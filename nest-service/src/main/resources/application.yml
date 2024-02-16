@@ -1,0 +1,62 @@
+server:
+    port: 8080
+sys:
+    ameVersion: 0.3
+    appId: 1001
+    appSource: android
+    appVersion: 147
+    ch: 10000
+    iActivityId: 11117
+    platform: android
+    sServiceDepartment: djc
+    sServiceType: dj
+    sVersionName: v4.7.1.0
+    set_info: newterminals
+    signVersion: 1.0
+    weexVersion: 0.28.0.1
+spring:
+    main:
+        allow-bean-definition-overriding: true
+    application:
+        name: djc_fight_task
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        initial-size: 5
+        max-idle: 10
+        max-wait: 10000
+        min-idle: 5
+        type: com.alibaba.druid.pool.DruidDataSource
+        url: jdbc:mysql://47.103.48.242:3306/little_nest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&useAffectedRows=true
+        username: 422846044
+        password: 422846044
+        druid:
+            #初始化连接池大小
+            initialSize: 10
+            #最大空闲值.当经过一个高峰时间后，连接池可以慢慢将已经用不到的连接慢慢释放一部分，一直减少到maxIdle为止
+            minIdle: 10
+            #最大活跃数
+            maxActive: 50
+            #最大建立连接等待时间。如果超过此时间将接到异常。设为－1表示无限制
+            maxWait: 60000
+            #失效检查线程运行时间间隔，要小于MySQL默认
+            timeBetweenEvictionRunsMillis: 60000
+            #连接的超时时间，默认为半小时
+            minEvictableIdleTimeMillis: 300000
+            #检查连接有效性的SQL语句
+            validationQuery: SELECT 1 FROM dual
+            #检查连接是否有效
+            testWhileIdle: true
+            testOnBorrow: true
+            testOnReturn: false
+            #开启池的prepared statement 池功能
+            poolPreparedStatements: false
+            #statement池能够同时分配的打开的statements的最大数量
+            maxOpenPreparedStatements: 50
+
+
+    jackson:
+        date-format: yyyy-MM-dd HH:mm:ss #格式化全局时间字段
+        time-zone: GMT+8 #指定时间区域类型
+
+mybatis:
+    mapper-locations: classpath:/mapper/*.xml
