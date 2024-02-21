@@ -27,6 +27,10 @@ public class UserInfo extends BaseDomain{
     */
     private String nickname;
     /**
+    * 头像
+    */
+    private String avatar;
+    /**
     * 用户状态(0不可用，1正常)
     */
     private Integer status;
@@ -57,6 +61,13 @@ public class UserInfo extends BaseDomain{
     */
     public void setNickname(String nickname){
     this.nickname = nickname;
+    }
+
+    /**
+    * 头像
+    */
+    public void setAvatar(String avatar){
+    this.avatar = avatar;
     }
 
     /**
@@ -97,6 +108,13 @@ public class UserInfo extends BaseDomain{
     */
     public String getNickname(){
     return this.nickname;
+    }
+
+    /**
+    * 头像
+    */
+    public String getAvatar(){
+    return this.avatar;
     }
 
     /**

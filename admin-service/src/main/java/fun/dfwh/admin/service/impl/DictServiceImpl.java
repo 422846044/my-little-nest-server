@@ -31,4 +31,15 @@ public class DictServiceImpl implements DictService {
         }
         return list;
     }
+
+    @Override
+    public Map getDictMapByDictCode(String dictCode) {
+        Map<String,String> data = new HashMap();
+        List<HashMap> sysDictDetailList =
+                sysDictDetailMapper.selectByDictCode(dictCode);
+        for (HashMap hashMap : sysDictDetailList) {
+            data.put(hashMap.get("code").toString(),hashMap.get("name").toString());
+        }
+        return data;
+    }
 }

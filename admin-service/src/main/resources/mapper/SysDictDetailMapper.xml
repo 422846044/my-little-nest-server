@@ -34,6 +34,10 @@
         select code as code,name as name from sys_dict_detail
         where dict_code=#{dictCode} and status = #{status} order by sort
     </select>
+    <select id="selectByDictCode" resultType="java.util.HashMap">
+        select code as code,name as name from sys_dict_detail
+        where dict_code=#{dictCode}
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from sys_dict_detail

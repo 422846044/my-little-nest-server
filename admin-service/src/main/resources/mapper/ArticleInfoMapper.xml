@@ -6,12 +6,11 @@
 
     <resultMap id="BaseResultMap" type="fun.dfwh.admin.entity.ArticleInfo">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="gategory" column="gategory" jdbcType="INTEGER"/>
+            <result property="category" column="category" jdbcType="INTEGER"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="content" column="content" jdbcType="VARCHAR"/>
             <result property="summary" column="summary" jdbcType="VARCHAR"/>
             <result property="cover" column="cover" jdbcType="VARCHAR"/>
-            <result property="directory" column="directory" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="INTEGER"/>
             <result property="createBy" column="create_by" jdbcType="BIGINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
@@ -20,9 +19,9 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,gategory,title,
+        id,category,title,
         content,summary,cover,
-        directory,status,create_by,
+        status,create_by,
         create_time,update_by,update_time
     </sql>
 
@@ -39,14 +38,14 @@
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="fun.dfwh.admin.entity.ArticleInfo" useGeneratedKeys="true">
         insert into article_info
-        ( id,gategory,title
+        ( id,category,title
         ,content,summary,cover
-        ,directory,status,create_by
+        ,status,create_by
         ,create_time,update_by,update_time
         )
-        values (#{id,jdbcType=BIGINT},#{gategory,jdbcType=INTEGER},#{title,jdbcType=VARCHAR}
+        values (#{id,jdbcType=BIGINT},#{category,jdbcType=INTEGER},#{title,jdbcType=VARCHAR}
         ,#{content,jdbcType=VARCHAR},#{summary,jdbcType=VARCHAR},#{cover,jdbcType=VARCHAR}
-        ,#{directory,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{createBy,jdbcType=BIGINT}
+        ,#{status,jdbcType=INTEGER},#{createBy,jdbcType=BIGINT}
         ,#{createTime,jdbcType=TIMESTAMP},#{updateBy,jdbcType=BIGINT},#{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
@@ -54,12 +53,11 @@
         insert into article_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
                 <if test="id != null">id,</if>
-                <if test="gategory != null">gategory,</if>
+                <if test="category != null">category,</if>
                 <if test="title != null">title,</if>
                 <if test="content != null">content,</if>
                 <if test="summary != null">summary,</if>
                 <if test="cover != null">cover,</if>
-                <if test="directory != null">directory,</if>
                 <if test="status != null">status,</if>
                 <if test="createBy != null">create_by,</if>
                 <if test="createTime != null">create_time,</if>
@@ -68,12 +66,11 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
                 <if test="id != null">#{id,jdbcType=BIGINT},</if>
-                <if test="gategory != null">#{gategory,jdbcType=INTEGER},</if>
+                <if test="category != null">#{category,jdbcType=INTEGER},</if>
                 <if test="title != null">#{title,jdbcType=VARCHAR},</if>
                 <if test="content != null">#{content,jdbcType=VARCHAR},</if>
                 <if test="summary != null">#{summary,jdbcType=VARCHAR},</if>
                 <if test="cover != null">#{cover,jdbcType=VARCHAR},</if>
-                <if test="directory != null">#{directory,jdbcType=VARCHAR},</if>
                 <if test="status != null">#{status,jdbcType=INTEGER},</if>
                 <if test="createBy != null">#{createBy,jdbcType=BIGINT},</if>
                 <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
@@ -84,8 +81,8 @@
     <update id="updateByPrimaryKeySelective" parameterType="fun.dfwh.admin.entity.ArticleInfo">
         update article_info
         <set>
-                <if test="gategory != null">
-                    gategory = #{gategory,jdbcType=INTEGER},
+                <if test="category != null">
+                    category = #{category,jdbcType=INTEGER},
                 </if>
                 <if test="title != null">
                     title = #{title,jdbcType=VARCHAR},
@@ -98,9 +95,6 @@
                 </if>
                 <if test="cover != null">
                     cover = #{cover,jdbcType=VARCHAR},
-                </if>
-                <if test="directory != null">
-                    directory = #{directory,jdbcType=VARCHAR},
                 </if>
                 <if test="status != null">
                     status = #{status,jdbcType=INTEGER},
@@ -123,12 +117,11 @@
     <update id="updateByPrimaryKey" parameterType="fun.dfwh.admin.entity.ArticleInfo">
         update article_info
         set 
-            gategory =  #{gategory,jdbcType=INTEGER},
+            category =  #{category,jdbcType=INTEGER},
             title =  #{title,jdbcType=VARCHAR},
             content =  #{content,jdbcType=VARCHAR},
             summary =  #{summary,jdbcType=VARCHAR},
             cover =  #{cover,jdbcType=VARCHAR},
-            directory =  #{directory,jdbcType=VARCHAR},
             status =  #{status,jdbcType=INTEGER},
             create_by =  #{createBy,jdbcType=BIGINT},
             create_time =  #{createTime,jdbcType=TIMESTAMP},

@@ -9,6 +9,7 @@
             <result property="username" column="username" jdbcType="VARCHAR"/>
             <result property="password" column="password" jdbcType="VARCHAR"/>
             <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+            <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="INTEGER"/>
             <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
@@ -18,8 +19,9 @@
 
     <sql id="Base_Column_List">
         id,username,password,
-        nickname,status,create_by,
-        create_time,update_by,update_time
+        nickname,avatar,status,
+        create_by,create_time,update_by,
+        update_time
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -27,12 +29,6 @@
         <include refid="Base_Column_List" />
         from user_info
         where  id = #{id,jdbcType=BIGINT} 
-    </select>
-    <select id="selectByUserName" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from user_info
-        where  username = #{userName}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -42,13 +38,13 @@
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="fun.dfwh.admin.entity.UserInfo" useGeneratedKeys="true">
         insert into user_info
         ( id,username,password
-        ,nickname,status,create_by
-        ,create_time,update_by,update_time
-        )
+        ,nickname,avatar,status
+        ,create_by,create_time,update_by
+        ,update_time)
         values (#{id,jdbcType=BIGINT},#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR}
-        ,#{nickname,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{createBy,jdbcType=VARCHAR}
-        ,#{createTime,jdbcType=TIMESTAMP},#{updateBy,jdbcType=VARCHAR},#{updateTime,jdbcType=TIMESTAMP}
-        )
+        ,#{nickname,jdbcType=VARCHAR},#{avatar,jdbcType=VARCHAR},#{status,jdbcType=INTEGER}
+        ,#{createBy,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateBy,jdbcType=VARCHAR}
+        ,#{updateTime,jdbcType=TIMESTAMP})
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="fun.dfwh.admin.entity.UserInfo" useGeneratedKeys="true">
         insert into user_info
@@ -57,6 +53,7 @@
                 <if test="username != null">username,</if>
                 <if test="password != null">password,</if>
                 <if test="nickname != null">nickname,</if>
+                <if test="avatar != null">avatar,</if>
                 <if test="status != null">status,</if>
                 <if test="createBy != null">create_by,</if>
                 <if test="createTime != null">create_time,</if>
@@ -68,6 +65,7 @@
                 <if test="username != null">#{username,jdbcType=VARCHAR},</if>
                 <if test="password != null">#{password,jdbcType=VARCHAR},</if>
                 <if test="nickname != null">#{nickname,jdbcType=VARCHAR},</if>
+                <if test="avatar != null">#{avatar,jdbcType=VARCHAR},</if>
                 <if test="status != null">#{status,jdbcType=INTEGER},</if>
                 <if test="createBy != null">#{createBy,jdbcType=VARCHAR},</if>
                 <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
@@ -86,6 +84,9 @@
                 </if>
                 <if test="nickname != null">
                     nickname = #{nickname,jdbcType=VARCHAR},
+                </if>
+                <if test="avatar != null">
+                    avatar = #{avatar,jdbcType=VARCHAR},
                 </if>
                 <if test="status != null">
                     status = #{status,jdbcType=INTEGER},
@@ -111,6 +112,7 @@
             username =  #{username,jdbcType=VARCHAR},
             password =  #{password,jdbcType=VARCHAR},
             nickname =  #{nickname,jdbcType=VARCHAR},
+            avatar =  #{avatar,jdbcType=VARCHAR},
             status =  #{status,jdbcType=INTEGER},
             create_by =  #{createBy,jdbcType=VARCHAR},
             create_time =  #{createTime,jdbcType=TIMESTAMP},
@@ -118,4 +120,15 @@
             update_time =  #{updateTime,jdbcType=TIMESTAMP}
         where   id = #{id,jdbcType=BIGINT} 
     </update>
+
+    <select id="selectByUserName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user_info
+        where  username = #{userName}
+    </select>
+    <select id="selectUserNameAndNickNameAndAvatarByUserId" resultType="java.util.HashMap">
+        select username as userName,nickname as nickName,avatar as avatar
+        from user_info where id = #{userId}
+    </select>
 </mapper>

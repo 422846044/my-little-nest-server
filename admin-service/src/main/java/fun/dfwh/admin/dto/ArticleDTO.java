@@ -14,7 +14,7 @@ public class ArticleDTO implements Serializable {
     /**
      * 文章分类
      */
-    private Integer gategory;
+    private Integer category;
 
     /**
      * 标题

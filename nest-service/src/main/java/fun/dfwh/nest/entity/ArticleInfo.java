@@ -1,14 +1,12 @@
-package fun.dfwh.admin.entity;
-
+package fun.dfwh.nest.entity;
 
 import fun.dfwh.common.entity.BaseDomain;
-
 
 /**
 * 
 * @TableName article_info
 */
-public class ArticleInfo extends BaseDomain {
+public class ArticleInfo extends BaseDomain{
 
     /**
     * 文章id
@@ -34,6 +32,7 @@ public class ArticleInfo extends BaseDomain {
     * 封面地址
     */
     private String cover;
+
     /**
     * 0删除,1正常,2草稿,3审批
     */
@@ -80,6 +79,7 @@ public class ArticleInfo extends BaseDomain {
     public void setCover(String cover){
     this.cover = cover;
     }
+
 
 
     /**
@@ -135,6 +135,8 @@ public class ArticleInfo extends BaseDomain {
     public String getCover(){
     return this.cover;
     }
+
+
 
     /**
     * 0删除,1正常,2草稿,3审批

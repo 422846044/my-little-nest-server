@@ -7,4 +7,6 @@ import java.util.Map;
 
 public interface DictService {
     List<DictDataVO> getDictDetailsByDictCode(String dictCode);
+
+    Map getDictMapByDictCode(String dictCode);
 }

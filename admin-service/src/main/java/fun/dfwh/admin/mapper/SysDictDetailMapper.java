@@ -28,4 +28,6 @@ public interface SysDictDetailMapper {
 
     List<HashMap> selectByDictCodeAndStatusOrderBySort(@Param("dictCode") String dictCode,
                                                        @Param("status") int status);
+
+    List<HashMap> selectByDictCode(@Param("dictCode") String dictCode);
 }

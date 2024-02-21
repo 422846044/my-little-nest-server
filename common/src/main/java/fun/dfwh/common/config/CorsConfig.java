@@ -11,7 +11,7 @@ import org.springframework.web.filter.CorsFilter;
 /**
  * 全局解决跨域问题
  */
-@Configuration
+//@Configuration
 public class CorsConfig {
     /**
      * 配置 corsFilter 自定义过滤器
@@ -32,7 +32,8 @@ public class CorsConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(false);    // 允许cookies跨域
         corsConfiguration.setMaxAge(1800L);             // 预检请求的缓存时间（秒），即在这个时间段里，对于相同的跨域请求不会再预检了
-        corsConfiguration.addAllowedOrigin("*");        // 允许任何“源”(域名)使用
+        //corsConfiguration.addAllowedOrigin("*");        // 允许任何“源”(域名)使用
+        corsConfiguration.addAllowedOrigin("http://www.dfwx.fun");
         corsConfiguration.addAllowedHeader("*");        // 允许任何请求头
         corsConfiguration.addAllowedMethod("*");        // 允许任何方法（get、post等）
         source.registerCorsConfiguration("/**", corsConfiguration);     // 处理所有请求的跨域配置

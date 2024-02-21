@@ -58,7 +58,6 @@ public class DjcTaskController {
     @ResponseBody
     @GetMapping("/query")
     public Result query(@RequestParam( name = "qqNum",required = false) String qqNum, HttpServletRequest httpServletRequest){
-
         String cookieNum = "";
         Cookie[] cookies = httpServletRequest.getCookies();
         if(cookies!=null){
@@ -68,7 +67,7 @@ public class DjcTaskController {
             }
         }
         if("".equals(cookieNum)&&StrUtil.isBlank(qqNum)){
-            return Result.error().message("请输入qq号");
+            return Result.error().message("请输入QQ号");
         }
         if(!"".equals(cookieNum)) qqNum=cookieNum;
         List<FightLogInfo> fightLogInfoList = logService.getLogInfoByQQNum(Integer.parseInt(qqNum));

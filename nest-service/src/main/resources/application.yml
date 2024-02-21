@@ -18,7 +18,7 @@ spring:
     main:
         allow-bean-definition-overriding: true
     application:
-        name: djc_fight_task
+        name: nest-service
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
         initial-size: 5
@@ -27,8 +27,8 @@ spring:
         min-idle: 5
         type: com.alibaba.druid.pool.DruidDataSource
         url: jdbc:mysql://47.103.48.242:3306/little_nest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&useAffectedRows=true
-        username: 422846044
-        password: 422846044
+        username: root
+        password: z422846044
         druid:
             #初始化连接池大小
             initialSize: 10

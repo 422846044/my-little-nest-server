@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/dict")
@@ -22,5 +23,11 @@ public class DictController {
     public Result getDictDetailsByDictCode(@RequestParam("dictCode") String dictCode){
         List<DictDataVO> dictInfoVOList = dictService.getDictDetailsByDictCode(dictCode);
         return Result.ok().data(dictInfoVOList);
+    }
+
+    @GetMapping("/getDictMapByDictCode")
+    public Result getDictMapByDictCode(@RequestParam("dictCode") String dictCode){
+        Map data = dictService.getDictMapByDictCode(dictCode);
+        return Result.ok().data(data);
     }
 }

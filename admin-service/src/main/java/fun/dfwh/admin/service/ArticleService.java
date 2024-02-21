@@ -15,12 +15,11 @@ public class ArticleService {
 
     public void addArticle(ArticleDTO articleDTO) {
         ArticleInfo articleInfo = new ArticleInfo();
-        articleInfo.setGategory(articleDTO.getGategory());
+        articleInfo.setCategory(articleDTO.getCategory());
         articleInfo.setTitle(articleDTO.getTitle());
         articleInfo.setContent(articleDTO.getContent());
         articleInfo.setSummary(articleDTO.getSummary());
         articleInfo.setCover(articleDTO.getCover());
-        articleInfo.setDirectory("");
         articleInfo.setStatus(1);
         articleInfoMapper.insert(articleInfo);
     }

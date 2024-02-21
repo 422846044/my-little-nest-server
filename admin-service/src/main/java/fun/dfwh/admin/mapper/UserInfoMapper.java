@@ -3,10 +3,12 @@ package fun.dfwh.admin.mapper;
 import fun.dfwh.admin.entity.UserInfo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
+
 /**
 * @author 11th
 * @description 针对表【user_info】的数据库操作Mapper
-* @createDate 2024-02-10 18:17:31
+* @createDate 2024-02-21 15:36:02
 * @Entity fun.dfwh.admin.entity.UserInfo
 */
 public interface UserInfoMapper {
@@ -24,4 +26,7 @@ public interface UserInfoMapper {
     int updateByPrimaryKey(UserInfo record);
 
     UserInfo selectByUserName(@Param("userName") String userName);
+
+
+    HashMap<String, String> selectUserNameAndNickNameAndAvatarByUserId(@Param("userId") Long userId);
 }

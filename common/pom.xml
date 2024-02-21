@@ -113,6 +113,11 @@
 
 
 
+    <!-- 打包格式 -->
+    <packaging>jar</packaging>
+
+    <!-- 打包插件 -->
+
 
 
 </project>

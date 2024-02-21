@@ -2,16 +2,16 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dfwh.djctask.mapper.ArticleInfoMapper">
+<mapper namespace="fun.dfwh.nest.mapper.ArticleInfoMapper">
 
-    <resultMap id="BaseResultMap" type="com.dfwh.djctask.domain.ArticleInfo">
+    <resultMap id="BaseResultMap" type="fun.dfwh.nest.entity.ArticleInfo">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="gategory" column="gategory" jdbcType="INTEGER"/>
+            <result property="category" column="category" jdbcType="INTEGER"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="content" column="content" jdbcType="VARCHAR"/>
             <result property="summary" column="summary" jdbcType="VARCHAR"/>
             <result property="cover" column="cover" jdbcType="VARCHAR"/>
-            <result property="directory" column="directory" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
             <result property="createBy" column="create_by" jdbcType="BIGINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
@@ -19,10 +19,10 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,gategory,title,
+        id,category,title,
         content,summary,cover,
-        directory,create_by,create_time,
-        update_by,update_time
+        status,create_by,
+        create_time,update_by,update_time
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -31,32 +31,53 @@
         from article_info
         where  id = #{id,jdbcType=BIGINT} 
     </select>
+    <select id="selectByPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from article_info where status = #{status}
+        <if test="lastId != -1">
+            and id
+          <if test="isNext">
+              <![CDATA[<]]> #{lastId}
+          </if>
+            <if test="!isNext">
+                >
+            </if>
+        </if>
+        order by id <if test="isNext"> desc </if>
+        limit #{pageSize}
+    </select>
+    <select id="selectCountByStatus" resultType="java.lang.Integer">
+        select count(1) from article_info where status = #{status}
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from article_info
         where  id = #{id,jdbcType=BIGINT} 
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dfwh.djctask.domain.ArticleInfo" useGeneratedKeys="true">
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="fun.dfwh.nest.entity.ArticleInfo" useGeneratedKeys="true">
         insert into article_info
-        ( id,gategory,title
+        ( id,category,title
         ,content,summary,cover
-        ,directory,create_by,create_time
-        ,update_by,update_time)
-        values (#{id,jdbcType=BIGINT},#{gategory,jdbcType=INTEGER},#{title,jdbcType=VARCHAR}
+        ,status,create_by
+        ,create_time,update_by,update_time
+        )
+        values (#{id,jdbcType=BIGINT},#{category,jdbcType=INTEGER},#{title,jdbcType=VARCHAR}
         ,#{content,jdbcType=VARCHAR},#{summary,jdbcType=VARCHAR},#{cover,jdbcType=VARCHAR}
-        ,#{directory,jdbcType=VARCHAR},#{createBy,jdbcType=BIGINT},#{createTime,jdbcType=TIMESTAMP}
-        ,#{updateBy,jdbcType=BIGINT},#{updateTime,jdbcType=TIMESTAMP})
+        ,#{status,jdbcType=INTEGER},#{createBy,jdbcType=BIGINT}
+        ,#{createTime,jdbcType=TIMESTAMP},#{updateBy,jdbcType=BIGINT},#{updateTime,jdbcType=TIMESTAMP}
+        )
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dfwh.djctask.domain.ArticleInfo" useGeneratedKeys="true">
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="fun.dfwh.nest.entity.ArticleInfo" useGeneratedKeys="true">
         insert into article_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
                 <if test="id != null">id,</if>
-                <if test="gategory != null">gategory,</if>
+                <if test="category != null">category,</if>
                 <if test="title != null">title,</if>
                 <if test="content != null">content,</if>
                 <if test="summary != null">summary,</if>
                 <if test="cover != null">cover,</if>
-                <if test="directory != null">directory,</if>
+                <if test="status != null">status,</if>
                 <if test="createBy != null">create_by,</if>
                 <if test="createTime != null">create_time,</if>
                 <if test="updateBy != null">update_by,</if>
@@ -64,23 +85,23 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
                 <if test="id != null">#{id,jdbcType=BIGINT},</if>
-                <if test="gategory != null">#{gategory,jdbcType=INTEGER},</if>
+                <if test="category != null">#{category,jdbcType=INTEGER},</if>
                 <if test="title != null">#{title,jdbcType=VARCHAR},</if>
                 <if test="content != null">#{content,jdbcType=VARCHAR},</if>
                 <if test="summary != null">#{summary,jdbcType=VARCHAR},</if>
                 <if test="cover != null">#{cover,jdbcType=VARCHAR},</if>
-                <if test="directory != null">#{directory,jdbcType=VARCHAR},</if>
+                <if test="status != null">#{status,jdbcType=INTEGER},</if>
                 <if test="createBy != null">#{createBy,jdbcType=BIGINT},</if>
                 <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
                 <if test="updateBy != null">#{updateBy,jdbcType=BIGINT},</if>
                 <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.dfwh.djctask.domain.ArticleInfo">
+    <update id="updateByPrimaryKeySelective" parameterType="fun.dfwh.nest.entity.ArticleInfo">
         update article_info
         <set>
-                <if test="gategory != null">
-                    gategory = #{gategory,jdbcType=INTEGER},
+                <if test="category != null">
+                    category = #{category,jdbcType=INTEGER},
                 </if>
                 <if test="title != null">
                     title = #{title,jdbcType=VARCHAR},
@@ -94,8 +115,8 @@
                 <if test="cover != null">
                     cover = #{cover,jdbcType=VARCHAR},
                 </if>
-                <if test="directory != null">
-                    directory = #{directory,jdbcType=VARCHAR},
+                <if test="status != null">
+                    status = #{status,jdbcType=INTEGER},
                 </if>
                 <if test="createBy != null">
                     create_by = #{createBy,jdbcType=BIGINT},
@@ -112,15 +133,15 @@
         </set>
         where   id = #{id,jdbcType=BIGINT} 
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.dfwh.djctask.domain.ArticleInfo">
+    <update id="updateByPrimaryKey" parameterType="fun.dfwh.nest.entity.ArticleInfo">
         update article_info
         set 
-            gategory =  #{gategory,jdbcType=INTEGER},
+            category =  #{category,jdbcType=INTEGER},
             title =  #{title,jdbcType=VARCHAR},
             content =  #{content,jdbcType=VARCHAR},
             summary =  #{summary,jdbcType=VARCHAR},
             cover =  #{cover,jdbcType=VARCHAR},
-            directory =  #{directory,jdbcType=VARCHAR},
+            status =  #{status,jdbcType=INTEGER},
             create_by =  #{createBy,jdbcType=BIGINT},
             create_time =  #{createTime,jdbcType=TIMESTAMP},
             update_by =  #{updateBy,jdbcType=BIGINT},
