@@ -1,14 +1,12 @@
 package fun.dfwh.admin.entity;
 
-import fun.dfwh.common.entity.BaseDomain;
-
-import java.util.Date;
+import fun.dfwh.common.entity.BaseEntity;
 
 /**
 * 
 * @TableName user_info
 */
-public class UserInfo extends BaseDomain{
+public class UserInfo extends BaseEntity {
 
     /**
     * 用户id

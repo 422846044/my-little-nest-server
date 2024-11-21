@@ -1,12 +1,15 @@
 package fun.dfwh.common.annotation;
 
 import fun.dfwh.common.validator.ValStrArrCheckValidator;
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
 
+import javax.validation.Constraint;
+import javax.validation.Payload;
 import java.lang.annotation.*;
 
-@Target({ElementType.FIELD, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+
+@Target({FIELD, METHOD, PARAMETER, ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Constraint(validatedBy = {ValStrArrCheckValidator.class})

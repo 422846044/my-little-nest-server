@@ -1,6 +1,6 @@
 package fun.dfwh.admin.entity;
 
-import fun.dfwh.common.entity.BaseDomain;
+import fun.dfwh.common.entity.BaseEntity;
 
 import java.util.Date;
 
@@ -8,7 +8,7 @@ import java.util.Date;
 * 
 * @TableName user_role_info
 */
-public class UserRoleInfo extends BaseDomain{
+public class UserRoleInfo extends BaseEntity {
 
     /**
     * 

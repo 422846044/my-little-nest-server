@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import fun.dfwh.admin.security.constant.SecurityConst;
 import fun.dfwh.admin.security.domain.SecurityUserDetails;
 import fun.dfwh.admin.service.JWTTokenService;
+import fun.dfwh.common.cache.Cache;
 import fun.dfwh.common.domain.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,11 +31,21 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Qualifier("securityUserDetailsService")
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private Cache<Integer> cache;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader(SecurityConst.TOKEN_HEADER);
         //不为空则写入上下文
         if(StrUtil.isNotEmpty(token)){
+            // 判断是否存在token信息
+            if(!cache.hasKey(SecurityConst.TOKEN_HEADER + "_"+token)){
+                //返回 提示使用refresh_token
+                response.setCharacterEncoding("UTF-8");
+                response.setContentType("application/json");
+                response.getWriter().write(JSONUtil.toJsonStr(new Result(true,402,"凭证已过期！",null)));
+                return;
+            }
             //校验token
             try {
                 jwtTokenService.verify(token);

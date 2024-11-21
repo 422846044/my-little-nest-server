@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="fun.dfwh.admin.mapper.ArticleInfoMapper">
 
-    <resultMap id="BaseResultMap" type="fun.dfwh.admin.entity.ArticleInfo">
+    <resultMap id="BaseResultMap" type="fun.dfwh.common.entity.ArticleInfo">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="category" column="category" jdbcType="INTEGER"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
@@ -12,6 +12,7 @@
             <result property="summary" column="summary" jdbcType="VARCHAR"/>
             <result property="cover" column="cover" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="deletedFlag" column="deleted_flag" jdbcType="BIT"/>
             <result property="createBy" column="create_by" jdbcType="BIGINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
@@ -31,25 +32,63 @@
         from article_info
         where  id = #{id,jdbcType=BIGINT} 
     </select>
+    <select id="selectDataCount" resultType="java.util.HashMap">
+        select (select count(1) from article_info) as allCount, (select ifnull(max(a.allCount),0) from (
+        select count(1) as allCount,year(create_time) as year,month(create_time) as month from article_info
+        group by year,month
+        order by year,month) a where year=#{year} and month = #{month}) as monthCount,
+            (select ifnull(max(a.allCount),0) from (
+            select count(1) as allCount,year(create_time) as year,month(create_time) as month from article_info
+            group by year,month
+            order by year,month) a where year = #{monthThanYear} and month = #{monthThanMonth}) as monthCountThan,
+            (select IFNULL(max(a.allCount),0) from (select count(1) as allCount,year(create_time) as year,month(create_time) as month,day(create_time) as day
+            from article_info group by year,month,day) a where a.year=#{year} and a.month = #{month} and a.day = #{day}
+            )as dayCount,
+            (select IFNULL(max(a.allCount),0) from (select count(1) as allCount,year(create_time) as year,month(create_time) as month,day(create_time) as day
+            from article_info group by year,month,day) a where a.year=#{dayThanYear} and a.month = #{dayThanMonth} and a.day = #{dayThanDay}
+            )as dayCountThan,(select count(1) from article_info where status = #{draftStatus}) as draftCount
+    </select>
+
+    <select id="selectByPage" resultMap="BaseResultMap">
+        select
+        ai.id as id,ai.category as category,ai.title as title,
+        ai.content as content,ai.summary as summary,ai.cover as cover,
+        ai.status as status,ai.create_by as create_by,
+        ai.create_time as create_time,ai.update_by as update_by,ai.update_time as update_time
+        from article_info ai
+        left join article_tags_info ati on ai.id = ati.article_id
+        where ai.status = #{status}
+        <if test="keyword != null and keyword != ''">
+            and (ai.title like concat('%',#{keyword},'%') or ai.content like concat('%',#{keyword},'%') or ai.summary like concat('%',#{keyword},'%'))
+        </if>
+        <if test="category != null">
+            and ai.category = #{category}
+        </if>
+        <if test="tag != null and tag != ''">
+            and ati.tags_code = #{tag}
+        </if>
+        group by ai.id
+        order by ${order} ${sort}, ai.id desc
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from article_info
         where  id = #{id,jdbcType=BIGINT} 
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="fun.dfwh.admin.entity.ArticleInfo" useGeneratedKeys="true">
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="fun.dfwh.common.entity.ArticleInfo" useGeneratedKeys="true">
         insert into article_info
         ( id,category,title
         ,content,summary,cover
-        ,status,create_by
+        ,status,deleted_flag,create_by
         ,create_time,update_by,update_time
         )
         values (#{id,jdbcType=BIGINT},#{category,jdbcType=INTEGER},#{title,jdbcType=VARCHAR}
         ,#{content,jdbcType=VARCHAR},#{summary,jdbcType=VARCHAR},#{cover,jdbcType=VARCHAR}
-        ,#{status,jdbcType=INTEGER},#{createBy,jdbcType=BIGINT}
+        ,#{status,jdbcType=INTEGER},#{deletedFlag,jdbcType=BIT},#{createBy,jdbcType=BIGINT}
         ,#{createTime,jdbcType=TIMESTAMP},#{updateBy,jdbcType=BIGINT},#{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="fun.dfwh.admin.entity.ArticleInfo" useGeneratedKeys="true">
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="fun.dfwh.common.entity.ArticleInfo" useGeneratedKeys="true">
         insert into article_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
                 <if test="id != null">id,</if>
@@ -59,6 +98,7 @@
                 <if test="summary != null">summary,</if>
                 <if test="cover != null">cover,</if>
                 <if test="status != null">status,</if>
+            <if test="deletedFlag != null">deleted_flag,</if>
                 <if test="createBy != null">create_by,</if>
                 <if test="createTime != null">create_time,</if>
                 <if test="updateBy != null">update_by,</if>
@@ -72,13 +112,14 @@
                 <if test="summary != null">#{summary,jdbcType=VARCHAR},</if>
                 <if test="cover != null">#{cover,jdbcType=VARCHAR},</if>
                 <if test="status != null">#{status,jdbcType=INTEGER},</if>
+                <if test="deletedFlag != null">#{deletedFlag</if>
                 <if test="createBy != null">#{createBy,jdbcType=BIGINT},</if>
                 <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
                 <if test="updateBy != null">#{updateBy,jdbcType=BIGINT},</if>
                 <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="fun.dfwh.admin.entity.ArticleInfo">
+    <update id="updateByPrimaryKeySelective" parameterType="fun.dfwh.common.entity.ArticleInfo">
         update article_info
         <set>
                 <if test="category != null">
@@ -114,7 +155,7 @@
         </set>
         where   id = #{id,jdbcType=BIGINT} 
     </update>
-    <update id="updateByPrimaryKey" parameterType="fun.dfwh.admin.entity.ArticleInfo">
+    <update id="updateByPrimaryKey" parameterType="fun.dfwh.common.entity.ArticleInfo">
         update article_info
         set 
             category =  #{category,jdbcType=INTEGER},

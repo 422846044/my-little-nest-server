@@ -20,16 +20,6 @@
             <option name="moduleUIInfoList">
               <list>
                 <ModuleInfoGo>
-                  <option name="basePath" value="src/main/java" />
-                  <option name="configFileName" value="domain.ftl" />
-                  <option name="configName" value="domain" />
-                  <option name="encoding" value="UTF-8" />
-                  <option name="fileName" value="${domain.fileName}" />
-                  <option name="fileNameWithSuffix" value="${domain.fileName}.java" />
-                  <option name="modulePath" value="$PROJECT_DIR$/admin-service" />
-                  <option name="packageName" value="fun.dfwh.admin.entity" />
-                </ModuleInfoGo>
-                <ModuleInfoGo>
                   <option name="basePath" value="${domain.basePath}" />
                   <option name="configFileName" value="mapperInterface.ftl" />
                   <option name="configName" value="mapperInterface" />
@@ -53,12 +43,12 @@
             </option>
             <option name="needsModel" value="false" />
             <option name="relativePackage" value="entity" />
-            <option name="superClass" value="" />
+            <option name="superClass" value="BaseEntity" />
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="UserInfo" />
-                  <option name="tableName" value="user_info" />
+                  <option name="className" value="ArticleTagsInfo" />
+                  <option name="tableName" value="article_tags_info" />
                 </TableUIInfo>
               </list>
             </option>

@@ -20,7 +20,7 @@ import java.util.Map;
 public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     public LoginAuthenticationFilter(){
-        super(new AntPathRequestMatcher("/admin/login", "POST"));
+        super(new AntPathRequestMatcher("/login", "POST"));
     }
 
     @Override

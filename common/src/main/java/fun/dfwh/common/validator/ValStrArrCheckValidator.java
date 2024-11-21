@@ -1,9 +1,9 @@
 package fun.dfwh.common.validator;
 
 import fun.dfwh.common.annotation.ValStrArrCheck;
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.List;
 

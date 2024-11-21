@@ -1,26 +1,21 @@
 package fun.dfwh.admin.service;
 
 
+import com.github.pagehelper.PageInfo;
 import fun.dfwh.admin.dto.ArticleDTO;
-import fun.dfwh.admin.entity.ArticleInfo;
-import fun.dfwh.admin.mapper.ArticleInfoMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import fun.dfwh.admin.dto.ArticlePageQueryDTO;
+import fun.dfwh.admin.vo.ArticleInfoVO;
+import fun.dfwh.admin.vo.HomeDataCountVO;
 
-@Service
-public class ArticleService {
+public interface ArticleService {
 
-    @Autowired(required = false)
-    private ArticleInfoMapper articleInfoMapper;
+    void addArticle(ArticleDTO articleDTO);
 
-    public void addArticle(ArticleDTO articleDTO) {
-        ArticleInfo articleInfo = new ArticleInfo();
-        articleInfo.setCategory(articleDTO.getCategory());
-        articleInfo.setTitle(articleDTO.getTitle());
-        articleInfo.setContent(articleDTO.getContent());
-        articleInfo.setSummary(articleDTO.getSummary());
-        articleInfo.setCover(articleDTO.getCover());
-        articleInfo.setStatus(1);
-        articleInfoMapper.insert(articleInfo);
-    }
+    HomeDataCountVO getDataCount();
+
+    PageInfo getArticleList(ArticlePageQueryDTO articlePageQuery);
+
+    ArticleInfoVO getArticleInfo(Long articleId);
+
+    void updateArticle(ArticleDTO articleDTO);
 }

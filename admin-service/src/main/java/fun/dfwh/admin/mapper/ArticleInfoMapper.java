@@ -1,7 +1,11 @@
 package fun.dfwh.admin.mapper;
 
 
-import fun.dfwh.admin.entity.ArticleInfo;
+import fun.dfwh.common.entity.ArticleInfo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
 * @author 11th
@@ -23,4 +27,20 @@ public interface ArticleInfoMapper {
 
     int updateByPrimaryKey(ArticleInfo record);
 
+    HashMap<String, Object> selectDataCount(@Param("year") int year,
+                                            @Param("month") int month,
+                                            @Param("day") int day,
+                                            @Param("monthThanYear") int monthThanYear,
+                                            @Param("monthThanMonth") int monthThanMonth,
+                                            @Param("dayThanYear") int dayThanYear,
+                                            @Param("dayThanMonth") int dayThanMonth,
+                                            @Param("dayThanDay") int dayThanDay,
+                                            @Param("draftStatus") int draftStatus);
+
+    List<ArticleInfo> selectByPage(@Param("keyword") String keyword,
+                                   @Param("category") Integer category,
+                                   @Param("tag") String tag,
+                                   @Param("order") String order,
+                                   @Param("sort") String sort,
+                                   @Param("status") Integer status);
 }

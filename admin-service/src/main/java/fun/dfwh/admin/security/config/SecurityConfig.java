@@ -29,8 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .apply(config)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/admin/login","/admin/dict/getDictMapByDictCode",
-                        "/admin/user/getSimpleUserInfoByUserId")
+                .antMatchers("/login","/refresh/refresh",
+                        "/dict/getDictMapByDictCode",
+                        "/user/getSimpleUserInfoByUserId")
                 .permitAll()
                 .antMatchers("/role").hasRole("admin")
                 .anyRequest()
@@ -48,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public TokenAuthenticationFilter tokenAuthenticationFilter(){
+    public TokenAuthenticationFilter tokenAuthenticationFilter() {
         return new TokenAuthenticationFilter();
     }
 }

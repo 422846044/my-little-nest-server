@@ -2,8 +2,11 @@ package fun.dfwh.nest.task;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.extra.mail.MailUtil;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import fun.dfwh.nest.async.AsyncService;
 import fun.dfwh.nest.constant.GoodsId;
 import fun.dfwh.nest.domain.FightLogInfo;
@@ -29,7 +32,9 @@ public class DjcTask {
     @Autowired
     private UserService userService;
 
-    @Scheduled(cron="0 0 1 * * ?")
+    private String start = "https://ultimateota.d.miui.com/OS1.0.45.0.UNCCNXM";
+
+    //@Scheduled(cron="0 0 1 * * ?")
     public void timingTask(){
         signTask(null);
     }
@@ -363,6 +368,30 @@ public class DjcTask {
         //Integer qqNum = 353816033;
 
         return false;
+    }
+
+    //@Scheduled(fixedRate = 15000)
+    public void queryTask(){
+        Date date = new Date();
+        int hours = date.getHours();
+        if(hours >0 && hours <9){
+            return;
+        }
+        HttpRequest get = HttpUtil.createGet("https://api.vip.miui.com/api/alpha/detail?ref=vipAccountShortcut&pathname=%2Fmio%2FtestDetails&version=dev.241017&miui_version=3793265&android_version=9&oaid=&device=marlin&restrict_imei=&miui_big_version=&model=PCLM10&androidVersion=9&miuiBigVersion=&miui_vip_ph=ARCI37n9%2BZt42xyOcT99eA%3D%3D&planId=551&type=&sid=vip");
+        get.header("cookie","cUserId=EjwVvTLybLAMyhe2uUgTBfmrZmU; userId=9d09413749719c5ad49ff18d2afb2ef7; miui_vip_ph=ARCI37n9+Zt42xyOcT99eA==; miui_vip_slh=PAWf3LYpx62HpjD5yxlwzbo7KTY=; miui_vip_serviceToken=MTpeQFfhsqxgOUQq2oAvZJXjBcD9MiJok4IVG622WmrQs/6QcukOxTQRx2uzOlHB8eftgNb4m61ay9+H+/egBJOmS+gGsze3iv9i4N++Ft23iWEWTpEVCXZrBQ4RsttbQdelj0QkFQBuPWS3n+e+VWne71pOEl0NVTEQSoHfzcNnDJenN1Rdnh2pEx9clIzD/ZKjFT+IiqyIP59UGE0haaTM9KXCP/9UU8T1o8f9Vb5jUDU6IlgTxLuPzPP14WKqa6V57KCm9RwfFBYef34zn/TyyIqezruQX4NEpFPEpuM=");
+        String body = get.execute().body();
+        JSONObject jsonObject = JSONUtil.parseObj(body);
+        JSONObject entity = jsonObject.getJSONObject("entity");
+        JSONObject testing  = entity.getJSONObject("testing");
+        JSONArray apps1 = testing.getJSONArray("apps");
+        Object o = apps1.get(0);
+        JSONObject apps = JSONUtil.parseObj(o);
+        String version = apps.getStr("version");
+        System.out.println(version);
+        if(!"OS1.0.45.0.UNCCNXM".equals(version)){
+            MailUtil.send("422846044@qq.com","系统已更新","系统已更新",false);
+            sleep(1000000000);
+        }
     }
 
     public boolean test(){

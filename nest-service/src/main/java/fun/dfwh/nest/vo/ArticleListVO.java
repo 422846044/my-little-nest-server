@@ -12,6 +12,6 @@ public class ArticleListVO {
     private String summary;
     private String cover;
     private Integer category;
-    private List<Integer> tags;
+    private List<String> tags;
     private Date createTime;
 }

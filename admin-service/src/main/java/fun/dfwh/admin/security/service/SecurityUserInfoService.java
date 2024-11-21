@@ -5,7 +5,7 @@ import fun.dfwh.admin.entity.UserRoleInfo;
 import fun.dfwh.admin.security.domain.SecurityUserDetails;
 import fun.dfwh.admin.security.domain.SecurityUserRole;
 import fun.dfwh.admin.service.UserRoleService;
-import fun.dfwh.admin.service.UserService;
+import fun.dfwh.admin.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -16,14 +16,16 @@ import java.util.Objects;
 
 @Service
 public class SecurityUserInfoService {
+
     @Autowired
-    private UserService userService;
+    private IUserService iUserService;
+
     @Autowired
     private UserRoleService userRoleService;
 
     public UserDetails getUserDetailsByUserName(String username) {
         SecurityUserDetails userDetails = null;
-        UserInfo userInfo = userService.getUserInfoByUserName(username);
+        UserInfo userInfo = iUserService.getUserInfoByUserName(username);
         if(Objects.nonNull(userInfo)){
             userDetails = new SecurityUserDetails();
             userDetails.setUserId(Long.toString(userInfo.getId()));

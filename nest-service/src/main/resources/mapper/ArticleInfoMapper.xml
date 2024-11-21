@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="fun.dfwh.nest.mapper.ArticleInfoMapper">
 
-    <resultMap id="BaseResultMap" type="fun.dfwh.nest.entity.ArticleInfo">
+    <resultMap id="BaseResultMap" type="fun.dfwh.common.entity.ArticleInfo">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="category" column="category" jdbcType="INTEGER"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
@@ -33,19 +33,24 @@
     </select>
     <select id="selectByPage" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
-        from article_info where status = #{status}
-        <if test="lastId != -1">
-            and id
-          <if test="isNext">
-              <![CDATA[<]]> #{lastId}
-          </if>
-            <if test="!isNext">
-                >
-            </if>
+        ai.id as id,ai.category as category,ai.title as title,
+        ai.content as content,ai.summary as summary,ai.cover as cover,
+        ai.status as status,ai.create_by as create_by,
+        ai.create_time as create_time,ai.update_by as update_by,ai.update_time as update_time
+        from article_info ai
+        left join article_tags_info ati on ai.id = ati.article_id
+        where ai.status = #{status}
+        <if test="keyword != null and keyword != ''">
+            and (ai.title like concat('%',#{keyword},'%') or ai.content like concat('%',#{keyword},'%') or ai.summary like concat('%',#{keyword},'%'))
         </if>
-        order by id <if test="isNext"> desc </if>
-        limit #{pageSize}
+          <if test="category != null">
+              and ai.category = #{category}
+          </if>
+        <if test="tag != null and tag != ''">
+            and ati.tags_code = #{tag}
+        </if>
+        group by ai.id
+        order by ${order} ${sort}, ai.id desc
     </select>
     <select id="selectCountByStatus" resultType="java.lang.Integer">
         select count(1) from article_info where status = #{status}
@@ -55,7 +60,7 @@
         delete from article_info
         where  id = #{id,jdbcType=BIGINT} 
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="fun.dfwh.nest.entity.ArticleInfo" useGeneratedKeys="true">
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="fun.dfwh.common.entity.ArticleInfo" useGeneratedKeys="true">
         insert into article_info
         ( id,category,title
         ,content,summary,cover
@@ -68,7 +73,7 @@
         ,#{createTime,jdbcType=TIMESTAMP},#{updateBy,jdbcType=BIGINT},#{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="fun.dfwh.nest.entity.ArticleInfo" useGeneratedKeys="true">
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="fun.dfwh.common.entity.ArticleInfo" useGeneratedKeys="true">
         insert into article_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
                 <if test="id != null">id,</if>
@@ -97,7 +102,7 @@
                 <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="fun.dfwh.nest.entity.ArticleInfo">
+    <update id="updateByPrimaryKeySelective" parameterType="fun.dfwh.common.entity.ArticleInfo">
         update article_info
         <set>
                 <if test="category != null">
@@ -133,7 +138,7 @@
         </set>
         where   id = #{id,jdbcType=BIGINT} 
     </update>
-    <update id="updateByPrimaryKey" parameterType="fun.dfwh.nest.entity.ArticleInfo">
+    <update id="updateByPrimaryKey" parameterType="fun.dfwh.common.entity.ArticleInfo">
         update article_info
         set 
             category =  #{category,jdbcType=INTEGER},

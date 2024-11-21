@@ -1,7 +1,5 @@
 package fun.dfwh.admin.security.service;
 
-import fun.dfwh.admin.entity.UserInfo;
-import fun.dfwh.admin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

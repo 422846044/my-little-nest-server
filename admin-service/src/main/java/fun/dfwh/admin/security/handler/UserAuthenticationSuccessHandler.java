@@ -1,10 +1,13 @@
 package fun.dfwh.admin.security.handler;
 
 import cn.hutool.json.JSONUtil;
+import fun.dfwh.admin.security.constant.SecurityConst;
 import fun.dfwh.admin.security.domain.SecurityUserDetails;
 import fun.dfwh.admin.service.JWTTokenService;
+import fun.dfwh.common.cache.Cache;
 import fun.dfwh.common.domain.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 密码校验通过处理
@@ -25,6 +29,12 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
 
     @Autowired
     private JWTTokenService jwtTokenService;
+    @Autowired
+    private Cache<Integer> cache;
+    @Value("${jwt.expires}")
+    private int expires;
+    @Value("${jwt.refresh}")
+    private int refresh;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         SecurityUserDetails userDetails = (SecurityUserDetails) authentication.getPrincipal();
@@ -35,6 +45,8 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
                 .createAccessToken(userDetails.getUserId(), userDetails.getUsername());
         String refreshToken = jwtTokenService
                 .createRefreshToken(userDetails.getUserId(),userDetails.getUsername());
+        cache.putAndExp(SecurityConst.TOKEN_HEADER + "_" + accessToken,1,Integer.toUnsignedLong(expires), TimeUnit.DAYS);
+        cache.putAndExp(SecurityConst.REFRESH_TOKEN_HEADER + "_" + refreshToken,1,Integer.toUnsignedLong(refresh), TimeUnit.DAYS);
         //返回
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");

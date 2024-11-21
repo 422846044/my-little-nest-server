@@ -1,14 +1,12 @@
 package fun.dfwh.admin.entity;
 
-import fun.dfwh.common.entity.BaseDomain;
-
-import java.util.Date;
+import fun.dfwh.common.entity.BaseEntity;
 
 /**
 * 
 * @TableName sys_dict
 */
-public class SysDict extends BaseDomain{
+public class SysDict extends BaseEntity {
 
     /**
     * 主键id

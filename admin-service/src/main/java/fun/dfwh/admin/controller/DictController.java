@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin/dict")
+@RequestMapping("/dict")
 public class DictController {
 
     @Autowired

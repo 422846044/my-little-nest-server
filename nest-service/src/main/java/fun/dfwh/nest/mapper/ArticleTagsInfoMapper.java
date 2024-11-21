@@ -1,6 +1,7 @@
 package fun.dfwh.nest.mapper;
 
-import fun.dfwh.nest.entity.ArticleTagsInfo;
+import fun.dfwh.common.entity.ArticleTagsInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
 * @author 11th
 * @description 针对表【article_tags_info】的数据库操作Mapper
 * @createDate 2024-02-19 10:42:14
-* @Entity fun.dfwh.nest.entity.ArticleTagsInfo
+* @Entity fun.dfwh.common.entity.ArticleTagsInfo
 */
 public interface ArticleTagsInfoMapper {
 
@@ -25,4 +26,6 @@ public interface ArticleTagsInfoMapper {
     int updateByPrimaryKey(ArticleTagsInfo record);
 
     List<Integer> selectTagsCodeByArticleId(Long articleId);
+
+    List<ArticleTagsInfo> selectByArticleIds(@Param("articleIdList") List<Long> articleIdList);
 }

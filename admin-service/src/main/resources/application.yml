@@ -1,5 +1,7 @@
 server:
     port: 8082
+    servlet:
+        context-path: /admin
 spring:
     main:
         allow-bean-definition-overriding: true
@@ -38,6 +40,18 @@ spring:
             poolPreparedStatements: false
             #statement池能够同时分配的打开的statements的最大数量
             maxOpenPreparedStatements: 50
+    redis:
+        database: 0
+        host: 47.103.48.242
+        port: 6379
+        password: 422846044
+        lettuce:
+            pool:
+                max-active: 6
+                max-idle: 4
+                max-wait: 5s
+                min-idle: 0
+        timeout: 60000
     jackson:
         date-format: yyyy-MM-dd HH:mm:ss #格式化全局时间字段
         time-zone: GMT+8 #指定时间区域类型
@@ -53,5 +67,23 @@ jwt:
     secret: dfwh422846044
     expires: 3
     refresh: 5
+
+logging:
+    config: classpath:logback-spring.xml
+    level:
+        org:
+            mybatis: debug
+        fun:
+            dfwh:
+                admin:
+                    mapper:
+                    /*: debug
+        root: info
+
+pagehelper:
+    helper-dialect: mysql
+    params: count=countSql
+    reasonable: false
+    support-methods-arguments: true
 
 

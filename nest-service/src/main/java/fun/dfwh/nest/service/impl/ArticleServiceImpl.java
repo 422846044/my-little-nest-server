@@ -1,53 +1,64 @@
 package fun.dfwh.nest.service.impl;
 
-import fun.dfwh.nest.entity.ArticleTagsInfo;
+import cn.hutool.core.util.StrUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import fun.dfwh.common.constant.ArticleStatus;
+import fun.dfwh.common.entity.ArticleTagsInfo;
 import fun.dfwh.nest.mapper.ArticleTagsInfoMapper;
+import fun.dfwh.nest.pojo.dto.ArticlePageQueryDTO;
 import fun.dfwh.nest.vo.ArticleListVO;
-import fun.dfwh.nest.constant.ArticleStatus;
-import fun.dfwh.nest.entity.ArticleInfo;
+import fun.dfwh.common.entity.ArticleInfo;
 import fun.dfwh.nest.mapper.ArticleInfoMapper;
 import fun.dfwh.nest.service.ArticleService;
 import fun.dfwh.nest.vo.ArticleInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
-    @Autowired(required = false)
+    @Autowired
     private ArticleInfoMapper articleInfoMapper;
 
-    @Autowired(required = false)
+    @Autowired
     private ArticleTagsInfoMapper articleTagsInfoMapper;
     @Override
-    public Map getArticleByPage(Long lastId, Integer pageSize, Boolean isNext) {
-        Map data = new HashMap();
+    public PageInfo getArticleByPage(ArticlePageQueryDTO articlePageQuery) {
+        StrUtil.trim(articlePageQuery.getKeyword());
+        articlePageQuery.setOrder("ai."+articlePageQuery.getOrder());
         List<ArticleListVO> voList = new ArrayList<>();
-        Integer total = articleInfoMapper.selectCountByStatus(ArticleStatus.EFFECTIVE);
-        List<ArticleInfo> articleInfoList = articleInfoMapper.selectByPage(lastId,pageSize,isNext, ArticleStatus.EFFECTIVE);
-        for (int i = 0; i < articleInfoList.size(); i++) {
-            ArticleInfo articleInfo = articleInfoList.get(i);
-            ArticleListVO vo = new ArticleListVO();
-            vo.setId(Long.toString(articleInfo.getId()));
-            vo.setTitle(articleInfo.getTitle());
-            vo.setCategory(articleInfo.getCategory());
-            vo.setSummary(articleInfo.getSummary());
-            vo.setCover(articleInfo.getCover());
-            vo.setTags(new ArrayList<>());
-            vo.setCreateTime(articleInfo.getCreateTime());
-            voList.add(vo);
-            if((i+1)==articleInfoList.size()){
-                lastId = articleInfo.getId();
+        PageHelper.startPage(articlePageQuery.getPageNum(),articlePageQuery.getPageSize());
+        List<ArticleInfo> articleInfoList = articleInfoMapper.selectByPage(articlePageQuery.getKeyword(),
+                articlePageQuery.getCategory(),
+                articlePageQuery.getTag(),
+                articlePageQuery.getOrder(),
+                articlePageQuery.getSort(),
+                ArticleStatus.VALID);
+        PageInfo pageInfo = new PageInfo(articleInfoList);
+        List<Long> articleIdList = articleInfoList.stream().map(ArticleInfo::getId).collect(Collectors.toList());
+        if(!articleIdList.isEmpty()){
+            List<ArticleTagsInfo> articleTagsInfoList = articleTagsInfoMapper.selectByArticleIds(articleIdList);
+            Map<Long, List<ArticleTagsInfo>> articleIdKeyTagsInfoMap = articleTagsInfoList.stream().collect(Collectors.groupingBy(ArticleTagsInfo::getArticleId));
+            for (int i = 0; i < articleInfoList.size(); i++) {
+                ArticleInfo articleInfo = articleInfoList.get(i);
+                ArticleListVO vo = new ArticleListVO();
+                vo.setId(Long.toString(articleInfo.getId()));
+                vo.setTitle(articleInfo.getTitle());
+                vo.setCategory(articleInfo.getCategory());
+                vo.setSummary(articleInfo.getSummary());
+                vo.setCover(articleInfo.getCover());
+                // 获取标签信息
+                List<ArticleTagsInfo> articleTagsInfoListVO = articleIdKeyTagsInfoMap.get(articleInfo.getId());
+                vo.setTags(Objects.isNull(articleTagsInfoListVO)  ? Collections.emptyList() : articleTagsInfoListVO.stream().map(ArticleTagsInfo::getTagsCode).collect(Collectors.toList()));
+                vo.setCreateTime(articleInfo.getCreateTime());
+                voList.add(vo);
             }
         }
-        data.put("articleList",voList);
-        data.put("lastId",lastId);
-        data.put("total",total);
-        return data;
+        pageInfo.setList(voList);
+        return pageInfo;
     }
 
     @Override

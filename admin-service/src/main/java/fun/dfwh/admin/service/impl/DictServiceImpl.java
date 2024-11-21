@@ -1,6 +1,5 @@
 package fun.dfwh.admin.service.impl;
 
-import fun.dfwh.admin.entity.SysDictDetail;
 import fun.dfwh.admin.mapper.SysDictDetailMapper;
 import fun.dfwh.admin.mapper.SysDictMapper;
 import fun.dfwh.admin.service.DictService;

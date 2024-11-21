@@ -4,9 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="fun.dfwh.nest.mapper.ArticleTagsInfoMapper">
 
-    <resultMap id="BaseResultMap" type="fun.dfwh.nest.entity.ArticleTagsInfo">
+    <resultMap id="BaseResultMap" type="fun.dfwh.common.entity.ArticleTagsInfo">
             <id property="articleId" column="article_id" jdbcType="BIGINT"/>
-            <id property="tagsCode" column="tags_code" jdbcType="INTEGER"/>
+            <id property="tagsCode" column="tags_code" jdbcType="VARCHAR"/>
             <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
@@ -22,23 +22,29 @@
         select
         <include refid="Base_Column_List" />
         from article_tags_info
-        where  article_id = #{articleId,jdbcType=BIGINT} AND tags_code = #{tagsCode,jdbcType=INTEGER} 
+        where  article_id = #{articleId,jdbcType=BIGINT} AND tags_code = #{tagsCode,jdbcType=VARCHAR}
     </select>
     <select id="selectTagsCodeByArticleId" resultType="java.lang.Integer">
         select tags_code from article_tags_info
         where  article_id = #{articleId}
     </select>
+    <select id="selectByArticleIds" resultMap="BaseResultMap">
+        select article_id,tags_code from article_tags_info where article_id in
+        <foreach collection="articleIdList" item="articleId" separator="," open="(" close=")">
+            #{articleId}
+        </foreach>
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from article_tags_info
-        where  article_id = #{articleId,jdbcType=BIGINT} AND tags_code = #{tagsCode,jdbcType=INTEGER} 
+        where  article_id = #{articleId,jdbcType=BIGINT} AND tags_code = #{tagsCode,jdbcType=VARCHAR}
     </delete>
     <insert id="insert">
         insert into article_tags_info
         ( article_id,tags_code,create_by
         ,create_time,update_by,update_time
         )
-        values (#{articleId,jdbcType=BIGINT},#{tagsCode,jdbcType=INTEGER},#{createBy,jdbcType=VARCHAR}
+        values (#{articleId,jdbcType=BIGINT},#{tagsCode,jdbcType=VARCHAR},#{createBy,jdbcType=VARCHAR}
         ,#{createTime,jdbcType=TIMESTAMP},#{updateBy,jdbcType=VARCHAR},#{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
@@ -54,14 +60,14 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
                 <if test="articleId != null">#{articleId,jdbcType=BIGINT},</if>
-                <if test="tagsCode != null">#{tagsCode,jdbcType=INTEGER},</if>
+                <if test="tagsCode != null">#{tagsCode,jdbcType=VARCHAR},</if>
                 <if test="createBy != null">#{createBy,jdbcType=VARCHAR},</if>
                 <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
                 <if test="updateBy != null">#{updateBy,jdbcType=VARCHAR},</if>
                 <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="fun.dfwh.nest.entity.ArticleTagsInfo">
+    <update id="updateByPrimaryKeySelective" parameterType="fun.dfwh.common.entity.ArticleTagsInfo">
         update article_tags_info
         <set>
                 <if test="createBy != null">
@@ -77,15 +83,15 @@
                     update_time = #{updateTime,jdbcType=TIMESTAMP},
                 </if>
         </set>
-        where   article_id = #{articleId,jdbcType=BIGINT} AND tags_code = #{tagsCode,jdbcType=INTEGER} 
+        where   article_id = #{articleId,jdbcType=BIGINT} AND tags_code = #{tagsCode,jdbcType=VARCHAR}
     </update>
-    <update id="updateByPrimaryKey" parameterType="fun.dfwh.nest.entity.ArticleTagsInfo">
+    <update id="updateByPrimaryKey" parameterType="fun.dfwh.common.entity.ArticleTagsInfo">
         update article_tags_info
         set 
             create_by =  #{createBy,jdbcType=VARCHAR},
             create_time =  #{createTime,jdbcType=TIMESTAMP},
             update_by =  #{updateBy,jdbcType=VARCHAR},
             update_time =  #{updateTime,jdbcType=TIMESTAMP}
-        where   article_id = #{articleId,jdbcType=BIGINT} AND tags_code = #{tagsCode,jdbcType=INTEGER} 
+        where   article_id = #{articleId,jdbcType=BIGINT} AND tags_code = #{tagsCode,jdbcType=VARCHAR}
     </update>
 </mapper>

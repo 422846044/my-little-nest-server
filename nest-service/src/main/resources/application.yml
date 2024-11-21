@@ -52,6 +52,18 @@ spring:
             poolPreparedStatements: false
             #statement池能够同时分配的打开的statements的最大数量
             maxOpenPreparedStatements: 50
+    redis:
+        database: 2
+        host: 47.103.48.242
+        port: 6379
+        password: 422846044
+        lettuce:
+            pool:
+                max-active: 6
+                max-idle: 4
+                max-wait: 5s
+                min-idle: 0
+        timeout: 50000
 
 
     jackson:
@@ -60,3 +72,22 @@ spring:
 
 mybatis:
     mapper-locations: classpath:/mapper/*.xml
+
+
+logging:
+    config: classpath:logback-spring.xml
+    level:
+        org:
+            mybatis: debug
+        fun:
+            dfwh:
+                nest:
+                    mapper:
+                    /*: debug
+        root: info
+
+pagehelper:
+    helper-dialect: mysql
+    params: count=countSql
+    reasonable: false
+    support-methods-arguments: true

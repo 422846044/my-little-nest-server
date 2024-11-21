@@ -1,6 +1,7 @@
 package fun.dfwh.nest.controller;
 
 import fun.dfwh.common.domain.Result;
+import fun.dfwh.nest.pojo.dto.ArticlePageQueryDTO;
 import fun.dfwh.nest.service.ArticleService;
 import fun.dfwh.nest.vo.ArticleInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/article")
@@ -19,11 +20,8 @@ public class ArticleController {
     private ArticleService articleService;
 
     @GetMapping("/getArticleByPage")
-    public Result getArticleByPage(@RequestParam("lastId") Long lastId,
-                                   @RequestParam("pageSize") Integer pageSize,
-                                   @RequestParam("isNext") Boolean isNext){
-        Map data = articleService.getArticleByPage(lastId,pageSize,isNext);
-        return Result.ok().data(data);
+    public Result getArticleByPage(@Valid ArticlePageQueryDTO articlePageQuery){
+        return Result.ok().data(articleService.getArticleByPage(articlePageQuery));
     }
 
     @GetMapping("/getArticleInfoById")
