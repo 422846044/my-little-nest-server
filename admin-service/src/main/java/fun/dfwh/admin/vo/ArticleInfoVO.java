@@ -22,6 +22,8 @@ public class ArticleInfoVO implements Serializable {
 
     private String category;
 
+    private Integer status;
+
     private List<String> tags;
 
 }

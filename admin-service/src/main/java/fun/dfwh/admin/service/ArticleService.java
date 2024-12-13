@@ -18,4 +18,6 @@ public interface ArticleService {
     ArticleInfoVO getArticleInfo(Long articleId);
 
     void updateArticle(ArticleDTO articleDTO);
+
+    void addArticleDraft(ArticleDTO articleDTO);
 }

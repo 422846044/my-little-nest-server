@@ -29,4 +29,9 @@ public class ArticleController {
         ArticleInfoVO articleInfoVO = articleService.getArticleInfoById(id);
         return Result.ok().data(articleInfoVO);
     }
+
+    @GetMapping("/history")
+    public Result getHistory(){
+        return Result.ok().data(articleService.getHistory());
+    }
 }

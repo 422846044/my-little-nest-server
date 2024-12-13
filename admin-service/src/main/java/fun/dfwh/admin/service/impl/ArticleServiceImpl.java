@@ -19,6 +19,7 @@ import fun.dfwh.common.entity.ArticleInfo;
 import fun.dfwh.common.entity.ArticleTagsInfo;
 import fun.dfwh.common.utils.CheckUtils;
 import fun.dfwh.common.utils.IdWorker;
+import fun.dfwh.common.utils.SpringContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -126,7 +127,7 @@ public class ArticleServiceImpl implements ArticleService {
                 articlePageQuery.getTag(),
                 articlePageQuery.getOrder(),
                 articlePageQuery.getSort(),
-                ArticleStatus.VALID);
+                Arrays.asList(ArticleStatus.VALID,ArticleStatus.DRAFT));
         PageInfo pageInfo = new PageInfo(articleInfoList);
         List<Long> articleIdList = articleInfoList.stream().map(ArticleInfo::getId).collect(Collectors.toList());
         if(!articleIdList.isEmpty()){
@@ -134,17 +135,17 @@ public class ArticleServiceImpl implements ArticleService {
             Map<String, String> tagMap = dictCacheService.getDictMapByDictCode(DictCodes.ARTICLE_TAGS);
             List<ArticleTagsInfo> articleTagsInfoList = articleTagsInfoMapper.selectByArticleIds(articleIdList);
             Map<Long, List<ArticleTagsInfo>> articleIdKeyTagsInfoMap = articleTagsInfoList.stream().collect(Collectors.groupingBy(ArticleTagsInfo::getArticleId));
-            for (int i = 0; i < articleInfoList.size(); i++) {
-                ArticleInfo articleInfo = articleInfoList.get(i);
+            for (ArticleInfo articleInfo : articleInfoList) {
                 ArticleListVO vo = new ArticleListVO();
                 vo.setId(Long.toString(articleInfo.getId()));
                 vo.setTitle(articleInfo.getTitle());
                 vo.setCategory(categoryMap.get(Integer.toString(articleInfo.getCategory())));
                 vo.setSummary(articleInfo.getSummary());
                 vo.setCover(articleInfo.getCover());
+                vo.setStatus(articleInfo.getStatus());
                 // 获取标签信息
                 List<ArticleTagsInfo> articleTagsInfoListVO = articleIdKeyTagsInfoMap.get(articleInfo.getId());
-                vo.setTags(Objects.isNull(articleTagsInfoListVO)  ? Collections.emptyList() : articleTagsInfoListVO.stream().map(info->tagMap.get(info.getTagsCode())).collect(Collectors.toList()));
+                vo.setTags(Objects.isNull(articleTagsInfoListVO) ? Collections.emptyList() : articleTagsInfoListVO.stream().map(info -> tagMap.get(info.getTagsCode())).collect(Collectors.toList()));
                 vo.setCreateTime(articleInfo.getCreateTime());
                 voList.add(vo);
             }
@@ -162,6 +163,7 @@ public class ArticleServiceImpl implements ArticleService {
         vo.setTitle(articleInfo.getTitle());
         vo.setContent(articleInfo.getContent());
         vo.setCategory(Integer.toString(articleInfo.getCategory()));
+        vo.setStatus(articleInfo.getStatus());
         List<String> tagsCodeList =
                 articleTagsInfoMapper.selectTagsCodeByArticleId(articleInfoId);
         vo.setTags(tagsCodeList);
@@ -193,7 +195,8 @@ public class ArticleServiceImpl implements ArticleService {
         // 取差集
         List<String> addList = new ArrayList<>(tags);
         List<String> deletedList = new ArrayList<>(tagsCode);
-        CheckUtils.isTure((!addList.isEmpty() && !addList.removeAll(tagsCode))||(!deletedList.isEmpty() && !deletedList.removeAll(tags))).throwMessage("更新失败");
+        CheckUtils.isTure((!addList.isEmpty() && !tagsCode.isEmpty() && !addList.removeAll(tagsCode))
+                ||(!deletedList.isEmpty() && !tags.isEmpty() && !deletedList.removeAll(tags))).throwMessage("更新失败");
         // 新增
         if(!addList.isEmpty()){
             List<ArticleTagsInfo> articleTagsInfoList = new ArrayList<>(addList.size());
@@ -209,6 +212,83 @@ public class ArticleServiceImpl implements ArticleService {
         // 更新为删除
         if(!deletedList.isEmpty()){
             articleTagsInfoMapper.batchDeleted(deletedList, articleId);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void addArticleDraft(ArticleDTO articleDTO) {
+        ArticleInfo articleInfo = new ArticleInfo();
+        Long articleId = articleDTO.getId();
+        if(Objects.isNull(articleId)){
+            // 若为空 则新增
+            final Long finalArticleId = idWorker.nextId();
+            articleInfo.setId(finalArticleId);
+            articleInfo.setCategory(articleDTO.getCategory());
+            articleInfo.setTitle(articleDTO.getTitle());
+            String content = articleDTO.getContent();
+            articleInfo.setContent(content);
+            String summary = articleDTO.getSummary();
+            summary = converSummary(content, summary);
+            articleInfo.setSummary(summary);
+            articleInfo.setCover(articleDTO.getCover());
+            articleInfo.setStatus(StatusConstant.DRAFT);
+            articleInfoMapper.insert(articleInfo);
+            List<String> tags = articleDTO.getTags();
+            if(!tags.isEmpty()){
+                // 校验标签
+                dictCacheService.validCode(DictCodes.ARTICLE_TAGS, tags);
+                List<ArticleTagsInfo> articleTagsInfoList = new ArrayList<>(tags.size());
+                tags.forEach(tag->{
+                    ArticleTagsInfo articleTagsInfo = new ArticleTagsInfo();
+                    articleTagsInfo.setId(idWorker.nextId());
+                    articleTagsInfo.setArticleId(finalArticleId);
+                    articleTagsInfo.setTagsCode(tag);
+                    articleTagsInfoList.add(articleTagsInfo);
+                });
+                articleTagsInfoMapper.batchInsert(articleTagsInfoList);
+            }
+        }else{
+            // 更新草稿
+            articleInfo.setId(articleId);
+            articleInfo.setCategory(articleDTO.getCategory());
+            articleInfo.setTitle(articleDTO.getTitle());
+            String content = articleDTO.getContent();
+            articleInfo.setContent(content);
+            String summary = articleDTO.getSummary();
+            summary = converSummary(content, summary);
+            articleInfo.setSummary(summary);
+            articleInfo.setCover(articleDTO.getCover());
+            articleInfo.setStatus(StatusConstant.DRAFT);
+            CheckUtils.isTure(articleInfoMapper.updateByPrimaryKeySelective(articleInfo) != 1).throwMessage("更新失败");
+            // 去重
+            List<String> tags = articleDTO.getTags().stream().distinct().collect(Collectors.toList());
+            // 校验标签
+            dictCacheService.validCode(DictCodes.ARTICLE_TAGS, tags);
+
+            // 查询文章标签信息
+            List<String> tagsCode = articleTagsInfoMapper.selectTagsCodeByArticleId(articleId);
+            // 取差集
+            List<String> addList = new ArrayList<>(tags);
+            List<String> deletedList = new ArrayList<>(tagsCode);
+            CheckUtils.isTure((!addList.isEmpty() && !tagsCode.isEmpty() && !addList.removeAll(tagsCode))
+                    ||(!deletedList.isEmpty() && !tags.isEmpty() && !deletedList.removeAll(tags))).throwMessage("更新失败");
+            // 新增
+            if(!addList.isEmpty()){
+                List<ArticleTagsInfo> articleTagsInfoList = new ArrayList<>(addList.size());
+                addList.forEach(tag->{
+                    ArticleTagsInfo articleTagsInfo = new ArticleTagsInfo();
+                    articleTagsInfo.setId(idWorker.nextId());
+                    articleTagsInfo.setArticleId(articleId);
+                    articleTagsInfo.setTagsCode(tag);
+                    articleTagsInfoList.add(articleTagsInfo);
+                });
+                articleTagsInfoMapper.batchInsert(articleTagsInfoList);
+            }
+            // 更新为删除
+            if(!deletedList.isEmpty()){
+                articleTagsInfoMapper.batchDeleted(deletedList, articleId);
+            }
         }
     }
 

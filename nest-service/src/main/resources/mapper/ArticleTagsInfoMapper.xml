@@ -26,10 +26,10 @@
     </select>
     <select id="selectTagsCodeByArticleId" resultType="java.lang.Integer">
         select tags_code from article_tags_info
-        where  article_id = #{articleId}
+        where  article_id = #{articleId} and deleted_flag = 0
     </select>
     <select id="selectByArticleIds" resultMap="BaseResultMap">
-        select article_id,tags_code from article_tags_info where article_id in
+        select article_id,tags_code from article_tags_info where deleted_flag = 0 and article_id in
         <foreach collection="articleIdList" item="articleId" separator="," open="(" close=")">
             #{articleId}
         </foreach>

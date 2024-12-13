@@ -1,5 +1,7 @@
 package fun.dfwh.admin.dto;
 
+import fun.dfwh.common.validator.group.Add;
+import fun.dfwh.common.validator.group.Draft;
 import fun.dfwh.common.validator.group.Update;
 import lombok.Data;
 
@@ -22,25 +24,25 @@ public class ArticleDTO implements Serializable {
     /**
      * 文章分类
      */
-    @NotNull(message = "分类编码不能为空")
+    @NotNull(groups = {Add.class, Update.class},message = "分类编码不能为空")
     private Integer category;
 
     /**
      * 标题
      */
-    @NotEmpty(message = "标题不能为空")
+    @NotEmpty(groups = {Add.class, Update.class, Draft.class}, message = "标题不能为空")
     private String title;
 
     /**
      * 内容
      */
-    @NotEmpty(message = "内容不能为空")
+    @NotEmpty(groups = {Add.class, Update.class},message = "内容不能为空")
     private String content;
 
     /**
      * 标签
      */
-    @NotNull(message = "缺少标签参数")
+    @NotNull(groups = {Add.class, Update.class},message = "缺少标签参数")
     private List<String> tags;
 
     /**

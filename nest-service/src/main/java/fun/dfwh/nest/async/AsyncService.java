@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AsyncService {
+
     @Autowired
     private LogService logService;
+
     @Async(value = "logAsyncService")
     public void addLog(FightLogInfo fightLogInfo){
         logService.addLog(fightLogInfo);

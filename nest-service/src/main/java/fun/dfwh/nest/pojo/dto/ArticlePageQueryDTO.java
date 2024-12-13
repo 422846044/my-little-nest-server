@@ -32,6 +32,10 @@ public class ArticlePageQueryDTO extends PageQuery {
      */
     private String tag;
 
+    private Integer year;
+
+    private Integer month;
+
     /**
      * 排序字段
      */

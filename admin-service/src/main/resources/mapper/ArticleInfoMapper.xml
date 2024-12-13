@@ -56,8 +56,11 @@
         ai.status as status,ai.create_by as create_by,
         ai.create_time as create_time,ai.update_by as update_by,ai.update_time as update_time
         from article_info ai
-        left join article_tags_info ati on ai.id = ati.article_id
-        where ai.status = #{status}
+        left join article_tags_info ati on ai.id = ati.article_id and ati.deleted_flag = 0
+        where ai.status in
+        <foreach collection="statusList" item="status" separator="," open="(" close=")">
+            #{status}
+        </foreach>
         <if test="keyword != null and keyword != ''">
             and (ai.title like concat('%',#{keyword},'%') or ai.content like concat('%',#{keyword},'%') or ai.summary like concat('%',#{keyword},'%'))
         </if>

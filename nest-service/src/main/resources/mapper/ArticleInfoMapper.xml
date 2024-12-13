@@ -49,11 +49,22 @@
         <if test="tag != null and tag != ''">
             and ati.tags_code = #{tag}
         </if>
+        <if test="year != null">
+            and year(ai.create_time) = #{year}
+        </if>
+        <if test="month != null">
+            and month(ai.create_time) = #{month}
+        </if>
         group by ai.id
         order by ${order} ${sort}, ai.id desc
     </select>
     <select id="selectCountByStatus" resultType="java.lang.Integer">
         select count(1) from article_info where status = #{status}
+    </select>
+    <select id="selectHistoryCount" resultType="java.util.HashMap">
+        select count(1) as allCount,year(create_time) as year,month(create_time) as month from article_info
+        group by year,month
+        order by year,month
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

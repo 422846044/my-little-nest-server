@@ -12,6 +12,7 @@ import fun.dfwh.common.entity.ArticleInfo;
 import fun.dfwh.nest.mapper.ArticleInfoMapper;
 import fun.dfwh.nest.service.ArticleService;
 import fun.dfwh.nest.vo.ArticleInfoVO;
+import fun.dfwh.nest.vo.HistoryListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,8 @@ public class ArticleServiceImpl implements ArticleService {
         List<ArticleInfo> articleInfoList = articleInfoMapper.selectByPage(articlePageQuery.getKeyword(),
                 articlePageQuery.getCategory(),
                 articlePageQuery.getTag(),
+                articlePageQuery.getYear(),
+                articlePageQuery.getMonth(),
                 articlePageQuery.getOrder(),
                 articlePageQuery.getSort(),
                 ArticleStatus.VALID);
@@ -76,5 +79,19 @@ public class ArticleServiceImpl implements ArticleService {
         vo.setAuthor(articleInfo.getCreateBy());
         vo.setCreateTime(articleInfo.getCreateTime());
         return vo;
+    }
+
+    @Override
+    public List<HistoryListVO> getHistory() {
+        List<HistoryListVO> dataList = new ArrayList<>();
+        List<HashMap> dataMapList = articleInfoMapper.selectHistoryCount();
+        dataMapList.forEach(info->{
+            HistoryListVO historyListVO = new HistoryListVO();
+            historyListVO.setYear((Integer) info.get("year"));
+            historyListVO.setMonth((Integer) info.get("month"));
+            historyListVO.setNumber((Long) info.get("allCount"));
+            dataList.add(historyListVO);
+        });
+        return dataList;
     }
 }

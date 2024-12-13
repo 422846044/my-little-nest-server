@@ -42,5 +42,5 @@ public interface ArticleInfoMapper {
                                    @Param("tag") String tag,
                                    @Param("order") String order,
                                    @Param("sort") String sort,
-                                   @Param("status") Integer status);
+                                   @Param("statusList") List<Integer> statusList);
 }

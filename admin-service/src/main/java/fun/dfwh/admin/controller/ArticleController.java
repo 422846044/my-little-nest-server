@@ -4,6 +4,8 @@ import fun.dfwh.admin.dto.ArticleDTO;
 import fun.dfwh.admin.dto.ArticlePageQueryDTO;
 import fun.dfwh.admin.service.ArticleService;
 import fun.dfwh.common.domain.Result;
+import fun.dfwh.common.validator.group.Add;
+import fun.dfwh.common.validator.group.Draft;
 import fun.dfwh.common.validator.group.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -20,8 +22,20 @@ public class ArticleController {
     private ArticleService articleService;
 
     @PostMapping("/addArticle")
-    public Result addArticle(@RequestBody @Valid ArticleDTO articleDTO){
+    public Result addArticle(@RequestBody @Validated(Add.class) ArticleDTO articleDTO){
         articleService.addArticle(articleDTO);
+        return Result.ok();
+    }
+
+    /**
+     * 添加草稿
+     *
+     * @param articleDTO
+     * @return
+     */
+    @PostMapping("/addArticleDraft")
+    public Result addArticleDraft(@RequestBody @Validated(Draft.class) ArticleDTO articleDTO){
+        articleService.addArticleDraft(articleDTO);
         return Result.ok();
     }
 

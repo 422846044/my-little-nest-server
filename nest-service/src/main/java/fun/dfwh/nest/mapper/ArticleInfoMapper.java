@@ -3,6 +3,7 @@ package fun.dfwh.nest.mapper;
 import fun.dfwh.common.entity.ArticleInfo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -28,9 +29,13 @@ public interface ArticleInfoMapper {
     List<ArticleInfo> selectByPage(@Param("keyword") String keyword,
                                    @Param("category") Integer category,
                                    @Param("tag") String tag,
+                                   @Param("year") Integer year,
+                                   @Param("month") Integer month,
                                    @Param("order") String order,
                                    @Param("sort") String sort,
                                    @Param("status") Integer status);
 
     Integer selectCountByStatus(@Param("status") Integer status);
+
+    List<HashMap> selectHistoryCount();
 }

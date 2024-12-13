@@ -20,7 +20,7 @@ public interface ArticleTagsInfoMapper {
 
     int insertSelective(ArticleTagsInfo record);
 
-    ArticleTagsInfo selectByPrimaryKey(Long id);
+    ArticleTagsInfo selectByPrimaryKey(@Param("id") Long id);
 
     int updateByPrimaryKeySelective(ArticleTagsInfo record);
 
