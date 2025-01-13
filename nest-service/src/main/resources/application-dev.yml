@@ -6,7 +6,7 @@ spring:
         max-wait: 10000
         min-idle: 5
         type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://192.168.222.130:3306/little_nest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&useAffectedRows=true
+        url: jdbc:mysql://192.168.222.130:3306/little_nest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai&useAffectedRows=true
         username: root
         password: 422846044
         druid:

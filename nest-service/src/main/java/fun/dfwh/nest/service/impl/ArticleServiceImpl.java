@@ -69,8 +69,8 @@ public class ArticleServiceImpl implements ArticleService {
         ArticleInfoVO vo = new ArticleInfoVO();
         ArticleInfo articleInfo = articleInfoMapper.selectByPrimaryKey(id);
         Long articleInfoId = articleInfo.getId();
-        vo.setId(articleInfoId);
         vo.setTitle(articleInfo.getTitle());
+        vo.setId(articleInfoId);
         vo.setContent(articleInfo.getContent());
         vo.setCategory(articleInfo.getCategory());
         List<Integer> tagsCodeList =
@@ -83,15 +83,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<HistoryListVO> getHistory() {
-        List<HistoryListVO> dataList = new ArrayList<>();
-        List<HashMap> dataMapList = articleInfoMapper.selectHistoryCount();
-        dataMapList.forEach(info->{
-            HistoryListVO historyListVO = new HistoryListVO();
-            historyListVO.setYear((Integer) info.get("year"));
-            historyListVO.setMonth((Integer) info.get("month"));
-            historyListVO.setNumber((Long) info.get("allCount"));
-            dataList.add(historyListVO);
-        });
+        List<HistoryListVO> dataList = articleInfoMapper.selectHistoryCount();
         return dataList;
     }
 }

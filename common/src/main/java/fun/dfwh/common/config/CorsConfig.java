@@ -34,7 +34,10 @@ public class CorsConfig {
         corsConfiguration.setMaxAge(1800L);             // 预检请求的缓存时间（秒），即在这个时间段里，对于相同的跨域请求不会再预检了
         //corsConfiguration.addAllowedOrigin("*");        // 允许任何“源”(域名)使用
         corsConfiguration.addAllowedOrigin("http://www.dfwx.fun");
+        corsConfiguration.addAllowedOrigin("http://zhongyingjie.top");
+        corsConfiguration.addAllowedOrigin("http://www.zhongyingjie.top");
         corsConfiguration.addAllowedOriginPattern("http://localhost*");
+        corsConfiguration.addAllowedOriginPattern("http://127.0.0.1*");
         corsConfiguration.addAllowedHeader("*");        // 允许任何请求头
         corsConfiguration.addAllowedMethod("*");        // 允许任何方法（get、post等）
         source.registerCorsConfiguration("/**", corsConfiguration);     // 处理所有请求的跨域配置

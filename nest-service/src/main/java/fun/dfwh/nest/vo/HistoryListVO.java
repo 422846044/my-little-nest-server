@@ -13,7 +13,7 @@ public class HistoryListVO implements Serializable {
 
     private static final long serialVersionUID = -8828701508885096648L;
 
-    private Integer year;
+    private Long year;
 
     private Integer month;
 

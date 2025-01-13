@@ -1,6 +1,7 @@
 package fun.dfwh.nest.mapper;
 
 import fun.dfwh.common.entity.ArticleInfo;
+import fun.dfwh.nest.vo.HistoryListVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
@@ -37,5 +38,5 @@ public interface ArticleInfoMapper {
 
     Integer selectCountByStatus(@Param("status") Integer status);
 
-    List<HashMap> selectHistoryCount();
+    List<HistoryListVO> selectHistoryCount();
 }

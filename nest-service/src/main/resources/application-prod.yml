@@ -6,7 +6,7 @@ spring:
         max-wait: 10000
         min-idle: 5
         type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://127.0.0.1:3396/little_nest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&useAffectedRows=true
+        url: jdbc:mysql://127.0.0.1:3396/little_nest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai&useAffectedRows=true
         username: ENC(mpPzM8tDADojV8gpzzLvdLLtApyulKT7i9QrVT/qMHfrf3ccfNptQvD0ewgOnEsz)
         password: ENC(BqOq2IPGA118wMOGH8SU2s8I2zRGxaLacNe0lY/3X9CLLB9vInGUbMHl4CDImFxE)
         druid:
