@@ -34,8 +34,6 @@
             <version>4.4.0</version>
         </dependency>
 
-
-
         <dependency>
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>
@@ -53,7 +51,6 @@
             <version>2.7.3</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
 

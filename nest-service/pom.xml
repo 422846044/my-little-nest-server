@@ -53,9 +53,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.7.3</version>
                 <configuration>
-                    <!--打包时允许添加本地jar包-->
-                    <includeSystemScope>true</includeSystemScope>
+                    <executable>true</executable>
+                    <layout>JAR</layout>
                 </configuration>
             </plugin>
             <!-- maven 打包时跳过测试 -->
