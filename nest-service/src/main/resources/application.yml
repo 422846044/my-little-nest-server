@@ -24,6 +24,10 @@ spring:
         time-zone: GMT+8 #指定时间区域类型
     profiles:
         active: @spring.profiles.active@
+    servlet:
+        multipart:
+            max-request-size: 100MB
+            max-file-size: 100MB
 
 mybatis:
     mapper-locations: classpath:/mapper/*.xml

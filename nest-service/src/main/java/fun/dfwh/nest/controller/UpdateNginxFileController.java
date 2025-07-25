@@ -3,6 +3,8 @@ package fun.dfwh.nest.controller;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import fun.dfwh.common.domain.Result;
+import fun.dfwh.common.exchandler.GlobalException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,13 +19,17 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/nginx/update/file")
+@Slf4j
 public class UpdateNginxFileController {
 
 
     @PutMapping("/replaceAll/{type}")
     public Result<Object> replaceAll(@PathVariable("type") Integer type,
-                                     @RequestPart MultipartFile multipartFile) throws IOException {
-
+                                     @RequestParam("file") MultipartFile multipartFile){
+        String contentType = multipartFile.getContentType();
+        if(!"application/x-zip-compressed".equals(contentType)){
+            throw new GlobalException("不支持当前文件格式");
+        }
         String fileName = "frontend.zip", originalDirName = "华雅生活家", targetDirName = "axure";
         if(type == 1){
             fileName = "backend.zip";
@@ -33,18 +39,26 @@ public class UpdateNginxFileController {
 
         String uploadFilePath = "/usr/local/application/tmpFile/" + fileName;
 
-        //将上传的文件保存到本地
-        File file = new File(uploadFilePath);
-        InputStream inputStream = multipartFile.getInputStream();
-        IoUtil.copy(inputStream, Files.newOutputStream(file.toPath()));
+        File dir = new File("/usr/local/application/tmpFile/frontend");
+        deleteDir(dir);
+        dir.mkdir();
+        File file1 = new File("/usr/local/nginx/html/axure");
+        deleteDir(file1);
+        file1.mkdir();
 
-        List<List<String>> list = Arrays.asList(Arrays.asList("unzip", uploadFilePath, "-d", "/usr/local/application/tmpFile/frontend"), // 解压文件
-                Arrays.asList("rm", "-f", "/usr/local/nginx/html/axure/*"),// 删除原文件
-                Arrays.asList("mv", "/usr/local/application/tmpFile/frontend/" + originalDirName + "/*", "/usr/local/nginx/html/" + targetDirName)  // 移动文件
-        );
-        for (List<String> strings : list) {
-            extracted(strings);
+        //将上传的文件保存到本地
+        try {
+            File file = new File(uploadFilePath);
+            InputStream inputStream = multipartFile.getInputStream();
+            IoUtil.copy(inputStream, Files.newOutputStream(file.toPath()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+        extracted(Arrays.asList("unzip", uploadFilePath, "-d", "/usr/local/application/tmpFile/frontend"));
+
+        FileUtil.copyContent(new File("/usr/local/application/tmpFile/frontend/" + originalDirName), new File("/usr/local/nginx/html/" + targetDirName), true);
+
         return Result.ok();
     }
 
@@ -52,19 +66,43 @@ public class UpdateNginxFileController {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(cmd);
             Process process = processBuilder.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))){
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+                int i = process.waitFor();
+                if(i == 0){
+                    log.info("命令"+ cmd+"执行成功");
+                }else{
+                    log.info("命令"+ cmd+"执行失败");
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
             }
-            process.waitFor();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
     }
+
+
+    // 使用递归方式删除目录及其中的文件
+    public static Boolean deleteDir(File dir) {
+        boolean res = true;
+        if (dir.exists()) {
+            File[] files = dir.listFiles();
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    deleteDir(file);
+                } else {
+                    res = res && file.delete();
+                }
+            }
+            res = res && dir.delete();
+        }
+        return res;
+    }
+
 
 
 }
