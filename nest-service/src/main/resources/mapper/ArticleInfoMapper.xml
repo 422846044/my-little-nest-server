@@ -64,7 +64,7 @@
     <select id="selectHistoryCount" resultType="fun.dfwh.nest.vo.HistoryListVO">
         select count(1) as number,year(create_time) as year,month(create_time) as month from article_info
         group by year,month
-        order by year,month
+        order by year desc,month desc
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
