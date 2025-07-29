@@ -1,0 +1,50 @@
+server:
+    port: 8089
+    servlet:
+        context-path: /admin
+spring:
+    main:
+        allow-bean-definition-overriding: true
+    application:
+        name: nest-admin
+    jackson:
+        date-format: yyyy-MM-dd HH:mm:ss #格式化全局时间字段
+        time-zone: GMT+8 #指定时间区域类型
+    profiles:
+        active: @spring.profiles.active@
+
+mybatis:
+    mapper-locations: classpath:/mapper/*.xml
+
+qiniu:
+    bucket: my-little-nest
+    accessKey: jD8Ss5vs6peyt_dFXelILsGUBa_PslPxtaAgmSW2
+    secretKey: ENC(U+y2fo/CyiVC/koVyX+2gK+v+mHR7ufA6LT1o/FkoFFayble9p9cSwx7mCNjkw8qnGzTA1dcsgC52toERJ6zOrG8bR3kdMKbRsWclg26g44=)
+
+logging:
+    config: classpath:logback-spring.xml
+    level:
+        org:
+            mybatis: debug
+        top:
+            dfwh:
+                admin:
+                    mapper:
+                    /*: debug
+        root: info
+
+pagehelper:
+    helper-dialect: mysql
+    params: count=countSql
+    reasonable: false
+    support-methods-arguments: true
+
+
+jasypt:
+    encryptor:
+        property:
+            # 算法识别前缀(当算法发现配置文件中的值以这前缀开始，后缀结尾时，会使用指定算法解密)
+            prefix: ENC(
+            # 算法识别后缀
+            suffix: )
+

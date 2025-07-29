@@ -6,7 +6,7 @@
         <option name="generateConfig">
           <GenerateConfig>
             <option name="annotationType" value="NONE" />
-            <option name="basePackage" value="fun.dfwh.admin" />
+            <option name="basePackage" value="top.dfwx.admin" />
             <option name="basePath" value="src/main/java" />
             <option name="classNameStrategy" value="camel" />
             <option name="encoding" value="UTF-8" />
@@ -41,14 +41,14 @@
                 </ModuleInfoGo>
               </list>
             </option>
-            <option name="needsModel" value="false" />
+            <option name="needsModel" value="true" />
             <option name="relativePackage" value="entity" />
             <option name="superClass" value="BaseEntity" />
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="ArticleTagsInfo" />
-                  <option name="tableName" value="article_tags_info" />
+                  <option name="className" value="SysConfInfo" />
+                  <option name="tableName" value="sys_conf_info" />
                 </TableUIInfo>
               </list>
             </option>

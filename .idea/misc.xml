@@ -7,7 +7,18 @@
         <option value="$PROJECT_DIR$/admin-service/pom.xml" />
         <option value="$PROJECT_DIR$/common/pom.xml" />
         <option value="$PROJECT_DIR$/nest-service/pom.xml" />
+        <option value="$PROJECT_DIR$/nest-admin/pom.xml" />
+        <option value="$PROJECT_DIR$/nest-common/pom.xml" />
+        <option value="$PROJECT_DIR$/nest-web/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/admin-service/pom.xml" />
+        <option value="$PROJECT_DIR$/common/pom.xml" />
+        <option value="$PROJECT_DIR$/nest-service/pom.xml" />
+      </set>
     </option>
     <option name="workspaceImportForciblyTurnedOn" value="true" />
   </component>

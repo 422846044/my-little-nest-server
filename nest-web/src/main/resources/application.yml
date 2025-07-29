@@ -1,0 +1,60 @@
+server:
+    port: 8080
+sys:
+    ameVersion: 0.3
+    appId: 1001
+    appSource: android
+    appVersion: 147
+    ch: 10000
+    iActivityId: 11117
+    platform: android
+    sServiceDepartment: djc
+    sServiceType: dj
+    sVersionName: v4.7.1.0
+    set_info: newterminals
+    signVersion: 1.0
+    weexVersion: 0.28.0.1
+spring:
+    main:
+        allow-bean-definition-overriding: true
+    application:
+        name: nest-web
+    jackson:
+        date-format: yyyy-MM-dd HH:mm:ss #格式化全局时间字段
+        time-zone: GMT+8 #指定时间区域类型
+    profiles:
+        active: @spring.profiles.active@
+    servlet:
+        multipart:
+            max-request-size: 100MB
+            max-file-size: 100MB
+
+mybatis:
+    mapper-locations: classpath:/mapper/*.xml
+
+
+logging:
+    config: classpath:logback-spring.xml
+    level:
+        org:
+            mybatis: debug
+        top:
+            dfwh:
+                nest:
+                    mapper:
+                    /*: debug
+        root: info
+
+pagehelper:
+    helper-dialect: mysql
+    params: count=countSql
+    reasonable: false
+    support-methods-arguments: true
+
+jasypt:
+    encryptor:
+        property:
+            # 算法识别前缀(当算法发现配置文件中的值以这前缀开始，后缀结尾时，会使用指定算法解密)
+            prefix: ENC(
+            # 算法识别后缀
+            suffix: )
