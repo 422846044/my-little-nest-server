@@ -22,12 +22,12 @@ public class DictController {
     @GetMapping("/getDictDetailsByDictCode")
     public Result getDictDetailsByDictCode(@RequestParam("dictCode") String dictCode){
         List<DictDataVO> dictInfoVOList = dictService.getDictDetailsByDictCode(dictCode);
-        return Result.ok().data(dictInfoVOList);
+        return Result.success(dictInfoVOList);
     }
 
     @GetMapping("/getDictMapByDictCode")
     public Result getDictMapByDictCode(@RequestParam("dictCode") String dictCode){
         Map data = dictService.getDictMapByDictCode(dictCode);
-        return Result.ok().data(data);
+        return Result.success(data);
     }
 }

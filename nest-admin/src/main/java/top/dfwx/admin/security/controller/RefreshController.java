@@ -52,6 +52,6 @@ public class RefreshController {
         tokenInfo.put("refreshToken", newRefreshToken);
         cache.putAndExp(SecurityConst.TOKEN_HEADER + "_" + newAccessToken,1,Integer.toUnsignedLong(expires), TimeUnit.DAYS);
         cache.putAndExp(SecurityConst.REFRESH_TOKEN_HEADER + "_" + newRefreshToken,1,Integer.toUnsignedLong(refresh), TimeUnit.DAYS);
-        return Result.ok().data(tokenInfo);
+        return Result.success(tokenInfo);
     }
 }

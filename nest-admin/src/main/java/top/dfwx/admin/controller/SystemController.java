@@ -27,7 +27,7 @@ public class SystemController {
      */
     @GetMapping("/value/{key}")
     public Result getValue(@PathVariable("key") String key){
-        return Result.ok().data(systemService.getValue(key));
+        return Result.success(systemService.getValue(key));
     }
 
 

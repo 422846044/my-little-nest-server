@@ -1,4 +1,4 @@
-package top.dfwx.admin.mapper;
+package top.dfwx.nest.mapper;
 
 import top.dfwx.entity.SysDictDetail;
 import org.apache.ibatis.annotations.Param;
@@ -10,7 +10,7 @@ import java.util.List;
 * @author 11th
 * @description 针对表【sys_dict_detail】的数据库操作Mapper
 * @createDate 2024-02-15 15:55:25
-* @Entity top.dfwx.admin.entity.SysDictDetail
+* @Entity top.dfwx.nest.entity.SysDictDetail
 */
 public interface SysDictDetailMapper {
 
@@ -30,4 +30,4 @@ public interface SysDictDetailMapper {
                                                        @Param("status") int status);
 
     List<HashMap> selectByDictCode(@Param("dictCode") String dictCode);
-}
+} 

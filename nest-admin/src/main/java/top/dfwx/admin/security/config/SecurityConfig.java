@@ -29,9 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .apply(config)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login","/refresh/refresh",
-                        "/dict/getDictMapByDictCode",
-                        "/user/getSimpleUserInfoByUserId")
+                .antMatchers("/login","/refresh/refresh")
                 .permitAll()
                 .antMatchers("/role").hasRole("admin")
                 .anyRequest()

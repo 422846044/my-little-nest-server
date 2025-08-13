@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="nest-admin" />
+        <module name="nest-entity" />
         <module name="nest-web" />
         <module name="nest-common" />
       </profile>
@@ -24,6 +25,7 @@
       <module name="common" options="-parameters" />
       <module name="nest-admin" options="-parameters" />
       <module name="nest-common" options="-parameters" />
+      <module name="nest-entity" options="-parameters" />
       <module name="nest-service" options="" />
       <module name="nest-web" options="-parameters" />
     </option>

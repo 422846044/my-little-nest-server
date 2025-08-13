@@ -1,4 +1,4 @@
-package top.dfwx.admin.entity;
+package top.dfwx.entity;
 
 import top.dfwx.common.entity.BaseEntity;
 
@@ -75,11 +75,6 @@ public class SysDictDetail extends BaseEntity {
     this.status = status;
     }
 
-
-
-
-
-
     /**
     * 主键id
     */
@@ -121,9 +116,4 @@ public class SysDictDetail extends BaseEntity {
     public Integer getStatus(){
     return this.status;
     }
-
-
-
-
-
-}
+} 

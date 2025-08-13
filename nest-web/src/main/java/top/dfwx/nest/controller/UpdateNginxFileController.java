@@ -59,7 +59,7 @@ public class UpdateNginxFileController {
 
         FileUtil.copyContent(new File("/usr/local/application/tmpFile/frontend/" + originalDirName), new File("/usr/local/nginx/html/" + targetDirName), true);
 
-        return Result.ok();
+        return Result.success();
     }
 
     private static void extracted(List<String> cmd) {

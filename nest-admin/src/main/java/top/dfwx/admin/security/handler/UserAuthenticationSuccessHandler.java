@@ -53,6 +53,6 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
         HashMap<String,String> tokenData = new HashMap<>();
         tokenData.put("accessToken",accessToken);
         tokenData.put("refreshToken",refreshToken);
-        response.getWriter().write(JSONUtil.toJsonStr(new Result(true,200,"登录成功",tokenData)));
+        response.getWriter().write(JSONUtil.toJsonStr(Result.success(tokenData).setMessage("登录成功")));
     }
 }

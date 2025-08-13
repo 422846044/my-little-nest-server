@@ -43,7 +43,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 //返回 提示使用refresh_token
                 response.setCharacterEncoding("UTF-8");
                 response.setContentType("application/json");
-                response.getWriter().write(JSONUtil.toJsonStr(new Result(true,402,"凭证已过期！",null)));
+                response.getWriter().write(JSONUtil.toJsonStr(new Result().setCode(402).setMessage("凭证已过期！")));
                 return;
             }
             //校验token
@@ -53,12 +53,12 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 //返回 提示使用refresh_token
                 response.setCharacterEncoding("UTF-8");
                 response.setContentType("application/json");
-                response.getWriter().write(JSONUtil.toJsonStr(new Result(true,402,"凭证已过期！",null)));
+                response.getWriter().write(JSONUtil.toJsonStr(new Result().setCode(402).setMessage("凭证已过期！")));
                 return;
             } catch (Exception e){
                 response.setCharacterEncoding("UTF-8");
                 response.setContentType("application/json");
-                response.getWriter().write(JSONUtil.toJsonStr(new Result(true,401,"凭证校验未通过",null)));
+                response.getWriter().write(JSONUtil.toJsonStr(new Result().setCode(401).setMessage("凭证校验未通过")));
                 return;
             }
             String userName = jwtTokenService.getUserName(token);

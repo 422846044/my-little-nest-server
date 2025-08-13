@@ -50,6 +50,6 @@ public class ExceptionAdvice {
             log.error("执行异常", e);//将异常打印在控制台
             message = "执行异常";
         }
-        return Result.error().message(message);
+        return Result.serverError(message);
     }
 }

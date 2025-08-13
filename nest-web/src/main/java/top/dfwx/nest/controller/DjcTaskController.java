@@ -67,11 +67,11 @@ public class DjcTaskController {
             }
         }
         if("".equals(cookieNum)&&StrUtil.isBlank(qqNum)){
-            return Result.error().message("请输入QQ号");
+            return Result.serverError("请输入QQ号");
         }
         if(!"".equals(cookieNum)) qqNum=cookieNum;
         List<FightLogInfo> fightLogInfoList = logService.getLogInfoByQQNum(Integer.parseInt(qqNum));
-        return Result.ok().data(fightLogInfoList);
+        return Result.success(fightLogInfoList);
 
     }
 
@@ -79,14 +79,14 @@ public class DjcTaskController {
     @GetMapping("/updateToken")
     public Result updateToken(@RequestParam("token") String token,
                               @RequestParam("qqNum") Integer qqNum){
-        boolean result = userService.updateTokenByQQNum(token,qqNum);
-        return Result.build(result,"更新");
+        userService.updateTokenByQQNum(token,qqNum);
+        return Result.success();
     }
 
     @ResponseBody
     @GetMapping("/retryTask")
     public Result retryTask(@RequestParam("qqNum") Integer qqNum){
         djcTask.signTask(qqNum);
-        return Result.ok().message("任务已提交");
+        return Result.success("任务已提交");
     }
 }

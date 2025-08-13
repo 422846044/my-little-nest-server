@@ -20,6 +20,6 @@ public class TokenAuthenticationErrorHandler implements AuthenticationEntryPoint
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        response.getWriter().write(JSONUtil.toJsonStr(new Result(true,401,"未登录！",null)));
+        response.getWriter().write(JSONUtil.toJsonStr(new Result().setCode(401).setMessage("未登录！")));
     }
 }

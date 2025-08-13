@@ -24,7 +24,7 @@ public class ArticleController {
     @PostMapping("/addArticle")
     public Result addArticle(@RequestBody @Validated(Add.class) ArticleDTO articleDTO){
         articleService.addArticle(articleDTO);
-        return Result.ok();
+        return Result.success();
     }
 
     /**
@@ -36,28 +36,28 @@ public class ArticleController {
     @PostMapping("/addArticleDraft")
     public Result addArticleDraft(@RequestBody @Validated(Draft.class) ArticleDTO articleDTO){
         articleService.addArticleDraft(articleDTO);
-        return Result.ok();
+        return Result.success();
     }
 
     @PutMapping("/updateArticle")
     public Result updateArticle(@RequestBody @Validated(Update.class) ArticleDTO articleDTO){
         articleService.updateArticle(articleDTO);
-        return Result.ok();
+        return Result.success();
     }
 
     @GetMapping("/dataCount")
     public Result getDataCount(){
-        return Result.ok().data(articleService.getDataCount());
+        return Result.success(articleService.getDataCount());
     }
 
     @GetMapping("/list")
     public Result getArticleList(@Valid ArticlePageQueryDTO articlePageQuery){
-        return Result.ok().data(articleService.getArticleList(articlePageQuery));
+        return Result.success(articleService.getArticleList(articlePageQuery));
     }
 
     @GetMapping("/info/{articleId}")
     public Result getArticleInfo(@PathVariable("articleId") Long articleId){
-        return Result.ok().data(articleService.getArticleInfo(articleId));
+        return Result.success(articleService.getArticleInfo(articleId));
     }
 
 }

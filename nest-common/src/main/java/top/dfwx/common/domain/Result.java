@@ -1,107 +1,131 @@
 package top.dfwx.common.domain;
 
-import top.dfwx.common.constant.ErrorCode;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.experimental.Accessors;
+import top.dfwx.common.enums.ResponseCodeEnum;
 
-import java.io.Serializable;
+import java.time.Instant;
 
 /**
- * 通用返回类
+ * 统一响应对象
+ *
+ * @author atulan_zyj
+ * @date 2025/4/2
  */
+
 @Data
-public class Result<T> implements Serializable {
+@Accessors(chain = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Result<T> {
 
-    private static final long serialVersionUID = -754791189633729778L;
+    /**
+     * 状态码
+     */
+    private int code;
 
-    private Boolean success;
-
-
-    private Integer code;
-
+    /**
+     * 业务消息
+     */
     private String message;
 
-    private T data ;
+    /**
+     * 响应数据
+     */
+    private T data;
 
-    public Result(){
-        super();
+    /**
+     * 时间戳(毫秒)
+     */
+    private final long timestamp = Instant.now().toEpochMilli();
+
+    /**
+     * 成功 (无数据)
+     */
+    public static <T> Result<T> success() {
+        return new Result<T>().setCode(ResponseCodeEnum.SUCCESS.getCode()).setMessage("success");
     }
 
-    public Result (Boolean success,Integer code, String message,T data){
-        this.success=success;
-        this.code=code;
-        this.message=message;
-        this.data=data;
+    /**
+     * 成功 (带数据)
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Result<T> success(T data) {
+        return (Result<T>) success().setData(data);
     }
 
-
-    public static <T> Result<T> ok(){
-        Result<T> Result = new Result<>();
-        Result.setSuccess(true);
-        Result.setCode(ErrorCode.SUCCCESS.getCode());
-        Result.setMessage(ErrorCode.SUCCCESS.getMessage());
-        return Result;
+    /**
+     * 失败 (标准错误码)
+     */
+    public static <T> Result<T> fail(int code, String message) {
+        return new Result<T>().setCode(code).setMessage(message);
     }
 
-    public static <T> Result<T> error(){
-        Result<T> Result = new Result<>();
-        Result.setSuccess(false);
-        Result.setCode(ErrorCode.FAIL.getCode());
-        Result.setMessage(ErrorCode.FAIL.getMessage());
-        return Result;
+    /**
+     * 失败 (400 Bad Request)
+     */
+    public static <T> Result<T> badRequest(String message) {
+        return fail(ResponseCodeEnum.BAD_REQUEST.getCode(), message);
     }
 
-    public static <T> Result<T> build(Boolean success,Integer code, String message,T data) {
-        return new Result<>(success,code, message, data);
+    /**
+     * 失败 (404 Not Found)
+     */
+    public static <T> Result<T> notFound(String resourceName) {
+        return fail(ResponseCodeEnum.NOT_FOUND.getCode(), resourceName + " not found");
     }
-    public static <T> Result<T> build(Boolean success) {
-        if(success){
-            Result<T> Result = new Result<>();
-            Result.setSuccess(true);
-            Result.setCode(ErrorCode.SUCCCESS.getCode());
-            Result.setMessage(ErrorCode.SUCCCESS.getMessage());
-            return Result;
-        }else {
-            Result<T> Result = new Result<>();
-            Result.setSuccess(false);
-            Result.setCode(ErrorCode.FAIL.getCode());
-            Result.setMessage(ErrorCode.FAIL.getMessage());
-            return Result;
+
+    /**
+     * 失败 (500 Server Error)
+     */
+    public static <T> Result<T> serverError(String message) {
+        return fail(ResponseCodeEnum.INTERNAL_SERVER_ERROR.getCode(), message);
+    }
+
+    public static <T> Result<T> response(ResponseCodeEnum responseCodeEnum){
+        return fail(responseCodeEnum.getCode(),responseCodeEnum.getMsg());
+    }
+
+    /**
+     * 追加额外消息 (适用于日志等场景)
+     */
+    public Result<T> appendMessage(String appendMsg) {
+        if (this.message == null) {
+            this.message = appendMsg;
+        } else {
+            this.message += " | " + appendMsg;
+        }
+        return this;
+    }
+
+    /**
+     * 快速判断是否成功
+     */
+    public boolean isSuccess() {
+        return this.code == ResponseCodeEnum.SUCCESS.getCode();
+    }
+
+    /**
+     * 分页数据包装
+     * @param list 数据列表
+     * @param total 总条数
+     */
+    public static <T> Result<PageData<T>> page(Iterable<T> list, long total) {
+        return success(new PageData<>(list, total));
+    }
+
+    /**
+     * 分页数据对象
+     */
+    @Data
+    public static class PageData<T> {
+        private final Iterable<T> list;
+        private final long total;
+
+        public PageData(Iterable<T> list, long total) {
+            this.list = list;
+            this.total = total;
         }
     }
-    public static <T> Result<T> build(Boolean success,String operation) {
-        if(success){
-            Result<T> Result = new Result<>();
-            Result.setSuccess(true);
-            Result.setCode(ErrorCode.SUCCCESS.getCode());
-            Result.setMessage(operation.concat("成功"));
-            return Result;
-        }else {
-            Result<T> Result = new Result<>();
-            Result.setSuccess(false);
-            Result.setCode(ErrorCode.FAIL.getCode());
-            Result.setMessage(operation.concat("失败"));
-            return Result;
-        }
-    }
 
-
-    public Result<T> success(Boolean success){
-        this.setSuccess(success);
-        return this;
-    }
-
-    public Result<T> message(String message){
-        this.setMessage(message);
-        return this;
-    }
-
-    public Result<T> code(Integer code){
-        this.setCode(code);
-        return this;
-    }
-
-    public Result<T> data(T data){
-        this.data=data;
-        return this;
-    }
 }

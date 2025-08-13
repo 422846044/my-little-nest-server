@@ -22,6 +22,6 @@ public class UserAuthenticationFailureHandler implements AuthenticationFailureHa
         String message = exception.getMessage();
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        response.getWriter().write(JSONUtil.toJsonStr(new Result(true,401,message,null)));
+        response.getWriter().write(JSONUtil.toJsonStr(new Result().setCode(401).setMessage(message)));
     }
 }

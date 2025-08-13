@@ -238,9 +238,9 @@ public class DjcTask {
                 }else{
                     break;
                 }
-                            }
+            }
                 //间隔1秒
-                sleep(1000);
+            sleep(1000);
             //许愿
             if(!"".equals(roleCode)){
                 DjcResult addDemandDjcResult = djcRequestService.addDemand(openId,accessToken,GoodsId.GAI_MING_KA,roleInfoMap);

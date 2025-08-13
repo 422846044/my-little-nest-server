@@ -21,6 +21,12 @@
             <artifactId>nest-common</artifactId>
         </dependency>
         
+        <!-- 依赖实体模块 -->
+        <dependency>
+            <groupId>top.dfwx</groupId>
+            <artifactId>nest-entity</artifactId>
+        </dependency>
+        
         <!-- MySQL驱动 -->
         <dependency>
             <groupId>mysql</groupId>

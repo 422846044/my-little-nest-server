@@ -21,17 +21,17 @@ public class ArticleController {
 
     @GetMapping("/getArticleByPage")
     public Result getArticleByPage(@Valid ArticlePageQueryDTO articlePageQuery){
-        return Result.ok().data(articleService.getArticleByPage(articlePageQuery));
+        return Result.success(articleService.getArticleByPage(articlePageQuery));
     }
 
     @GetMapping("/getArticleInfoById")
     public Result getArticleInfoById(@RequestParam("id") Long id){
         ArticleInfoVO articleInfoVO = articleService.getArticleInfoById(id);
-        return Result.ok().data(articleInfoVO);
+        return Result.success(articleInfoVO);
     }
 
     @GetMapping("/history")
     public Result getHistory(){
-        return Result.ok().data(articleService.getHistory());
+        return Result.success(articleService.getHistory());
     }
 }

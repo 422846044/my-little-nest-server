@@ -19,6 +19,6 @@ public class UserController {
 
     @GetMapping("/getSimpleUserInfoByUserId")
     public Result getSimpleUserInfoByUserId(@RequestParam Long userId){
-        return Result.ok().data(iUserService.getSimpleUserInfoByUserId(userId));
+        return Result.success(iUserService.getSimpleUserInfoByUserId(userId));
     }
 }

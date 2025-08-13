@@ -15,6 +15,6 @@ public class CommonController {
 
     @GetMapping("/qiniu/getUploadToken")
     public Result getUploadToken(){
-        return Result.ok().data(qiniuService.getUploadToken());
+        return Result.success(qiniuService.getUploadToken());
     }
 }

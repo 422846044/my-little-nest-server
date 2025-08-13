@@ -20,6 +20,6 @@ public class RequestAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        response.getWriter().write(JSONUtil.toJsonStr(new Result(true,403,"暂无权限",null)));
+        response.getWriter().write(JSONUtil.toJsonStr(new Result().setCode(403).setMessage("暂无权限")));
     }
 }
