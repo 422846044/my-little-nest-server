@@ -12,7 +12,6 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/dataDict")
-@CrossOrigin
 public class SysDictDetailController {
     
     @Autowired
