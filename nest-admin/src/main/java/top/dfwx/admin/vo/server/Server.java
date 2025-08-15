@@ -1,6 +1,7 @@
-package top.dfwx.admin.vo;
+package top.dfwx.admin.vo.server;
 
-import top.dfwx.admin.vo.server.*;
+
+import lombok.Data;
 import top.dfwx.common.utils.Arith;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
@@ -20,11 +21,10 @@ import java.util.Properties;
 
 /**
  * 服务器相关信息
- * 
- * @author ruoyi
+ *
  */
-public class Server
-{
+@Data
+public class Server {
     private static final int OSHI_WAIT_SECOND = 1000;
     
     /**
@@ -51,56 +51,6 @@ public class Server
      * 磁盘相关信息
      */
     private List<SysFile> sysFiles = new LinkedList<SysFile>();
-
-    public Cpu getCpu()
-    {
-        return cpu;
-    }
-
-    public void setCpu(Cpu cpu)
-    {
-        this.cpu = cpu;
-    }
-
-    public Mem getMem()
-    {
-        return mem;
-    }
-
-    public void setMem(Mem mem)
-    {
-        this.mem = mem;
-    }
-
-    public Jvm getJvm()
-    {
-        return jvm;
-    }
-
-    public void setJvm(Jvm jvm)
-    {
-        this.jvm = jvm;
-    }
-
-    public Sys getSys()
-    {
-        return sys;
-    }
-
-    public void setSys(Sys sys)
-    {
-        this.sys = sys;
-    }
-
-    public List<SysFile> getSysFiles()
-    {
-        return sysFiles;
-    }
-
-    public void setSysFiles(List<SysFile> sysFiles)
-    {
-        this.sysFiles = sysFiles;
-    }
 
     public void copyTo() throws Exception
     {

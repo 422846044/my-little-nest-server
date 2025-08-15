@@ -1,6 +1,7 @@
 package top.dfwx.common.aop;
 
 import com.alibaba.fastjson2.JSON;
+import org.checkerframework.checker.units.qual.C;
 import top.dfwx.common.utils.IpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -17,7 +18,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 请求日志切面
@@ -35,6 +38,13 @@ public class RequestLogAspect {
      */
     private static final DefaultParameterNameDiscoverer PARAMETER_NAME_DISCOVERER = new DefaultParameterNameDiscoverer();
 
+    private static List<Map<String, String>> excludeMethods = Arrays.asList(
+            new HashMap<String, String>(){{
+                put("class", "top.dfwx.admin.controller.ServerController");
+                put("method","getInfo");
+            }}
+    );
+
     /**
      * 切入点
      */
@@ -46,8 +56,16 @@ public class RequestLogAspect {
     @Before("entryPoint()")
     public void doBefore(JoinPoint joinPoint) {
         try {
+            String className = joinPoint.getTarget().getClass().getName();
+            String methodName = joinPoint.getSignature().getName();
+            for (Map<String, String> map : excludeMethods) {
+                if(map.get("class").equals(className) && map.get("method").equals(methodName)){
+                    return;
+                }
+            }
             ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = attributes.getRequest();
+            String requestURL = request.getRequestURL().toString();
             MethodSignature signature = (MethodSignature) joinPoint.getSignature();
             String[] parameterNames = PARAMETER_NAME_DISCOVERER.getParameterNames(signature.getMethod());
             //List<String> fieldsName = AspectUtils.getFieldsName(joinPoint);
@@ -74,11 +92,11 @@ public class RequestLogAspect {
                             + "请求参数名:{}" + "\n"
                             + "请求参数:{}" + "\n"
                             + "[接口请求日志结束]",
-                    request.getRequestURL().toString(),
+                    requestURL,
                     IpUtils.getIpAddress(request),
                     request.getMethod(),
-                    joinPoint.getTarget().getClass().getName(),
-                    joinPoint.getSignature().getName(),
+                    className,
+                    methodName,
                     fieldsName,
                     JSON.toJSONString(myArgs));
         } catch (Throwable e) {
@@ -89,22 +107,29 @@ public class RequestLogAspect {
 
     @Around("entryPoint()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
-
+        String className = joinPoint.getTarget().getClass().getName();
+        String methodName = joinPoint.getSignature().getName();
+        boolean logTag = true;
+        for (Map<String, String> map : excludeMethods) {
+            if(map.get("class").equals(className) && map.get("method").equals(methodName)){
+                logTag = false;
+            }
+        }
         long startTime = System.currentTimeMillis();
         Object result = joinPoint.proceed();
         long time = System.currentTimeMillis() - startTime;
-
-        log.info("\n" + "[接口返回日志开始]" + "\n"
-                        + "类名:{}" + "\n"
-                        + "方法名:{}" + "\n"
-                        + "返回结果:{}" + "\n"
-                        + "方法执行耗时:{}" + "ms" + "\n"
-                        + "[接口返回日志结束]",
-                joinPoint.getTarget().getClass().getName(),
-                joinPoint.getSignature().getName(),
-                JSON.toJSONString(result),
-                time);
-
+        if(logTag){
+            log.info("\n" + "[接口返回日志开始]" + "\n"
+                            + "类名:{}" + "\n"
+                            + "方法名:{}" + "\n"
+                            + "返回结果:{}" + "\n"
+                            + "方法执行耗时:{}" + "ms" + "\n"
+                            + "[接口返回日志结束]",
+                    className,
+                    methodName,
+                    JSON.toJSONString(result),
+                    time);
+        }
         return result;
     }
 
