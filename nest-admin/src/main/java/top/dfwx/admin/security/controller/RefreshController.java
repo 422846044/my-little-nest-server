@@ -35,7 +35,7 @@ public class RefreshController {
     @GetMapping("/refresh")
     public Result refresh(@RequestParam("refreshToken") String refreshToken){
         if(!cache.hasKey(SecurityConst.REFRESH_TOKEN_HEADER + "_" + refreshToken)){
-            throw new GlobalException("refresh invalid",402);
+            throw new GlobalException("长时间未登录", 402);
         }
         jwtTokenService.verify(refreshToken);
         Map<String, String> tokenInfo = new HashMap<>();

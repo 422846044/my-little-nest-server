@@ -9,4 +9,6 @@ public interface DictService {
     List<DictDataVO> getDictDetailsByDictCode(String dictCode);
 
     Map getDictMapByDictCode(String dictCode);
+
+    void addDictDetail(String dictCode, String detailName);
 }

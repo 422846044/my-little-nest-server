@@ -15,6 +15,7 @@ import top.dfwx.common.domain.Result;
 @RequestMapping("/monitor/server")
 @Slf4j
 public class ServerController {
+
     @GetMapping()
     public Result<Server> getInfo(){
         Server server = new Server();

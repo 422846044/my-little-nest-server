@@ -38,6 +38,9 @@
         select code as code,name as name from sys_dict_detail
         where dict_code=#{dictCode}
     </select>
+    <select id="selectOneCodeByDictCodeOrderByCodeDesc" resultType="java.lang.String">
+        select code from sys_dict_detail where dict_code=#{dictCode} order by code desc limit 1
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from sys_dict_detail
