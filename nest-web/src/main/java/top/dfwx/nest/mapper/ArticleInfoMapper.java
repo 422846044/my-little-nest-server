@@ -36,7 +36,7 @@ public interface ArticleInfoMapper {
                                    @Param("sort") String sort,
                                    @Param("status") Integer status);
 
-    Integer selectCountByStatus(@Param("status") Integer status);
+    Long selectCountByStatus(@Param("status") Integer status);
 
     List<HistoryListVO> selectHistoryCount();
 }

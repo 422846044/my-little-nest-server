@@ -34,4 +34,9 @@ public class ArticleController {
     public Result getHistory(){
         return Result.success(articleService.getHistory());
     }
+
+    @GetMapping("/count")
+    public Result<Long> getCount(){
+        return Result.success(articleService.getCount());
+    }
 }

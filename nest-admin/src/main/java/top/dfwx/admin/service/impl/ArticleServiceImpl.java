@@ -3,8 +3,11 @@ package top.dfwx.admin.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.context.ApplicationEventPublisher;
 import top.dfwx.admin.dto.ArticleDTO;
 import top.dfwx.admin.dto.ArticlePageQueryDTO;
+import top.dfwx.admin.event.AddArticleEvent;
+import top.dfwx.admin.event.EditArticleEvent;
 import top.dfwx.admin.mapper.ArticleInfoMapper;
 import top.dfwx.admin.mapper.ArticleTagsInfoMapper;
 import top.dfwx.admin.service.ArticleService;
@@ -51,13 +54,17 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private DictCacheService dictCacheService;
 
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
     @Transactional(rollbackFor = Exception.class)
     public void addArticle(ArticleDTO articleDTO) {
         ArticleInfo articleInfo = new ArticleInfo();
         Long articleId = idWorker.nextId();
         articleInfo.setId(articleId);
         articleInfo.setCategory(articleDTO.getCategory());
-        articleInfo.setTitle(articleDTO.getTitle());
+        String title = articleDTO.getTitle();
+        articleInfo.setTitle(title);
         String content = articleDTO.getContent();
         articleInfo.setContent(content);
         String summary = articleDTO.getSummary();
@@ -80,6 +87,8 @@ public class ArticleServiceImpl implements ArticleService {
             });
             articleTagsInfoMapper.batchInsert(articleTagsInfoList);
         }
+        // 发送事件
+        applicationEventPublisher.publishEvent(new AddArticleEvent(title));
     }
 
     @Override
@@ -177,7 +186,8 @@ public class ArticleServiceImpl implements ArticleService {
         Long articleId = articleDTO.getId();
         articleInfo.setId(articleId);
         articleInfo.setCategory(articleDTO.getCategory());
-        articleInfo.setTitle(articleDTO.getTitle());
+        String title = articleDTO.getTitle();
+        articleInfo.setTitle(title);
         String content = articleDTO.getContent();
         articleInfo.setContent(content);
         String summary = articleDTO.getSummary();
@@ -213,6 +223,8 @@ public class ArticleServiceImpl implements ArticleService {
         if(!deletedList.isEmpty()){
             articleTagsInfoMapper.batchDeleted(deletedList, articleId);
         }
+        // 发送事件
+        applicationEventPublisher.publishEvent(new EditArticleEvent(title));
     }
 
     @Override

@@ -14,4 +14,5 @@ public interface ArticleService {
 
     List<HistoryListVO> getHistory();
 
+    Long getCount();
 }

@@ -58,7 +58,7 @@
         group by ai.id
         order by ${order} ${sort}, ai.id desc
     </select>
-    <select id="selectCountByStatus" resultType="java.lang.Integer">
+    <select id="selectCountByStatus" resultType="java.lang.Long">
         select count(1) from article_info where status = #{status}
     </select>
     <select id="selectHistoryCount" resultType="top.dfwx.nest.vo.HistoryListVO">

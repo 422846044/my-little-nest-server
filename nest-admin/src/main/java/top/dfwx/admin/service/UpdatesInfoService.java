@@ -29,7 +29,7 @@ public class UpdatesInfoService {
         UpdatesInfo updatesInfo = new UpdatesInfo();
         updatesInfo.setId(idWorker.nextId());
         updatesInfo.setType(type.getCode());
-        updatesInfo.setTitle(type.getPrefix() + title);
+        updatesInfo.setTitle(String.format(type.getParam(), title));
         if(updatesInfoMapper.insert(updatesInfo) == 0){
             log.error("插入动态信息表失败：插入条数为0");
             throw new GlobalException("操作失败");

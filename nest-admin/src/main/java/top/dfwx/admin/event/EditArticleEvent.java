@@ -9,7 +9,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class AddArticleEvent extends ArticleEvent{
+public class EditArticleEvent extends ArticleEvent{
 
     private String title;
 

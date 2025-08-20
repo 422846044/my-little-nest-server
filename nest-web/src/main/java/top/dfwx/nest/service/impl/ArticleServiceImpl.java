@@ -86,4 +86,9 @@ public class ArticleServiceImpl implements ArticleService {
         List<HistoryListVO> dataList = articleInfoMapper.selectHistoryCount();
         return dataList;
     }
+
+    @Override
+    public Long getCount() {
+        return articleInfoMapper.selectCountByStatus(ArticleStatus.VALID);
+    }
 }

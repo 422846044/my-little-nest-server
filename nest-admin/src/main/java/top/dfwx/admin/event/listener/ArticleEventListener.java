@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import top.dfwx.admin.event.AddArticleEvent;
 import top.dfwx.admin.event.ArticleEvent;
+import top.dfwx.admin.event.EditArticleEvent;
 import top.dfwx.admin.service.UpdatesInfoService;
 import top.dfwx.common.enums.UpdatesType;
 
@@ -24,12 +26,11 @@ public class ArticleEventListener {
     @EventListener
     public void handlerArticleEvent(ArticleEvent articleEvent){
         log.info("开始执行文章事件监听处理");
-        /*switch (articleEvent){
-            case AddArticleEvent:{
-                break;
-            }
-        }*/
-        updatesInfoService.add("", UpdatesType.ADD_ARTICLE);
+        if(articleEvent instanceof AddArticleEvent){
+            updatesInfoService.add(((AddArticleEvent) articleEvent).getTitle(), UpdatesType.ADD_ARTICLE);
+        }else if(articleEvent instanceof EditArticleEvent){
+            updatesInfoService.add(((EditArticleEvent) articleEvent).getTitle(), UpdatesType.EDIT_ARTICLE);
+        }
         log.info("文章事件监听处理结束");
     }
 }

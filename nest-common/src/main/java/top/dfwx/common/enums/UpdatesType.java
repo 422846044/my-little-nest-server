@@ -11,14 +11,14 @@ import lombok.Getter;
 @Getter
 public enum UpdatesType {
 
-    ADD_ARTICLE(0, "发布文章", "发布了"),
+    ADD_ARTICLE(0, "发布文章", "发布了文章《%s》"),
 
-    EDIT_ARTICLE(1, "编辑文章", "编辑了");
+    EDIT_ARTICLE(1, "编辑文章", "编辑了文章《%s》");
 
     private final int code;
 
     private final String desc;
 
-    private final String prefix;
+    private final String param;
 
 }
