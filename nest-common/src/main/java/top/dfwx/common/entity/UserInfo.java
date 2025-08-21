@@ -1,6 +1,4 @@
-package top.dfwx.admin.entity;
-
-import top.dfwx.common.entity.BaseEntity;
+package top.dfwx.common.entity;
 
 /**
 * 

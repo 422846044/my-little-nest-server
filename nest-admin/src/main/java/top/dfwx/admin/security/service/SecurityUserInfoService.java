@@ -1,6 +1,6 @@
 package top.dfwx.admin.security.service;
 
-import top.dfwx.admin.entity.UserInfo;
+import top.dfwx.common.entity.UserInfo;
 import top.dfwx.admin.entity.UserRoleInfo;
 import top.dfwx.admin.security.domain.SecurityUserDetails;
 import top.dfwx.admin.security.domain.SecurityUserRole;

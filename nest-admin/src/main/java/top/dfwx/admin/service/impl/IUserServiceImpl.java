@@ -1,6 +1,6 @@
 package top.dfwx.admin.service.impl;
 
-import top.dfwx.admin.entity.UserInfo;
+import top.dfwx.common.entity.UserInfo;
 import top.dfwx.admin.mapper.UserInfoMapper;
 import top.dfwx.admin.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;

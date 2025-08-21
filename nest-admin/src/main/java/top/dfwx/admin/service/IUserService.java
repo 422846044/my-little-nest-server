@@ -1,6 +1,6 @@
 package top.dfwx.admin.service;
 
-import top.dfwx.admin.entity.UserInfo;
+import top.dfwx.common.entity.UserInfo;
 
 import java.util.Map;
 
