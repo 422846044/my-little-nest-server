@@ -1,0 +1,36 @@
+package top.zhongyingjie.admin.event.listener;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import top.zhongyingjie.admin.event.AddArticleEvent;
+import top.zhongyingjie.admin.event.ArticleEvent;
+import top.zhongyingjie.admin.event.EditArticleEvent;
+import top.zhongyingjie.admin.service.UpdatesInfoService;
+import top.zhongyingjie.common.enums.UpdatesType;
+
+/**
+ * @author atulan_zyj
+ * @date 2025/8/20
+ */
+@Service
+@Slf4j
+public class ArticleEventListener {
+
+    @Autowired
+    private UpdatesInfoService updatesInfoService;
+
+    @Async
+    @EventListener
+    public void handlerArticleEvent(ArticleEvent articleEvent){
+        log.info("开始执行文章事件监听处理");
+        if(articleEvent instanceof AddArticleEvent){
+            updatesInfoService.add(((AddArticleEvent) articleEvent).getTitle(), UpdatesType.ADD_ARTICLE);
+        }else if(articleEvent instanceof EditArticleEvent){
+            updatesInfoService.add(((EditArticleEvent) articleEvent).getTitle(), UpdatesType.EDIT_ARTICLE);
+        }
+        log.info("文章事件监听处理结束");
+    }
+}

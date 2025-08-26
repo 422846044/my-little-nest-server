@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.dfwx.nest.mapper.ArticleInfoMapper">
+<mapper namespace="top.zhongyingjie.nest.mapper.ArticleInfoMapper">
 
-    <resultMap id="BaseResultMap" type="top.dfwx.common.entity.ArticleInfo">
+    <resultMap id="BaseResultMap" type="top.zhongyingjie.common.entity.ArticleInfo">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="category" column="category" jdbcType="INTEGER"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
@@ -12,6 +12,7 @@
             <result property="summary" column="summary" jdbcType="VARCHAR"/>
             <result property="cover" column="cover" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="deletedFlag" column="deleted_flag" jdbcType="BIT"/>
             <result property="createBy" column="create_by" jdbcType="BIGINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
@@ -21,7 +22,7 @@
     <sql id="Base_Column_List">
         id,category,title,
         content,summary,cover,
-        status,create_by,
+        status,deleted_flag,create_by,
         create_time,update_by,update_time
     </sql>
 
@@ -39,7 +40,7 @@
         ai.create_time as create_time,ai.update_by as update_by,ai.update_time as update_time
         from article_info ai
         left join article_tags_info ati on ai.id = ati.article_id
-        where ai.status = #{status}
+        where ai.deleted_flag = 0 and ai.status = #{status}
         <if test="keyword != null and keyword != ''">
             and (ai.title like concat('%',#{keyword},'%') or ai.content like concat('%',#{keyword},'%') or ai.summary like concat('%',#{keyword},'%'))
         </if>
@@ -61,7 +62,7 @@
     <select id="selectCountByStatus" resultType="java.lang.Long">
         select count(1) from article_info where status = #{status}
     </select>
-    <select id="selectHistoryCount" resultType="top.dfwx.nest.vo.HistoryListVO">
+    <select id="selectHistoryCount" resultType="top.zhongyingjie.nest.vo.HistoryListVO">
         select count(1) as number,year(create_time) as year,month(create_time) as month from article_info
         group by year,month
         order by year desc,month desc
@@ -71,7 +72,7 @@
         delete from article_info
         where  id = #{id,jdbcType=BIGINT} 
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="top.dfwx.common.entity.ArticleInfo" useGeneratedKeys="true">
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="top.zhongyingjie.common.entity.ArticleInfo" useGeneratedKeys="true">
         insert into article_info
         ( id,category,title
         ,content,summary,cover
@@ -84,7 +85,7 @@
         ,#{createTime,jdbcType=TIMESTAMP},#{updateBy,jdbcType=BIGINT},#{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="top.dfwx.common.entity.ArticleInfo" useGeneratedKeys="true">
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="top.zhongyingjie.common.entity.ArticleInfo" useGeneratedKeys="true">
         insert into article_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
                 <if test="id != null">id,</if>
@@ -113,7 +114,7 @@
                 <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="top.dfwx.common.entity.ArticleInfo">
+    <update id="updateByPrimaryKeySelective" parameterType="top.zhongyingjie.common.entity.ArticleInfo">
         update article_info
         <set>
                 <if test="category != null">
@@ -149,7 +150,7 @@
         </set>
         where   id = #{id,jdbcType=BIGINT} 
     </update>
-    <update id="updateByPrimaryKey" parameterType="top.dfwx.common.entity.ArticleInfo">
+    <update id="updateByPrimaryKey" parameterType="top.zhongyingjie.common.entity.ArticleInfo">
         update article_info
         set 
             category =  #{category,jdbcType=INTEGER},

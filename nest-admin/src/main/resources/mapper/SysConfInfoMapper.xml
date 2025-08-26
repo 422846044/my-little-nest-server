@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.dfwx.admin.mapper.SysConfInfoMapper">
+<mapper namespace="top.zhongyingjie.admin.mapper.SysConfInfoMapper">
 
-    <resultMap id="BaseResultMap" type="top.dfwx.admin.entity.SysConfInfo">
+    <resultMap id="BaseResultMap" type="top.zhongyingjie.admin.entity.SysConfInfo">
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="key" column="key" jdbcType="VARCHAR"/>
             <result property="value" column="value" jdbcType="VARCHAR"/>
@@ -28,14 +28,14 @@
         delete from sys_conf_info
         where  id = #{id,jdbcType=INTEGER} 
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="top.dfwx.admin.entity.SysConfInfo" useGeneratedKeys="true">
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="top.zhongyingjie.admin.entity.SysConfInfo" useGeneratedKeys="true">
         insert into sys_conf_info
         ( id,key,value
         )
         values (#{id,jdbcType=INTEGER},#{key,jdbcType=VARCHAR},#{value,jdbcType=VARCHAR}
         )
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="top.dfwx.admin.entity.SysConfInfo" useGeneratedKeys="true">
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="top.zhongyingjie.admin.entity.SysConfInfo" useGeneratedKeys="true">
         insert into sys_conf_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
                 <if test="id != null">id,</if>
@@ -48,7 +48,7 @@
                 <if test="value != null">#{value,jdbcType=VARCHAR},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="top.dfwx.admin.entity.SysConfInfo">
+    <update id="updateByPrimaryKeySelective" parameterType="top.zhongyingjie.admin.entity.SysConfInfo">
         update sys_conf_info
         <set>
                 <if test="key != null">
@@ -60,7 +60,7 @@
         </set>
         where   id = #{id,jdbcType=INTEGER} 
     </update>
-    <update id="updateByPrimaryKey" parameterType="top.dfwx.admin.entity.SysConfInfo">
+    <update id="updateByPrimaryKey" parameterType="top.zhongyingjie.admin.entity.SysConfInfo">
         update sys_conf_info
         set 
             key =  #{key,jdbcType=VARCHAR},

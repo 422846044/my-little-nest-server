@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.dfwx.admin.mapper.SysDictMapper">
+<mapper namespace="top.zhongyingjie.admin.mapper.SysDictMapper">
 
-    <resultMap id="BaseResultMap" type="top.dfwx.admin.entity.SysDict">
+    <resultMap id="BaseResultMap" type="top.zhongyingjie.admin.entity.SysDict">
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="code" column="code" jdbcType="VARCHAR"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
@@ -36,7 +36,7 @@
         delete from sys_dict
         where  id = #{id,jdbcType=INTEGER} 
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="top.dfwx.admin.entity.SysDict" useGeneratedKeys="true">
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="top.zhongyingjie.admin.entity.SysDict" useGeneratedKeys="true">
         insert into sys_dict
         ( id,code,name
         ,description,status,create_by
@@ -47,7 +47,7 @@
         ,#{createTime,jdbcType=TIMESTAMP},#{updateBy,jdbcType=VARCHAR},#{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="top.dfwx.admin.entity.SysDict" useGeneratedKeys="true">
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="top.zhongyingjie.admin.entity.SysDict" useGeneratedKeys="true">
         insert into sys_dict
         <trim prefix="(" suffix=")" suffixOverrides=",">
                 <if test="id != null">id,</if>
@@ -72,7 +72,7 @@
                 <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="top.dfwx.admin.entity.SysDict">
+    <update id="updateByPrimaryKeySelective" parameterType="top.zhongyingjie.admin.entity.SysDict">
         update sys_dict
         <set>
                 <if test="code != null">
@@ -102,7 +102,7 @@
         </set>
         where   id = #{id,jdbcType=INTEGER} 
     </update>
-    <update id="updateByPrimaryKey" parameterType="top.dfwx.admin.entity.SysDict">
+    <update id="updateByPrimaryKey" parameterType="top.zhongyingjie.admin.entity.SysDict">
         update sys_dict
         set 
             code =  #{code,jdbcType=VARCHAR},

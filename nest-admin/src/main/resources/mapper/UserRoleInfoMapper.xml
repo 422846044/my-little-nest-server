@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.dfwx.admin.mapper.UserRoleInfoMapper">
+<mapper namespace="top.zhongyingjie.admin.mapper.UserRoleInfoMapper">
 
-    <resultMap id="BaseResultMap" type="top.dfwx.admin.entity.UserRoleInfo">
+    <resultMap id="BaseResultMap" type="top.zhongyingjie.admin.entity.UserRoleInfo">
             <id property="userId" column="user_id" jdbcType="BIGINT"/>
             <id property="roleId" column="role_id" jdbcType="INTEGER"/>
             <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
@@ -63,7 +63,7 @@
                 <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="top.dfwx.admin.entity.UserRoleInfo">
+    <update id="updateByPrimaryKeySelective" parameterType="top.zhongyingjie.admin.entity.UserRoleInfo">
         update user_role_info
         <set>
                 <if test="createBy != null">
@@ -81,7 +81,7 @@
         </set>
         where   user_id = #{userId,jdbcType=BIGINT} AND role_id = #{roleId,jdbcType=INTEGER} 
     </update>
-    <update id="updateByPrimaryKey" parameterType="top.dfwx.admin.entity.UserRoleInfo">
+    <update id="updateByPrimaryKey" parameterType="top.zhongyingjie.admin.entity.UserRoleInfo">
         update user_role_info
         set 
             create_by =  #{createBy,jdbcType=VARCHAR},

@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.dfwx.admin.mapper.ArticleTagsInfoMapper">
+<mapper namespace="top.zhongyingjie.admin.mapper.ArticleTagsInfoMapper">
 
-    <resultMap id="BaseResultMap" type="top.dfwx.common.entity.ArticleTagsInfo">
+    <resultMap id="BaseResultMap" type="top.zhongyingjie.common.entity.ArticleTagsInfo">
             <result property="id" column="id" jdbcType="BIGINT"/>
             <result property="articleId" column="article_id" jdbcType="BIGINT"/>
             <result property="tagsCode" column="tags_code" jdbcType="VARCHAR"/>
@@ -94,7 +94,7 @@
 
 
 
-    <update id="updateByPrimaryKeySelective" parameterType="top.dfwx.common.entity.ArticleTagsInfo">
+    <update id="updateByPrimaryKeySelective" parameterType="top.zhongyingjie.common.entity.ArticleTagsInfo">
         update article_tags_info
         <set>
                 <if test="id != null">
@@ -124,7 +124,7 @@
         </set>
         where  
     </update>
-    <update id="updateByPrimaryKey" parameterType="top.dfwx.common.entity.ArticleTagsInfo">
+    <update id="updateByPrimaryKey" parameterType="top.zhongyingjie.common.entity.ArticleTagsInfo">
         update article_tags_info
         set 
             id =  #{id,jdbcType=BIGINT},
