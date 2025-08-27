@@ -189,6 +189,7 @@ public class ArticleServiceImpl implements ArticleService {
         Long articleInfoId = articleInfo.getId();
         vo.setId(articleInfoId);
         vo.setTitle(articleInfo.getTitle());
+        vo.setCover(articleInfo.getCover());
         vo.setContent(articleInfo.getContent());
         vo.setSummary(articleInfo.getSummary());
         vo.setCategory(Integer.toString(articleInfo.getCategory()));

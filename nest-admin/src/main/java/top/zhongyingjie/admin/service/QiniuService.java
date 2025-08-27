@@ -23,10 +23,12 @@ public class QiniuService {
     @Autowired
     @Qualifier("qiniuCache")
     private Cache<String,String> qiniuUploadToken;
+
     public String getUploadToken(){
         String token = qiniuUploadToken.asMap().get("token");
         if(StrUtil.isEmpty(token)){
             Auth auth = Auth.create(accessKey, secretKey);
+            // 失效时间 3600L 秒
             token = auth.uploadToken(bucket);
             qiniuUploadToken.put("token",token);
         }

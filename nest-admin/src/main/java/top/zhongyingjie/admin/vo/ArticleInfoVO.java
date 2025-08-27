@@ -18,6 +18,8 @@ public class ArticleInfoVO implements Serializable {
 
     private String title;
 
+    private String cover;
+
     private String content;
 
     private String summary;

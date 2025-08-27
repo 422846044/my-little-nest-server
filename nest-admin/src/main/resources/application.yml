@@ -27,7 +27,7 @@ logging:
         org:
             mybatis: debug
         top:
-            dfwh:
+            zhongyingjie:
                 admin:
                     mapper:
                     /*: debug
