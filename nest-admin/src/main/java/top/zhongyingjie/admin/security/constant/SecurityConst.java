@@ -1,6 +1,17 @@
 package top.zhongyingjie.admin.security.constant;
 
+/**
+ * 安全常量
+ *
+ * @author Kong
+ */
 public final class SecurityConst {
-    public final static String TOKEN_HEADER = "Authorization";
-    public final static String REFRESH_TOKEN_HEADER = "Refresh-Token";
+
+    private SecurityConst() {
+
+    }
+
+    public static final  String TOKEN_HEADER = "Authorization";
+
+    public static final  String REFRESH_TOKEN_HEADER = "Refresh-Token";
 }

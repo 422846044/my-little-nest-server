@@ -10,33 +10,30 @@ import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
  * redis缓存实现
  *
- * @author atulan_zyj
- * @date 2024/4/22
+ * @param <T> 变量类型
+ * @author Kong
  */
 @Component
-public class RedisCache implements Cache {
+public class RedisCache<T> implements Cache<T> {
 
     @Autowired
-    private RedisTemplate<Object, Object> redisTemplate;
+    private RedisTemplate<Object, T> redisTemplate;
 
     /**
      * 获取缓存值
      *
      * @param key 缓存键
-     * @return
+     * @return 缓存值
      */
     @Override
-    public Object get(Object key) {
+    public T get(Object key) {
         return redisTemplate.opsForValue().get(key);
     }
 
@@ -44,12 +41,13 @@ public class RedisCache implements Cache {
      * 获取字符串类型缓存值
      *
      * @param key 缓存键
-     * @return
+     * @return 字符串类型缓存值
      */
     @Override
     public String getStr(Object key) {
         try {
-            return redisTemplate.opsForValue().get(key).toString();
+            T t = redisTemplate.opsForValue().get(key);
+            return String.valueOf(t);
         } catch (Exception e) {
             return null;
         }
@@ -62,7 +60,7 @@ public class RedisCache implements Cache {
      * @param value 缓存值
      */
     @Override
-    public void put(Object key, Object value) {
+    public void put(Object key, T value) {
         redisTemplate.opsForValue().set(key, value);
     }
 
@@ -75,7 +73,7 @@ public class RedisCache implements Cache {
      * @param timeUnit 失效时间单位
      */
     @Override
-    public void putAndExp(Object key, Object value, Long exp, TimeUnit timeUnit) {
+    public void putAndExp(Object key, T value, Long exp, TimeUnit timeUnit) {
         redisTemplate.opsForValue().set(key, value, exp, timeUnit);
     }
 
@@ -97,7 +95,7 @@ public class RedisCache implements Cache {
      * @return
      */
     @Override
-    public List multiGet(Collection keys) {
+    public List<T> multiGet(Collection keys) {
         return redisTemplate.opsForValue().multiGet(keys);
     }
 
@@ -146,11 +144,11 @@ public class RedisCache implements Cache {
      *
      * @param key     缓存键
      * @param hashKey 缓存哈希键
-     * @return
+     * @return 缓存哈希值
      */
     @Override
-    public Object getHash(Object key, Object hashKey) {
-        return redisTemplate.opsForHash().get(key, hashKey);
+    public T getHash(Object key, Object hashKey) {
+        return (T) redisTemplate.opsForHash().get(key, hashKey);
     }
 
     /**

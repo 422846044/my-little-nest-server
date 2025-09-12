@@ -5,8 +5,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-
+/**
+ * 安全用户详情信息类
+ *
+ * @author Kong
+ */
 public class SecurityUserDetails implements UserDetails {
+
+    private static final long serialVersionUID = 3550914678363854335L;
 
     private String userId;
 
@@ -22,6 +28,7 @@ public class SecurityUserDetails implements UserDetails {
     private String passWord;
     private Collection<? extends GrantedAuthority> authorities;
     private Boolean enable;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;

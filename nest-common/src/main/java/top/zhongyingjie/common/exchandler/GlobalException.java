@@ -1,18 +1,23 @@
 package top.zhongyingjie.common.exchandler;
 
-
 import top.zhongyingjie.common.constant.ErrorCode;
-import lombok.Data;
 
-@Data
-public class GlobalException extends RuntimeException{
-    private int code= ErrorCode.FAIL.getCode();
+/**
+ * 自定义全局异常
+ *
+ * @author Kong
+ */
+public class GlobalException extends RuntimeException {
+
+    private static final long serialVersionUID = 5469152547364704628L;
+
+    private int code = ErrorCode.FAIL.getCode();
     private String msg = ErrorCode.FAIL.getMessage();
 
-    public GlobalException(){
+    public GlobalException() {
         super();
     }
-    // 对该异常类的构造方法进行补充，不写的话会默认只有一个无参构造
+
     public GlobalException(String msg) {
         super(msg);
         this.msg = msg;
@@ -35,5 +40,19 @@ public class GlobalException extends RuntimeException{
         this.code = code;
     }
 
+    public int getCode() {
+        return code;
+    }
 
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 }

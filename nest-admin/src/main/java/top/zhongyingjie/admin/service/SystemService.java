@@ -1,9 +1,17 @@
 package top.zhongyingjie.admin.service;
 
 /**
- * @author atulan_zyj
- * @date 2025/2/17
+ * 系统参数信息接口
+ *
+ * @author Kong
  */
 public interface SystemService {
+
+    /**
+     * 通过key获取value
+     *
+     * @param key 键
+     * @return 值
+     */
     String getValue(String key);
 }

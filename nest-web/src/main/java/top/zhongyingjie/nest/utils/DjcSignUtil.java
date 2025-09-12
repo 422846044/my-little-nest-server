@@ -1,6 +1,7 @@
 package top.zhongyingjie.nest.utils;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.crypto.Cipher;
@@ -11,16 +12,34 @@ import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
-@Slf4j
-public class DjcSignUtil {
+/**
+ * 道具城签到工具类
+ *
+ * @author Kong
+ */
+public final class DjcSignUtil {
 
-    private static String f11865b = "RSA";
+    private static final Logger log = LoggerFactory.getLogger(DjcSignUtil.class);
 
-    private static String f11866c = "RSA/ECB/PKCS1Padding";
+    private static final String F11865B = "RSA";
 
-    private static String JOIN = "+";
+    private static final String F11866C = "RSA/ECB/PKCS1Padding";
 
-    public static String getDjcSign(String openId,String versionCode,String deviceId){
+    private static final String JOIN = "+";
+
+    private DjcSignUtil() {
+
+    }
+
+    /**
+     * 获取签到请求链接
+     *
+     * @param openId      openId
+     * @param versionCode 版本code
+     * @param deviceId    设备id
+     * @return 签到请求链接
+     */
+    public static String getDjcSign(String openId, String versionCode, String deviceId) {
         StringBuilder sb = new StringBuilder();
         sb.append(openId);
         sb.append(JOIN);
@@ -32,12 +51,20 @@ public class DjcSignUtil {
         try {
             return b(a(a(sb.toString(), "se35d32s63r7m23m")));
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             log.error("get djcSign error");
         }
         return "";
     }
 
+    /**
+     * 加密
+     *
+     * @param str  原文
+     * @param str2 算法
+     * @return 数组
+     * @throws Exception 异常
+     */
     public static byte[] a(String str, String str2) throws Exception {
         if (str == null) {
             return null;
@@ -47,36 +74,45 @@ public class DjcSignUtil {
         return cipher.doFinal(str.getBytes(StandardCharsets.UTF_8));
     }
 
+    /**
+     * 加密
+     *
+     * @param bArr 字符数组
+     * @return 数组
+     * @throws Exception 异常
+     */
     public static byte[] a(byte[] bArr) throws Exception {
-        Cipher cipher = Cipher.getInstance(f11866c);
+        Cipher cipher = Cipher.getInstance(F11866C);
         cipher.init(1, a());
         return cipher.doFinal(bArr);
     }
 
     private static PublicKey a() {
         byte[] bArr;
-        try {
-            InputStream open = ClassPathResource.class.getClassLoader().getResourceAsStream("djc_rsa_public_key_new.der");
+        try (InputStream open = ClassPathResource.class.getClassLoader()
+                .getResourceAsStream("djc_rsa_public_key_new.der")) {
             //InputStream open = new ClassPathResource("djc_rsa_public_key_new.der").getInputStream();
             try {
                 bArr = new byte[open.available()];
                 do {
-                    try {
-                    } catch (Exception e) {
-                        e = e;
-                        System.out.println("Got exception while is -> bytearr conversion: " + e);
-                        return KeyFactory.getInstance(f11865b).generatePublic(new X509EncodedKeySpec(bArr));
-                    }
+                    // 内容略过
+                    log.debug("测试");
                 } while (open.read(bArr) != -1);
             } catch (Exception e2) {
                 bArr = null;
             }
-            return KeyFactory.getInstance(f11865b).generatePublic(new X509EncodedKeySpec(bArr));
+            return KeyFactory.getInstance(F11865B).generatePublic(new X509EncodedKeySpec(bArr));
         } catch (Exception e3) {
             return null;
         }
     }
 
+    /**
+     * 解密
+     *
+     * @param bArr 字符数组
+     * @return 原文
+     */
     public static String b(byte[] bArr) {
         String str = "";
         for (byte b2 : bArr) {
@@ -85,13 +121,4 @@ public class DjcSignUtil {
         }
         return str;
     }
-
-    public static void main(String[] args) {
-        System.out.println(getDjcSign("DECC4DC6C39B1FC86E109B26F31C9105","147","832ed1ab5036d8bec44e4cc6c12c439d7544bb25eab1ffa9acec1abe6bd913ca"));
-    }
-
-
-
-
-
 }

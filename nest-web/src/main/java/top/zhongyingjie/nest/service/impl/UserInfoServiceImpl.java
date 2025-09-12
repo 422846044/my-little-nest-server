@@ -10,6 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * 用户信息服务实现
+ *
+ * @author Kong
+ */
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
 
@@ -19,9 +24,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public Map<String, Object> getSimpleInfo(Long uid) {
         Map<String, Object> data = new HashMap<>();
-        String nickName = "",avatar = "";
+        String nickName = "", avatar = "";
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(uid);
-        if(Objects.nonNull(userInfo)){
+        if (Objects.nonNull(userInfo)) {
             nickName = userInfo.getNickname();
             avatar = userInfo.getAvatar();
         }

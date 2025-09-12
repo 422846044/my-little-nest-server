@@ -13,7 +13,10 @@ import org.springframework.web.filter.CorsFilter;
  */
 @Configuration
 public class CorsConfig {
-    /**
+
+    private static final long MAX_AGE = 3600;
+
+    /*
      * 配置 corsFilter 自定义过滤器
      * 为了保证 跨域操作 一定会执行，这里有几个点需要注意：
      * 1. 没有在WebMvcConfigurer中使用addCorsMappings方法完成cors的配置，
@@ -26,23 +29,37 @@ public class CorsConfig {
      * 2. 为了保证 CorsFilter 过滤器在过滤器中也一定是最先执行，可以使用 FilterRegistrationBean 设置 CorsFilter 的执行顺序为最高，
      *    这样可以大概率保证CorsFilter 过滤器会最先执行。
      */
+
+    /**
+     * 跨域过滤器
+     *
+     * @return 跨域注册对象
+     */
     @Bean
-    public FilterRegistrationBean corsFilter() {
+    public FilterRegistrationBean<CorsFilter> corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowCredentials(false);    // 允许cookies跨域
-        corsConfiguration.setMaxAge(1800L);             // 预检请求的缓存时间（秒），即在这个时间段里，对于相同的跨域请求不会再预检
-        //corsConfiguration.addAllowedOrigin("*");        // 允许任何“源”域名)使用
+        // 允许cookies跨域
+        corsConfiguration.setAllowCredentials(false);
+        // 预检请求的缓存时间（秒），即在这个时间段里，对于相同的跨域请求不会再预检
+        corsConfiguration.setMaxAge(MAX_AGE);
+        // 允许任何“源”域名)使用
+        //corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.addAllowedOrigin("http://www.dfwx.fun");
         corsConfiguration.addAllowedOrigin("http://zhongyingjie.top");
         corsConfiguration.addAllowedOrigin("http://www.zhongyingjie.top");
         corsConfiguration.addAllowedOriginPattern("http://localhost*");
         corsConfiguration.addAllowedOriginPattern("http://127.0.0.1*");
-        corsConfiguration.addAllowedHeader("*");        // 允许任何请求头
-        corsConfiguration.addAllowedMethod("*");        // 允许任何方法（get、post等）
-        source.registerCorsConfiguration("/**", corsConfiguration);     // 处理所有请求的跨域配置
-        FilterRegistrationBean registrationBean = new FilterRegistrationBean(new CorsFilter(source));   // 注册自定义过滤器
-        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);  // 优先级最高
+        // 允许任何请求头
+        corsConfiguration.addAllowedHeader("*");
+        // 允许任何方法（get、post等）
+        corsConfiguration.addAllowedMethod("*");
+        // 处理所有请求的跨域配置
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        // 注册自定义过滤器
+        FilterRegistrationBean<CorsFilter> registrationBean = new FilterRegistrationBean<>(new CorsFilter(source));
+        // 优先级最高
+        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return registrationBean;
     }
 }

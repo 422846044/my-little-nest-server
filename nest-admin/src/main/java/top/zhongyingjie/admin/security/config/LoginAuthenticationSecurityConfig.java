@@ -17,9 +17,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 /**
  * 配置登录过滤器
+ *
+ * @author Kong
  */
 @Configuration
-public class LoginAuthenticationSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
+public class LoginAuthenticationSecurityConfig extends
+        SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
     @Autowired
     private UserAuthenticationSuccessHandler successHandler;
@@ -31,7 +34,6 @@ public class LoginAuthenticationSecurityConfig extends SecurityConfigurerAdapter
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
 
     @Override
     public void configure(HttpSecurity builder) throws Exception {

@@ -9,21 +9,24 @@ import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 /**
  * jasypt工具类
  *
- * @author atulan_zyj
- * @date 2024/4/22
+ * @author Kong
  */
-public class JasyptUtils {
+public final class JasyptUtils {
 
     private static final String PBEWITHMD5ANDDES = "PBEWithMD5AndDES";
 
     private static final String PBEWITHHMACSHA512ANDAES_256 = "PBEWITHHMACSHA512ANDAES_256";
 
+    private JasyptUtils() {
+
+    }
+
     /**
      * jasypt2.x 加密（PBEWithMD5AndDES）
      *
-     * @return java.lang.String
-     * @param         plainText      待加密的原文
-     * @param         factor         加密秘钥
+     * @param plainText 待加密的原文
+     * @param factor    加密秘钥
+     * @return 密文
      */
     public static String encryptWithMD5(String plainText, String factor) {
         // 1. 创建加解密工具实例
@@ -40,9 +43,9 @@ public class JasyptUtils {
     /**
      * jasypt2.x 解密（PBEWithMD5AndDES）
      *
+     * @param encryptedText 待解密密文
+     * @param factor        解密秘钥
      * @return java.lang.String
-     * @param         encryptedText      待解密密文
-     * @param         factor             解密秘钥
      */
     public static String decryptWithMD5(String encryptedText, String factor) {
         // 1. 创建加解密工具实例
@@ -59,9 +62,9 @@ public class JasyptUtils {
     /**
      * jasypt3.x 加密（PBEWITHHMACSHA512ANDAES_256）
      *
+     * @param plainText 待加密的原文
+     * @param factor    加密秘钥
      * @return java.lang.String
-     * @param         plainText  待加密的原文
-     * @param         factor     加密秘钥
      */
     public static String encryptWithSHA512(String plainText, String factor) {
         // 1. 创建加解密工具实例
@@ -85,9 +88,9 @@ public class JasyptUtils {
     /**
      * jasypt3.x 解密（PBEWITHHMACSHA512ANDAES_256）
      *
+     * @param encryptedText 待解密密文
+     * @param factor        解密秘钥
      * @return java.lang.String
-     * @param         encryptedText  待解密密文
-     * @param         factor         解密秘钥
      */
     public static String decryptWithSHA512(String encryptedText, String factor) {
         // 1. 创建加解密工具实例
@@ -108,7 +111,7 @@ public class JasyptUtils {
         return encryptor.decrypt(encryptedText);
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         String factor = "z422846044";
         String plainText = "QfT58RuuQd30m5dnjZDG368d9TbsRA_rlMs2f2Hv";
         //String encryptWithMD5Str = encryptWithMD5(plainText, factor);
@@ -118,8 +121,7 @@ public class JasyptUtils {
         String decryptWithSHA512Str = decryptWithSHA512(encryptWithSHA512Str, factor);
         //System.out.println("采用MD5加密前原文密文：" + encryptWithMD5Str);
         //System.out.println("采用MD5解密后密文原文:" + decryptWithMD5Str);
-        System.out.println();
         System.out.println("采用SHA512加密前原文密文：" + encryptWithSHA512Str);
         System.out.println("采用SHA512解密后密文原文:" + decryptWithSHA512Str);
-    }
+    }*/
 }

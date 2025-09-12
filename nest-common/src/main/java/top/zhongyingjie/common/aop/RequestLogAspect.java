@@ -1,8 +1,9 @@
 package top.zhongyingjie.common.aop;
 
 import com.alibaba.fastjson2.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import top.zhongyingjie.common.utils.IpUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -16,58 +17,67 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 请求日志切面
  *
- * @author atulan_zyj
- * @date 2024/4/4
+ * @author Kong
  */
-@Slf4j
 @Component
 @Aspect
 public class RequestLogAspect {
 
+    private static final Logger log = LoggerFactory.getLogger(RequestLogAspect.class);
+
     /**
      * 参数名发现器
      */
-    private static final DefaultParameterNameDiscoverer PARAMETER_NAME_DISCOVERER = new DefaultParameterNameDiscoverer();
+    private static final DefaultParameterNameDiscoverer PARAMETER_NAME_DISCOVERER
+            = new DefaultParameterNameDiscoverer();
 
-    private static List<Map<String, String>> excludeMethods = Arrays.asList(
-            new HashMap<String, String>(){{
-                put("class", "top.dfwx.admin.controller.ServerController");
-                put("method","getInfo");
-            }}
+    private static final List<Map<String, String>> EXCLUDE_METHODS = Collections.singletonList(
+            new HashMap<String, String>() {
+
+                private static final long serialVersionUID = 922864639691779930L;
+
+                {
+                    put("class", "top.zhongyingjie.admin.controller.ServerController");
+                    put("method", "getInfo");
+                }
+            }
     );
+
 
     /**
      * 切入点
      */
-    @Pointcut("execution(* top.dfwx.*.controller..*(..)) ")
+    @Pointcut("execution(* top.zhongyingjie.*.controller..*(..)) ")
     public void entryPoint() {
         // 无需内容
     }
 
+    /**
+     * 前置执行方法
+     *
+     * @param joinPoint 连接点
+     */
     @Before("entryPoint()")
     public void doBefore(JoinPoint joinPoint) {
         try {
             String className = joinPoint.getTarget().getClass().getName();
             String methodName = joinPoint.getSignature().getName();
-            for (Map<String, String> map : excludeMethods) {
-                if(map.get("class").equals(className) && map.get("method").equals(methodName)){
+            for (Map<String, String> map : EXCLUDE_METHODS) {
+                if (map.get("class").equals(className) && map.get("method").equals(methodName)) {
                     return;
                 }
             }
-            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
+                    .getRequestAttributes();
             HttpServletRequest request = attributes.getRequest();
             String requestURL = request.getRequestURL().toString();
             MethodSignature signature = (MethodSignature) joinPoint.getSignature();
             String[] parameterNames = PARAMETER_NAME_DISCOVERER.getParameterNames(signature.getMethod());
-            //List<String> fieldsName = AspectUtils.getFieldsName(joinPoint);
             List<String> fieldsName = Arrays.asList(parameterNames);
             Object[] args = joinPoint.getArgs();
             Object[] myArgs = new Object[args.length];
@@ -104,20 +114,27 @@ public class RequestLogAspect {
 
     }
 
+    /**
+     * 环绕方法
+     *
+     * @param joinPoint 连接点
+     * @return 处理结果
+     * @throws Throwable Throwable
+     */
     @Around("entryPoint()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
         String className = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
         boolean logTag = true;
-        for (Map<String, String> map : excludeMethods) {
-            if(map.get("class").equals(className) && map.get("method").equals(methodName)){
+        for (Map<String, String> map : EXCLUDE_METHODS) {
+            if (map.get("class").equals(className) && map.get("method").equals(methodName)) {
                 logTag = false;
             }
         }
         long startTime = System.currentTimeMillis();
         Object result = joinPoint.proceed();
         long time = System.currentTimeMillis() - startTime;
-        if(logTag){
+        if (logTag) {
             log.info("\n" + "[接口返回日志开始]" + "\n"
                             + "类名:{}" + "\n"
                             + "方法名:{}" + "\n"
@@ -132,6 +149,12 @@ public class RequestLogAspect {
         return result;
     }
 
+    /**
+     * 后置执行方法
+     *
+     * @param joinPoint 连接点
+     * @param e 错误信息
+     */
     @AfterThrowing(pointcut = "entryPoint()", throwing = "e")
     public void doAfterThrowing(JoinPoint joinPoint, Throwable e) {
         try {

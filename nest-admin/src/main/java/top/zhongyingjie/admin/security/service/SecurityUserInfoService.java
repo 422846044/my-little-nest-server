@@ -14,6 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * 安全用户信息服务
+ *
+ * @author Kong
+ */
 @Service
 public class SecurityUserInfoService {
 
@@ -23,15 +28,21 @@ public class SecurityUserInfoService {
     @Autowired
     private UserRoleService userRoleService;
 
+    /**
+     * 根据用户名获取用户信息
+     *
+     * @param username 用户名
+     * @return 用户详情信息
+     */
     public UserDetails getUserDetailsByUserName(String username) {
         SecurityUserDetails userDetails = null;
         UserInfo userInfo = iUserService.getUserInfoByUserName(username);
-        if(Objects.nonNull(userInfo)){
+        if (Objects.nonNull(userInfo)) {
             userDetails = new SecurityUserDetails();
             userDetails.setUserId(Long.toString(userInfo.getId()));
             userDetails.setUserName(userInfo.getUsername());
             userDetails.setPassWord(userInfo.getPassword());
-            userDetails.setEnable(!"2".equals(userInfo.getStatus()));
+            userDetails.setEnable(2 != userInfo.getStatus());
             List<UserRoleInfo> userRoleList = userRoleService.getUserRoleByUserId(userInfo.getId());
             List<SecurityUserRole> securityUserRoleList = new ArrayList<>();
             for (UserRoleInfo userRoleInfo : userRoleList) {

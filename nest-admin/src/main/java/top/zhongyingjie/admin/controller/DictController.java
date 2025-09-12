@@ -12,6 +12,12 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * 字典信息api
+ *
+ * @author Kong
+ */
 @RestController
 @RequestMapping("/dict")
 @Validated
@@ -20,18 +26,35 @@ public class DictController {
     @Autowired
     private DictService dictService;
 
+    /**
+     * 根据字典code获取字典详情信息列表
+     *
+     * @param dictCode 字典code
+     * @return 统一返回对象
+     */
     @GetMapping("/getDictDetailsByDictCode")
-    public Result getDictDetailsByDictCode(@RequestParam("dictCode") String dictCode){
-        List<DictDataVO> dictInfoVOList = dictService.getDictDetailsByDictCode(dictCode);
-        return Result.success(dictInfoVOList);
+    public Result<List<DictDataVO>> getDictDetailsByDictCode(@RequestParam("dictCode") String dictCode) {
+        return Result.success(dictService.getDictDetailsByDictCode(dictCode));
     }
 
+    /**
+     * 根据字典code获取字典详情映射表
+     *
+     * @param dictCode 字典code
+     * @return 统一返回对象
+     */
     @GetMapping("/getDictMapByDictCode")
-    public Result getDictMapByDictCode(@RequestParam("dictCode") String dictCode){
-        Map data = dictService.getDictMapByDictCode(dictCode);
-        return Result.success(data);
+    public Result<Map<String, String>> getDictMapByDictCode(@RequestParam("dictCode") String dictCode) {
+        return Result.success(dictService.getDictMapByDictCode(dictCode));
     }
 
+    /**
+     * 添加字段详情
+     *
+     * @param dictCode   目录code
+     * @param detailName 详情名称
+     * @return 统一返回对象
+     */
     @PostMapping("/detail/info/{dictCode}/{detailName}")
     public Result<Object> addDictDetail(@PathVariable("dictCode") String dictCode,
                                         @Length(message = "名称长度不能超过30")

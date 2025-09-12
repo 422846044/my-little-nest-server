@@ -31,17 +31,18 @@ public class ArticleController {
      * @return 统一返回对象
      */
     @GetMapping("/list")
-    public Result<Result.PageData<ArticleListVO>> listArticleByPage(@Valid ArticlePageQueryDTO articlePageQuery){
+    public Result<Result.PageData<ArticleListVO>> listArticleByPage(@Valid ArticlePageQueryDTO articlePageQuery) {
         return articleService.getArticleByPage(articlePageQuery);
     }
 
     /**
      * 获取文章信息详情
+     *
      * @param id 文章id
      * @return 统一返回对象
      */
     @GetMapping("/info/{id}")
-    public Result<ArticleInfoVO> getArticleInfoById(@PathVariable("id") Long id){
+    public Result<ArticleInfoVO> getArticleInfoById(@PathVariable("id") Long id) {
         return Result.success(articleService.getArticleInfoById(id));
     }
 
@@ -51,7 +52,7 @@ public class ArticleController {
      * @return 统一返回对象
      */
     @GetMapping("/history")
-    public Result<List<HistoryListVO>> getHistory(){
+    public Result<List<HistoryListVO>> getHistory() {
         return Result.success(articleService.getHistory());
     }
 
@@ -61,7 +62,7 @@ public class ArticleController {
      * @return 统一返回对象
      */
     @GetMapping("/count")
-    public Result<Long> getCount(){
+    public Result<Long> getCount() {
         return Result.success(articleService.getCount());
     }
 }

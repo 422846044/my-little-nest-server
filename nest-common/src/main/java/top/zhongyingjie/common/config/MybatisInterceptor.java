@@ -21,8 +21,7 @@ import java.util.Objects;
 /**
  * mybatis拦截器
  *
- * @author atulan_zyj
- * @date 2024/4/4
+ * @author Kong
  */
 @Component
 @Intercepts({@Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})})
@@ -38,7 +37,9 @@ public class MybatisInterceptor implements Interceptor {
         MappedStatement mappedStatement = (MappedStatement) args[0];
         SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
         Object parameter = args[1];
-        if (parameter == null) return invocation.proceed();
+        if (parameter == null) {
+            return invocation.proceed();
+        }
         if (sqlCommandType == SqlCommandType.INSERT) {
             create(parameter);
             update(parameter);
@@ -71,7 +72,8 @@ public class MybatisInterceptor implements Interceptor {
                     for (Object object : list) {
                         if (object instanceof BaseEntity) {
                             UserLoginInfo userLoginInfo = UserHolder.getUserLoginInfo();
-                            ((BaseEntity) object).setCreateBy(Objects.isNull(userLoginInfo) ? "" : Long.toString(userLoginInfo.getUserId()));
+                            ((BaseEntity) object).setCreateBy(Objects.isNull(userLoginInfo)
+                                    ? "" : Long.toString(userLoginInfo.getUserId()));
                             ((BaseEntity) object).setCreateTime(new Date());
                             ((BaseEntity) object).setDeletedFlag(false);
                         }
@@ -85,7 +87,8 @@ public class MybatisInterceptor implements Interceptor {
         if (parameter instanceof BaseEntity) {
             UserLoginInfo userLoginInfo = UserHolder.getUserLoginInfo();
             if (Objects.isNull(((BaseEntity) parameter).getUpdateBy())) {
-                ((BaseEntity) parameter).setUpdateBy(Objects.isNull(userLoginInfo) ? "" : Long.toString(userLoginInfo.getUserId()));
+                ((BaseEntity) parameter).setUpdateBy(Objects.isNull(userLoginInfo)
+                        ? "" : Long.toString(userLoginInfo.getUserId()));
             }
             ((BaseEntity) parameter).setUpdateTime(new Date());
         } else if (parameter instanceof MapperMethod.ParamMap) {
@@ -94,7 +97,8 @@ public class MybatisInterceptor implements Interceptor {
                 if (o instanceof BaseEntity) {
                     UserLoginInfo userLoginInfo = UserHolder.getUserLoginInfo();
                     if (Objects.isNull(((BaseEntity) o).getUpdateBy())) {
-                        ((BaseEntity) o).setUpdateBy(Objects.isNull(userLoginInfo) ? "" : Long.toString(userLoginInfo.getUserId()));
+                        ((BaseEntity) o).setUpdateBy(Objects.isNull(userLoginInfo)
+                                ? "" : Long.toString(userLoginInfo.getUserId()));
                     }
                     ((BaseEntity) o).setUpdateTime(new Date());
                 } else if (o instanceof List) {
@@ -103,7 +107,8 @@ public class MybatisInterceptor implements Interceptor {
                         if (object instanceof BaseEntity) {
                             UserLoginInfo userLoginInfo = UserHolder.getUserLoginInfo();
                             if (Objects.isNull(((BaseEntity) object).getUpdateBy())) {
-                                ((BaseEntity) object).setUpdateBy(Objects.isNull(userLoginInfo) ? "" : Long.toString(userLoginInfo.getUserId()));
+                                ((BaseEntity) object).setUpdateBy(Objects.isNull(userLoginInfo)
+                                        ? "" : Long.toString(userLoginInfo.getUserId()));
                             }
                             ((BaseEntity) object).setUpdateTime(new Date());
                         }

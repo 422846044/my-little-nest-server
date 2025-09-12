@@ -7,10 +7,13 @@ import top.zhongyingjie.common.function.ThrowExceptionFunction;
 /**
  * 校验工具类
  *
- * @author atulan_zyj
- * @date 2024/8/21
+ * @author Kong
  */
-public class CheckUtils {
+public final class CheckUtils {
+
+    private CheckUtils() {
+
+    }
 
     /**
      * 如果参数为true抛出异常
@@ -25,6 +28,5 @@ public class CheckUtils {
             }
         };
     }
-
 
 }

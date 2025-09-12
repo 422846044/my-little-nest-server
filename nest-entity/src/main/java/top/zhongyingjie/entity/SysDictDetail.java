@@ -3,117 +3,83 @@ package top.zhongyingjie.entity;
 import top.zhongyingjie.common.entity.BaseEntity;
 
 /**
-* 
-* @TableName sys_dict_detail
-*/
+ *
+ * @TableName sys_dict_detail
+ */
 public class SysDictDetail extends BaseEntity {
 
+    private static final long serialVersionUID = 7851783347660141742L;
+
     /**
-    * 主键id
-    */
+     * 主键id
+     */
     private Integer id;
     /**
-    * 字典编码
-    */
+     * 字典编码
+     */
     private String dictCode;
     /**
-    * 编码
-    */
+     * 编码
+     */
     private String code;
     /**
-    * 名称
-    */
+     * 名称
+     */
     private String name;
     /**
-    * 排序
-    */
+     * 排序
+     */
     private Integer sort;
     /**
-    * 状态（1--正常0--不使用）
-    */
+     * 状态（1--正常0--不使用）
+     */
     private Integer status;
 
-    /**
-    * 主键id
-    */
-    public void setId(Integer id){
-    this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    /**
-    * 字典编码
-    */
-    public void setDictCode(String dictCode){
-    this.dictCode = dictCode;
+    public void setDictCode(String dictCode) {
+        this.dictCode = dictCode;
     }
 
-    /**
-    * 编码
-    */
-    public void setCode(String code){
-    this.code = code;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    /**
-    * 名称
-    */
-    public void setName(String name){
-    this.name = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    /**
-    * 排序
-    */
-    public void setSort(Integer sort){
-    this.sort = sort;
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 
-    /**
-    * 状态（1--正常0--不使用）
-    */
-    public void setStatus(Integer status){
-    this.status = status;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
-    /**
-    * 主键id
-    */
-    public Integer getId(){
-    return this.id;
+    public Integer getId() {
+        return this.id;
     }
 
-    /**
-    * 字典编码
-    */
-    public String getDictCode(){
-    return this.dictCode;
+    public String getDictCode() {
+        return this.dictCode;
     }
 
-    /**
-    * 编码
-    */
-    public String getCode(){
-    return this.code;
+    public String getCode() {
+        return this.code;
     }
 
-    /**
-    * 名称
-    */
-    public String getName(){
-    return this.name;
+    public String getName() {
+        return this.name;
     }
 
-    /**
-    * 排序
-    */
-    public Integer getSort(){
-    return this.sort;
+    public Integer getSort() {
+        return this.sort;
     }
 
-    /**
-    * 状态（1--正常0--不使用）
-    */
-    public Integer getStatus(){
-    return this.status;
+    public Integer getStatus() {
+        return this.status;
     }
-} 
+}

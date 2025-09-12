@@ -3,16 +3,12 @@ package top.zhongyingjie.nest.pojo.dto;
 import org.hibernate.validator.constraints.Length;
 import top.zhongyingjie.common.annotation.ValStrArrCheck;
 import top.zhongyingjie.common.domain.PageQuery;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 文章分页查询参数
  *
- * @author zyj
+ * @author Kong
  */
-@EqualsAndHashCode(callSuper = true)
-@Data
 public class ArticlePageQueryDTO extends PageQuery {
 
     private static final long serialVersionUID = -6477763564007502012L;
@@ -52,6 +48,62 @@ public class ArticlePageQueryDTO extends PageQuery {
     /**
      * 排序方式
      */
-    @ValStrArrCheck(values = {"asc","desc"})
+    @ValStrArrCheck(values = {"asc", "desc"})
     private String sort;
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public void setMonth(Integer month) {
+        this.month = month;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
 }

@@ -11,6 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * 安全配置类
+ *
+ * @author Kong
+ */
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -29,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .apply(config)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login","/refresh/refresh")
+                .antMatchers("/login", "/refresh/refresh")
                 .permitAll()
                 .antMatchers("/role").hasRole("admin")
                 .anyRequest()
@@ -46,6 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
+    /**
+     * 获取令牌认证过滤器
+     *
+     * @return 令牌认证过滤器
+     */
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
         return new TokenAuthenticationFilter();

@@ -1,16 +1,19 @@
 package top.zhongyingjie.admin.event;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
- * @author atulan_zyj
- * @date 2025/8/20
+ * 更新文章事件
+ *
+ * @author Kong
  */
-@AllArgsConstructor
-@Getter
-public class EditArticleEvent extends ArticleEvent{
+public class EditArticleEvent extends ArticleEvent {
 
-    private String title;
+    private final String title;
 
+    public EditArticleEvent(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
 }

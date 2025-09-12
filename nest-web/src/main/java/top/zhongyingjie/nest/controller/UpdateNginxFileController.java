@@ -2,9 +2,10 @@ package top.zhongyingjie.nest.controller;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import top.zhongyingjie.common.domain.Result;
 import top.zhongyingjie.common.exchandler.GlobalException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,19 +20,26 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/nginx/update/file")
-@Slf4j
 public class UpdateNginxFileController {
 
+    private static final Logger log = LoggerFactory.getLogger(UpdateNginxFileController.class);
 
+    /**
+     * 替换文件
+     *
+     * @param type          类型
+     * @param multipartFile 文件
+     * @return 统一返回对象
+     */
     @PutMapping("/replaceAll/{type}")
     public Result<Object> replaceAll(@PathVariable("type") Integer type,
-                                     @RequestParam("file") MultipartFile multipartFile){
+                                     @RequestParam("file") MultipartFile multipartFile) {
         String contentType = multipartFile.getContentType();
-        if(!"application/x-zip-compressed".equals(contentType)){
+        if (!"application/x-zip-compressed".equals(contentType)) {
             throw new GlobalException("不支持当前文件格式");
         }
         String fileName = "frontend.zip", originalDirName = "华雅生活", targetDirName = "axure";
-        if(type == 1){
+        if (type == 1) {
             fileName = "backend.zip";
             originalDirName = "华雅后台";
             targetDirName = "hyht";
@@ -57,7 +65,8 @@ public class UpdateNginxFileController {
 
         extracted(Arrays.asList("unzip", uploadFilePath, "-d", "/usr/local/application/tmpFile/frontend"));
 
-        FileUtil.copyContent(new File("/usr/local/application/tmpFile/frontend/" + originalDirName), new File("/usr/local/nginx/html/" + targetDirName), true);
+        FileUtil.copyContent(new File("/usr/local/application/tmpFile/frontend/" + originalDirName),
+                new File("/usr/local/nginx/html/" + targetDirName), true);
 
         return Result.success();
     }
@@ -66,16 +75,16 @@ public class UpdateNginxFileController {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(cmd);
             Process process = processBuilder.start();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))){
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     System.out.println(line);
                 }
                 int i = process.waitFor();
-                if(i == 0){
-                    log.info("命令"+ cmd+"执行成功");
-                }else{
-                    log.info("命令"+ cmd+"执行失败");
+                if (i == 0) {
+                    log.info("命令" + cmd + "执行成功");
+                } else {
+                    log.info("命令" + cmd + "执行失败");
                 }
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
@@ -85,8 +94,12 @@ public class UpdateNginxFileController {
         }
     }
 
-
-    // 使用递归方式删除目录及其中的文件
+    /**
+     * 使用递归方式删除目录及其中的文件
+     *
+     * @param dir 目录
+     * @return 是否删除完成
+     */
     public static Boolean deleteDir(File dir) {
         boolean res = true;
         if (dir.exists()) {
@@ -102,7 +115,6 @@ public class UpdateNginxFileController {
         }
         return res;
     }
-
 
 
 }

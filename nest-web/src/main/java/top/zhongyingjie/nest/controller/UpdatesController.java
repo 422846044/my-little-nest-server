@@ -10,6 +10,11 @@ import top.zhongyingjie.nest.vo.UpdatesVO;
 
 import java.util.List;
 
+/**
+ * 动态信息api
+ *
+ * @author Kong
+ */
 @RestController
 @RequestMapping("/updates")
 public class UpdatesController {
@@ -17,8 +22,13 @@ public class UpdatesController {
     @Autowired
     private UpdatesService updatesService;
 
+    /**
+     * 获取最新动态
+     *
+     * @return 统一返回对象
+     */
     @GetMapping("/new")
-    public Result<List<UpdatesVO>> getNewUpdates(){
+    public Result<List<UpdatesVO>> getNewUpdates() {
         return Result.success(updatesService.getNewUpdates());
     }
 }

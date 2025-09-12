@@ -10,15 +10,20 @@ import java.util.Objects;
 
 /**
  * 获取用户信息
+ *
+ * @author Kong
  */
 @Service
 public class SecurityUserDetailsService implements UserDetailsService {
     @Autowired
     private SecurityUserInfoService securityUserInfoService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetails userDetails = securityUserInfoService.getUserDetailsByUserName(username);
-        if(Objects.isNull(userDetails)) throw new UsernameNotFoundException("用户不存在");
+        if (Objects.isNull(userDetails)) {
+            throw new UsernameNotFoundException("用户不存在");
+        }
         return userDetails;
     }
 }

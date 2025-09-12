@@ -8,10 +8,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 用户角色服务实现
+ *
+ * @author Kong
+ */
 @Service
 public class UserRoleServiceImpl implements UserRoleService {
     @Autowired(required = false)
     private UserRoleInfoMapper userRoleInfoMapper;
+
     @Override
     public List<UserRoleInfo> getUserRoleByUserId(Long userId) {
         return userRoleInfoMapper.selectByUserId(userId);

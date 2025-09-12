@@ -1,7 +1,5 @@
 package top.zhongyingjie.common.domain;
 
-import lombok.Data;
-
 import java.io.Serializable;
 
 /**
@@ -10,13 +8,27 @@ import java.io.Serializable;
  * @author atulan_zyj
  * @date 2024/10/18
  */
-@Data
 public class PageQuery implements Serializable {
+
     private static final long serialVersionUID = 5135110693188015645L;
 
     private Integer pageNum;
 
     private Integer pageSize;
 
+    public Integer getPageNum() {
+        return pageNum;
+    }
 
+    public void setPageNum(Integer pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
 }

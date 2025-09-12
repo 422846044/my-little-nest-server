@@ -13,8 +13,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 动态信息服务实现
+ *
+ * @author Kong
+ */
 @Service
 public class UpdatesServiceImpl implements UpdatesService {
+
+    private static final int ONE_THOUSAND = 1000;
+
+    private static final int HOUR = 24;
+
+    private static final int MINUTE = 60;
+
+    private static final int SECOND = 60;
+
+    private static final int MIN_DAY = 4;
+
+    private static final int LIMIT = 4;
 
     @Autowired
     private UpdatesInfoMapper updatesInfoMapper;
@@ -22,27 +39,27 @@ public class UpdatesServiceImpl implements UpdatesService {
     @Override
     public List<UpdatesVO> getNewUpdates() {
         List<UpdatesVO> dataList = new ArrayList<>();
-        List<UpdatesInfo> updatesInfos = updatesInfoMapper.selectByLimitOrderByCreateTimeDesc(4);
+        List<UpdatesInfo> updatesInfos = updatesInfoMapper.selectByLimitOrderByCreateTimeDesc(LIMIT);
         updatesInfos.forEach(updatesInfo -> {
             String time = "";
             UpdatesVO updatesVO = new UpdatesVO();
             BeanUtils.copyProperties(updatesInfo, updatesVO);
             Date createTime = updatesInfo.getCreateTime();
             long ms = DateUtil.betweenMs(new Date(), createTime);
-            int minutes = (int) (ms / 60000);
-            if(minutes == 0){
-                time = (ms/1000) + "秒前";
-            }else if(minutes < 60 ){
+            int minutes = (int) (ms / SECOND * ONE_THOUSAND);
+            if (minutes == 0) {
+                time = (ms / ONE_THOUSAND) + "秒前";
+            } else if (minutes < SECOND) {
                 time = minutes + "分钟前";
-            }else{
-                int hours = minutes / 60;
-                if(hours < 24){
+            } else {
+                int hours = minutes / MINUTE;
+                if (hours < HOUR) {
                     time = hours + "小时前";
-                }else{
+                } else {
                     long day = DateUtil.betweenDay(new Date(), createTime, true);
-                    if(day < 4){
+                    if (day < MIN_DAY) {
                         time = day + "天前";
-                    }else{
+                    } else {
                         time = DateUtil.formatDateTime(createTime);
                     }
                 }

@@ -2,8 +2,14 @@ package top.zhongyingjie.common.constant;
 
 /**
  * 状态常量
+ *
+ * @author Kong
  */
 public final class StatusConstant {
+
+    private StatusConstant() {
+
+    }
 
     public static final int INVALID = 0;
 

@@ -8,8 +8,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * 缓存接口
  *
- * @author atulan_zyj
- * @date 2024/4/22
+ * @param <T> 变量类型
+ * @author Kong
  */
 public interface Cache<T> {
 
@@ -17,7 +17,7 @@ public interface Cache<T> {
      * 获取缓存值
      *
      * @param key 缓存键
-     * @return
+     * @return 缓存值
      */
     T get(Object key);
 
@@ -25,7 +25,7 @@ public interface Cache<T> {
      * 获取字符串类型缓存值
      *
      * @param key 缓存键
-     * @return
+     * @return 字符串类型缓存值
      */
     String getStr(Object key);
 
@@ -51,7 +51,7 @@ public interface Cache<T> {
      * 删除缓存
      *
      * @param key 缓存键
-     * @return
+     * @return 是否成功删除
      */
     Boolean delete(Object key);
 
@@ -59,9 +59,9 @@ public interface Cache<T> {
      * 批量获取缓存值
      *
      * @param keys 缓存键集合
-     * @return
+     * @return 缓存值列表
      */
-    List multiGet(Collection keys);
+    List<T> multiGet(Collection<String> keys);
 
     /**
      * 将Map集合元素放入缓存
@@ -94,15 +94,15 @@ public interface Cache<T> {
      *
      * @param key     缓存键
      * @param hashKey 缓存哈希键
-     * @return
+     * @return 哈希值
      */
     T getHash(Object key, Object hashKey);
 
     /**
-     * 获取缓存哈希值
+     * 获取缓存哈希表
      *
      * @param key 缓存键
-     * @return
+     * @return 哈希表
      */
     Map<Object, Object> getHash(Object key);
 
@@ -136,7 +136,7 @@ public interface Cache<T> {
      * 是否存在缓存键
      *
      * @param key 缓存键
-     * @return
+     * @return 是否存在缓存键
      */
     boolean hasKey(Object key);
 
@@ -145,7 +145,7 @@ public interface Cache<T> {
      * 根据前缀匹配所有缓存键
      *
      * @param pattern 前缀
-     * @return
+     * @return 缓存键列表
      */
     List<Object> keys(String pattern);
 

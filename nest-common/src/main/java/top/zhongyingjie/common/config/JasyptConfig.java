@@ -8,14 +8,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author atulan_zyj
- * @date 2024/4/22
+ * jasypt配置类
+ *
+ * @author Kong
  */
 @Configuration
 public class JasyptConfig {
     @Value("${jasypt.encryptor.password}")
     String salt;
 
+    /**
+     * 获取加密器
+     *
+     * @return 加密器
+     */
     @Bean(name = "jasyptStringEncryptor")
     public StringEncryptor jasyptStringEncryptor() {
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();

@@ -20,6 +20,11 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * 文章信息服务实现
+ *
+ * @author Kong
+ */
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
@@ -32,9 +37,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Result<Result.PageData<ArticleListVO>> getArticleByPage(ArticlePageQueryDTO articlePageQuery) {
         StrUtil.trim(articlePageQuery.getKeyword());
-        articlePageQuery.setOrder("ai."+articlePageQuery.getOrder());
+        articlePageQuery.setOrder("ai." + articlePageQuery.getOrder());
         List<ArticleListVO> voList = new ArrayList<>();
-        PageHelper.startPage(articlePageQuery.getPageNum(),articlePageQuery.getPageSize());
+        PageHelper.startPage(articlePageQuery.getPageNum(), articlePageQuery.getPageSize());
         List<ArticleInfo> articleInfoList = articleInfoMapper.selectByPage(articlePageQuery.getKeyword(),
                 articlePageQuery.getCategory(),
                 articlePageQuery.getTag(),
@@ -45,9 +50,10 @@ public class ArticleServiceImpl implements ArticleService {
                 ArticleStatus.VALID);
         PageInfo<ArticleInfo> pageInfo = new PageInfo<>(articleInfoList);
         List<Long> articleIdList = articleInfoList.stream().map(ArticleInfo::getId).collect(Collectors.toList());
-        if(!articleIdList.isEmpty()){
+        if (!articleIdList.isEmpty()) {
             List<ArticleTagsInfo> articleTagsInfoList = articleTagsInfoMapper.selectByArticleIds(articleIdList);
-            Map<Long, List<ArticleTagsInfo>> articleIdKeyTagsInfoMap = articleTagsInfoList.stream().collect(Collectors.groupingBy(ArticleTagsInfo::getArticleId));
+            Map<Long, List<ArticleTagsInfo>> articleIdKeyTagsInfoMap = articleTagsInfoList
+                    .stream().collect(Collectors.groupingBy(ArticleTagsInfo::getArticleId));
             for (ArticleInfo articleInfo : articleInfoList) {
                 ArticleListVO vo = new ArticleListVO();
                 vo.setId(Long.toString(articleInfo.getId()));
@@ -57,7 +63,8 @@ public class ArticleServiceImpl implements ArticleService {
                 vo.setCover(articleInfo.getCover());
                 // 获取标签信息
                 List<ArticleTagsInfo> articleTagsInfoListVO = articleIdKeyTagsInfoMap.get(articleInfo.getId());
-                vo.setTags(Objects.isNull(articleTagsInfoListVO) ? Collections.emptyList() : articleTagsInfoListVO.stream().map(ArticleTagsInfo::getTagsCode).collect(Collectors.toList()));
+                vo.setTags(Objects.isNull(articleTagsInfoListVO) ? Collections.emptyList() : articleTagsInfoListVO
+                        .stream().map(ArticleTagsInfo::getTagsCode).collect(Collectors.toList()));
                 vo.setCreateTime(articleInfo.getCreateTime());
                 voList.add(vo);
             }

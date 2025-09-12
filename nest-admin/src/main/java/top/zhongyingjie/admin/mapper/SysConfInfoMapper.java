@@ -3,10 +3,7 @@ package top.zhongyingjie.admin.mapper;
 import top.zhongyingjie.admin.entity.SysConfInfo;
 
 /**
-* @author Administrator
-* @description 针对表【sys_conf_info】的数据库操作Mapper
-* @createDate 2025-02-17 16:11:44
-* @Entity top.dfwx.admin.entity.SysConfInfo
+* @author Kong
 */
 public interface SysConfInfoMapper {
 
@@ -22,5 +19,11 @@ public interface SysConfInfoMapper {
 
     int updateByPrimaryKey(SysConfInfo record);
 
+    /**
+     * 查询值通过键
+     *
+     * @param key 键
+     * @return 值
+     */
     String selectValueByKey(String key);
 }

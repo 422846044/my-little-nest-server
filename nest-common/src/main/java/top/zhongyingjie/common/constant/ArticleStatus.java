@@ -1,10 +1,15 @@
 package top.zhongyingjie.common.constant;
 
 /**
- * @author atulan_zyj
- * @date 2024/10/24
+ * 文章状态
+ *
+ * @author Kong
  */
 public final class ArticleStatus {
+
+    private ArticleStatus() {
+
+    }
 
     public static final int INVALID = 0;
 

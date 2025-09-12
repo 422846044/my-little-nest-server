@@ -1,7 +1,8 @@
 package top.zhongyingjie.common.exchandler;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import top.zhongyingjie.common.domain.Result;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,15 +15,27 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.Optional;
 
-
-@Slf4j()//打印日志信息
+/**
+ * 异常通知器
+ *
+ * @author Kong
+ */
 @RestControllerAdvice//让系统知道这是处理异常的
 //步骤1、将异常转化为对应的类型 2、调用里面的获取消息模块
 public class ExceptionAdvice {
-    @ResponseBody//将异常的返回格式为json格式
+
+    private static final Logger log = LoggerFactory.getLogger(ExceptionAdvice.class);
+
+    /**
+     * 异常处理
+     *
+     * @param e 异常
+     * @return 统一返回对象
+     */
+    @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(Exception.class)//处理哪种异常
-    public Result exceptionHandler(Exception e) {
+    public Result<Object> exceptionHandler(Exception e) {
         String message = "";
         //处理后端验证失败
         if (e instanceof MethodArgumentNotValidException) {
@@ -41,13 +54,12 @@ public class ExceptionAdvice {
         } else if (e instanceof BindException) {
             BindException bindException = (BindException) e;
             message = "参数校验异常:" + bindException.getBindingResult().getAllErrors().get(0).getDefaultMessage();
-        }
-        //自定义异常
-        else if (e instanceof GlobalException) {
+        } else if (e instanceof GlobalException) {
+            // 自定义异常
             GlobalException exception = (GlobalException) e;
             message = exception.getMsg();
         } else {
-            log.error("执行异常", e);//将异常打印在控制台
+            log.error("执行异常", e);
             message = "执行异常";
         }
         return Result.serverError(message);

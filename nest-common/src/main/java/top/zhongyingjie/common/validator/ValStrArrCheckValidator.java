@@ -7,6 +7,11 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 自定义校验字符串数组注解校验器
+ *
+ * @author Kong
+ */
 public class ValStrArrCheckValidator implements ConstraintValidator<ValStrArrCheck, String> {
     private List<String> valueCollection;
 

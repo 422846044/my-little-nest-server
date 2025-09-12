@@ -1,10 +1,15 @@
 package top.zhongyingjie.common.constant;
 
 /**
- * @author atulan_zyj
- * @date 2024/10/11
+ * 字典code常量
+ *
+ * @author Kong
  */
 public final class DictCodes {
+
+    private DictCodes() {
+
+    }
 
     public static final String ARTICLE_CATEGORY = "WZFL";
 

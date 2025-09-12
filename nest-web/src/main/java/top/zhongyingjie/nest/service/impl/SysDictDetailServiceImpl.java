@@ -12,35 +12,38 @@ import java.util.stream.Collectors;
 
 /**
  * 数据字典详情服务实现类
+ *
+ * @author Kong
  */
 @Service
 public class SysDictDetailServiceImpl implements SysDictDetailService {
-    
+
     @Autowired
     private SysDictDetailMapper sysDictDetailMapper;
-    
+
     @Override
     public Map<String, String> getDictMapByCode(String dictCode) {
         List<HashMap> dictList = sysDictDetailMapper.selectByDictCode(dictCode);
         return convertToMap(dictList);
     }
-    
+
     @Override
     public Map<String, String> getDictMapByCodeAndStatus(String dictCode, Integer status) {
         List<HashMap> dictList = sysDictDetailMapper.selectByDictCodeAndStatusOrderBySort(dictCode, status);
         return convertToMap(dictList);
     }
-    
+
     /**
      * 将查询结果转换为Map
+     *
      * @param dictList 字典列表
-     * @return Map<String, String> code为key，name为value的Map集合
+     * @return code为key，name为value的Map集合
      */
     private Map<String, String> convertToMap(List<HashMap> dictList) {
         if (dictList == null || dictList.isEmpty()) {
             return new HashMap<>();
         }
-        
+
         return dictList.stream()
                 .filter(dict -> dict.get("code") != null && dict.get("name") != null)
                 .collect(Collectors.toMap(
@@ -49,4 +52,4 @@ public class SysDictDetailServiceImpl implements SysDictDetailService {
                         (existing, replacement) -> existing // 如果有重复的key，保留第一个
                 ));
     }
-} 
+}

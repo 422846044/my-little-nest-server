@@ -1,35 +1,67 @@
 package top.zhongyingjie.nest.domain;
 
 import java.io.Serializable;
-import lombok.Data;
 
 /**
- * 
+ * 大乐斗用户信息表
+ *
  * @TableName user_info
  */
-@Data
 public class FightUserInfo implements Serializable {
+
+    private static final long serialVersionUID = -4630825223748639350L;
+
     /**
-     * 
+     * qq号
      */
     private Integer qqNum;
 
     /**
-     * 
+     * openId
      */
     private String openId;
 
     /**
-     * 
+     * 访问令牌
      */
     private String accessToken;
 
     /**
-     * 
+     * 设备id
      */
     private String deviceId;
 
-    private static final long serialVersionUID = 1L;
+    public Integer getQqNum() {
+        return qqNum;
+    }
+
+    public void setQqNum(Integer qqNum) {
+        this.qqNum = qqNum;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 
     @Override
     public boolean equals(Object that) {
@@ -45,8 +77,10 @@ public class FightUserInfo implements Serializable {
         FightUserInfo other = (FightUserInfo) that;
         return (this.getQqNum() == null ? other.getQqNum() == null : this.getQqNum().equals(other.getQqNum()))
             && (this.getOpenId() == null ? other.getOpenId() == null : this.getOpenId().equals(other.getOpenId()))
-            && (this.getAccessToken() == null ? other.getAccessToken() == null : this.getAccessToken().equals(other.getAccessToken()))
-            && (this.getDeviceId() == null ? other.getDeviceId() == null : this.getDeviceId().equals(other.getDeviceId()));
+            && (this.getAccessToken() == null
+                ? other.getAccessToken() == null : this.getAccessToken().equals(other.getAccessToken()))
+            && (this.getDeviceId() == null
+                ? other.getDeviceId() == null : this.getDeviceId().equals(other.getDeviceId()));
     }
 
     @Override

@@ -23,6 +23,13 @@ public interface SysDictMapper {
 
     int updateByPrimaryKey(SysDict record);
 
+    /**
+     * 判断是否存在值
+     *
+     * @param dictCode 字典code
+     * @param status 状态
+     * @return 1
+     */
     Integer select1ByDictCodeAndStatus(@Param("dictCode") String dictCode,
                                        @Param("status") int status);
 }

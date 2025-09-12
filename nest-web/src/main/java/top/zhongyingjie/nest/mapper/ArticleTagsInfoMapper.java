@@ -6,10 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
-* @author 11th
-* @description 针对表【article_tags_info】的数据库操作Mapper
-* @createDate 2024-02-19 10:42:14
-* @Entity top.dfwx.common.entity.ArticleTagsInfo
+* @author Kong
 */
 public interface ArticleTagsInfoMapper {
 
@@ -25,7 +22,19 @@ public interface ArticleTagsInfoMapper {
 
     int updateByPrimaryKey(ArticleTagsInfo record);
 
+    /**
+     * 通过文章id查询标签代码列表
+     *
+     * @param articleId 文章id
+     * @return 标签代码列表
+     */
     List<Integer> selectTagsCodeByArticleId(Long articleId);
 
+    /**
+     * 根据文章id列表查询文章标签信息列表
+     *
+     * @param articleIdList 文章id列表
+     * @return 文章标签信息列表
+     */
     List<ArticleTagsInfo> selectByArticleIds(@Param("articleIdList") List<Long> articleIdList);
 }

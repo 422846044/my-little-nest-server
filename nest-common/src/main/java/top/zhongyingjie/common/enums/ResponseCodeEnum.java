@@ -1,16 +1,11 @@
 package top.zhongyingjie.common.enums;
 
-import lombok.Getter;
-
 /**
  * 响应码枚举
  *
- * @author atulan_zyj
- * @date 2024/3/1
+ * @author Kong
  */
-@Getter
 public enum ResponseCodeEnum {
-
 
     SUCCESS(true, 200, "请求成功"),
 
@@ -18,13 +13,15 @@ public enum ResponseCodeEnum {
 
     UNAUTHORIZED(false, 401, "用户未认证"),
 
+    REFRESH_TOKEN_INVALID(false, 402, "长时间未登录"),
+
     FORBIDDEN(false, 403, "暂无权限访问该资源"),
 
     NOT_FOUND(false, 404, "请求url找不到"),
 
-    MISS_REQUEST_HEADER(false,411,"请求头缺失"),
+    MISS_REQUEST_HEADER(false, 411, "请求头缺失"),
 
-    MISS_REQUEST_PARAMETER(false,412,"请求参数缺失"),
+    MISS_REQUEST_PARAMETER(false, 412, "请求参数缺失"),
 
     REQUEST_METHOD_NOT_SUPPORTED(false, 421, "请求方法不支持"),
 
@@ -42,9 +39,9 @@ public enum ResponseCodeEnum {
 
     PASSWORD_ERROR(false, 515, "旧密码错误"),
 
-    IMAGE_UPLOAD_ERROR(false, 516, "文件上传出错,请检查文件格式是否符合要求：" +
-            "支持'bmp、gif、jpg、jpeg、png、tar、zip、mp4、avi、rmvb、mp3、avi'等格式,文件名不超过100个字符" +
-            ",单个文件大小不超过500MB,多文件大小和不超过1GB"),
+    IMAGE_UPLOAD_ERROR(false, 516, "文件上传出错,请检查文件格式是否符合要求："
+            + "支持'bmp、gif、jpg、jpeg、png、tar、zip、mp4、avi、rmvb、mp3、avi'等格式,文件名不超过100个字符"
+            + ",单个文件大小不超过500MB,多文件大小和不超过1GB"),
 
     FILE_UPLOAD_ERROR(false, 517, "文件在上传过程中出错,请重试!"),
 
@@ -58,19 +55,19 @@ public enum ResponseCodeEnum {
 
     PARAM_SIZE_OUT_OF_RANGE(false, 1004, "参数数量超出范围"),
 
-    TOKEN_INVALID(false,1020,"凭证无效"),
+    TOKEN_INVALID(false, 1020, "凭证无效"),
 
-    TOKEN_EXPIRE(false,1021,"凭证已过期"),
+    TOKEN_EXPIRE(false, 1021, "凭证已过期"),
 
-    REFRESH_TOKEN_EXPIRE(false,1022,"刷新凭证已过期"),
+    REFRESH_TOKEN_EXPIRE(false, 1022, "刷新凭证已过期"),
 
-    TOKEN_PARSE_ERROR(false,1023,"凭证解析错误"),
+    TOKEN_PARSE_ERROR(false, 1023, "凭证解析错误"),
 
     BUSINESS_ERROR(false, 1110, ""),
 
-    BUSINESS_BUSY(false,1111,"业务繁忙，请稍后再试"),
+    BUSINESS_BUSY(false, 1111, "业务繁忙，请稍后再试"),
 
-    OPERATE_FAIL(false, 1112,"操作失败，请稍后再试"),
+    OPERATE_FAIL(false, 1112, "操作失败，请稍后再试"),
 
     REPEAT_REGISTER(false, 1200, "重复注册"),
 
@@ -94,4 +91,15 @@ public enum ResponseCodeEnum {
         this.msg = msg;
     }
 
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
 }

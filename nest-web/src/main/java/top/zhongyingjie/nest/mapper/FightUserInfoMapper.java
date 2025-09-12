@@ -6,10 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
-* @author 11th
-* @description 针对表【user_info】的数据库操作Mapper
-* @createDate 2024-01-30 21:11:10
-* @Entity com.dfwh.djctask.domain.UserInfo
+* @author Kong
 */
 public interface FightUserInfoMapper {
 
@@ -25,8 +22,20 @@ public interface FightUserInfoMapper {
 
     int updateByPrimaryKey(FightUserInfo record);
 
+    /**
+     * 查询全部用户
+     *
+     * @return 用户信息列表
+     */
     List<FightUserInfo> selectAll();
 
+    /**
+     * 更新访问令牌
+     *
+     * @param token 令牌
+     * @param qqNum QQ号
+     * @return 更新条数
+     */
     int updateAccessTokenByQQNum(@Param("accessToken")String token,
                                  @Param("qqNum") Integer qqNum);
 }

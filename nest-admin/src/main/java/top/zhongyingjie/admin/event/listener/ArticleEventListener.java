@@ -12,8 +12,9 @@ import top.zhongyingjie.admin.service.UpdatesInfoService;
 import top.zhongyingjie.common.enums.UpdatesType;
 
 /**
- * @author atulan_zyj
- * @date 2025/8/20
+ * 文章事件监听器
+ *
+ * @author Kong
  */
 @Service
 @Slf4j
@@ -22,15 +23,21 @@ public class ArticleEventListener {
     @Autowired
     private UpdatesInfoService updatesInfoService;
 
+    /**
+     * 异步添加文章的新增、编辑动态
+     *
+     * @param articleEvent 文章事件
+     */
     @Async
     @EventListener
-    public void handlerArticleEvent(ArticleEvent articleEvent){
+    public void handlerArticleEvent(ArticleEvent articleEvent) {
         log.info("开始执行文章事件监听处理");
-        if(articleEvent instanceof AddArticleEvent){
+        if (articleEvent instanceof AddArticleEvent) {
             updatesInfoService.add(((AddArticleEvent) articleEvent).getTitle(), UpdatesType.ADD_ARTICLE);
-        }else if(articleEvent instanceof EditArticleEvent){
+        } else if (articleEvent instanceof EditArticleEvent) {
             updatesInfoService.add(((EditArticleEvent) articleEvent).getTitle(), UpdatesType.EDIT_ARTICLE);
         }
         log.info("文章事件监听处理结束");
     }
+
 }

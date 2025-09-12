@@ -2,14 +2,15 @@ package top.zhongyingjie.nest.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
- * 
  * @TableName log_info
+ * @author Kong
  */
-@Data
 public class FightLogInfo implements Serializable {
+
+    private static final long serialVersionUID = 8622953179089880872L;
+
     /**
      * 日志id
      */
@@ -44,7 +45,45 @@ public class FightLogInfo implements Serializable {
      */
     private Date updateTime;
 
-    private static final long serialVersionUID = 1L;
+    public Long getLogId() {
+        return logId;
+    }
+
+    public void setLogId(Long logId) {
+        this.logId = logId;
+    }
+
+    public Integer getQqNum() {
+        return qqNum;
+    }
+
+    public void setQqNum(Integer qqNum) {
+        this.qqNum = qqNum;
+    }
+
+    public String getLogContent() {
+        return logContent;
+    }
+
+    public void setLogContent(String logContent) {
+        this.logContent = logContent;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     @Override
     public boolean equals(Object that) {
@@ -60,9 +99,12 @@ public class FightLogInfo implements Serializable {
         FightLogInfo other = (FightLogInfo) that;
         return (this.getLogId() == null ? other.getLogId() == null : this.getLogId().equals(other.getLogId()))
             && (this.getQqNum() == null ? other.getQqNum() == null : this.getQqNum().equals(other.getQqNum()))
-            && (this.getLogContent() == null ? other.getLogContent() == null : this.getLogContent().equals(other.getLogContent()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
+            && (this.getLogContent() == null
+                ? other.getLogContent() == null : this.getLogContent().equals(other.getLogContent()))
+            && (this.getCreateTime() == null
+                ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+            && (this.getUpdateTime() == null
+                ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
     }
 
     @Override

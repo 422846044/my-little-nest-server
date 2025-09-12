@@ -1,6 +1,7 @@
 package top.zhongyingjie.common.config;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,9 +11,16 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import java.util.concurrent.RejectedExecutionHandler;
 
 
-@Slf4j
+/**
+ * 线程池配置类
+ *
+ * @author Kong
+ */
 @Configuration
-public class ThreadPoolConfig implements AsyncConfigurer{
+public class ThreadPoolConfig implements AsyncConfigurer {
+
+    private static final Logger log = LoggerFactory.getLogger(ThreadPoolConfig.class);
+
     /**
      * 核心线程数（默认线程数）
      */
@@ -39,12 +47,22 @@ public class ThreadPoolConfig implements AsyncConfigurer{
     private static final int QUEUE_CAPACITY = 1200;
 
     /**
+     * 自定义拒绝策略睡眠时间
+     */
+    private static final int CUSTOMIZE_REJECTED_EXECUTION_SLEEP = 5000;
+
+    /**
      * 线程池名前缀
      */
     private static final String THREAD_NAME_PREFIX = "log-thread-pool";
 
+    /**
+     * 获取异步日志线程池
+     *
+     * @return 异步日志线程池
+     */
     @Bean(name = "logAsyncService")
-    public ThreadPoolTaskExecutor logAsyncService(){
+    public ThreadPoolTaskExecutor logAsyncService() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         //核心线程数
         executor.setCorePoolSize(CORE_POOL_SIZE);
@@ -59,13 +77,17 @@ public class ThreadPoolConfig implements AsyncConfigurer{
         return executor;
     }
 
-
+    /**
+     * 获取自定义拒绝策略
+     *
+     * @return 自定义拒绝策略
+     */
     public RejectedExecutionHandler customizeRejectedExecutionHandler() {
         return (r, executor) -> {
             if (!executor.isShutdown()) {
                 try {
                     log.info("日志线程队列已满，进入休眠");
-                    Thread.sleep(5000);
+                    Thread.sleep(CUSTOMIZE_REJECTED_EXECUTION_SLEEP);
                 } catch (InterruptedException e) {
                     log.error(e.getMessage());
                 }
@@ -74,7 +96,6 @@ public class ThreadPoolConfig implements AsyncConfigurer{
             }
         };
     }
-
 
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {

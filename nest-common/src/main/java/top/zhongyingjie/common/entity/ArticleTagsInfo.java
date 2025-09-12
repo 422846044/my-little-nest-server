@@ -1,7 +1,7 @@
 package top.zhongyingjie.common.entity;
 
 /**
-* 
+*
 * @TableName article_tags_info
 */
 public class ArticleTagsInfo extends BaseEntity {
@@ -11,12 +11,12 @@ public class ArticleTagsInfo extends BaseEntity {
     private Long id;
 
     /**
-    * 
+    * 文章id
     */
     private Long articleId;
 
     /**
-    * 
+    * 标签代码
     */
     private String tagsCode;
 

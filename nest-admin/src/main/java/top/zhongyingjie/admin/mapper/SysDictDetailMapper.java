@@ -7,11 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
-* @author 11th
-* @description 针对表【sys_dict_detail】的数据库操作Mapper
-* @createDate 2024-02-15 15:55:25
-* @Entity top.dfwx.admin.entity.SysDictDetail
-*/
+ * @author Kong
+ */
 public interface SysDictDetailMapper {
 
     int deleteByPrimaryKey(Long id);
@@ -26,10 +23,28 @@ public interface SysDictDetailMapper {
 
     int updateByPrimaryKey(SysDictDetail record);
 
+    /**
+     * 通过字典code和状态排序查询详情映射表列表
+     *
+     * @param dictCode 字典code
+     * @param status   状态
+     * @return 详情映射表列表
+     */
     List<HashMap> selectByDictCodeAndStatusOrderBySort(@Param("dictCode") String dictCode,
                                                        @Param("status") int status);
-
+    /**
+     * 通过字典code查询详情映射表列表
+     *
+     * @param dictCode 字典code
+     * @return 详情映射表列表
+     */
     List<HashMap> selectByDictCode(@Param("dictCode") String dictCode);
 
-    String selectOneCodeByDictCodeOrderByCodeDesc(@Param("dictCode") String dictCode);
+    /**
+     * 根据字典code查询详情code最大值
+     *
+     * @param dictCode 字典code
+     * @return code最大值
+     */
+    Integer selectOneCodeByDictCodeOrderByCodeDesc(@Param("dictCode") String dictCode);
 }

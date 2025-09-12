@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author atulan_zyj
- * @date 2025/2/17
+ * 系统参数信息api
+ *
+ * @author Kong
  */
 @RestController
 @RequestMapping("/system")
@@ -22,13 +23,12 @@ public class SystemController {
     /**
      * 获取key对应的value
      *
-     * @param key
-     * @return
+     * @param key 键
+     * @return 统一返回对象
      */
     @GetMapping("/value/{key}")
-    public Result getValue(@PathVariable("key") String key){
+    public Result<String> getValue(@PathVariable("key") String key) {
         return Result.success(systemService.getValue(key));
     }
-
 
 }

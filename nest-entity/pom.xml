@@ -21,12 +21,5 @@
             <artifactId>nest-common</artifactId>
             <version>${project.version}</version>
         </dependency>
-        
-        <!-- Lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
     </dependencies>
 </project> 

@@ -1,14 +1,11 @@
 package top.zhongyingjie.common.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 /**
- * @author atulan_zyj
- * @date 2025/8/20
+ * 动态类型枚举
+ *
+ * @author Kong
  */
-@AllArgsConstructor
-@Getter
 public enum UpdatesType {
 
     ADD_ARTICLE(0, "发布文章", "发布了文章《%s》"),
@@ -21,4 +18,21 @@ public enum UpdatesType {
 
     private final String param;
 
+    UpdatesType(int code, String desc, String param) {
+        this.code = code;
+        this.desc = desc;
+        this.param = param;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public String getParam() {
+        return param;
+    }
 }

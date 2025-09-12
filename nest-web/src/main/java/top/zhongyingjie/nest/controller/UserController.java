@@ -11,8 +11,9 @@ import top.zhongyingjie.nest.service.UserInfoService;
 import java.util.Map;
 
 /**
- * @author atulan_zyj
- * @date 2025/8/14
+ * 用户信息api
+ *
+ * @author Kong
  */
 @RestController
 @RequestMapping("/user")
@@ -21,8 +22,14 @@ public class UserController {
     @Autowired
     private UserInfoService userInfoService;
 
+    /**
+     * 获取用户简单信息
+     *
+     * @param uid 用户id
+     * @return 统一返回对象
+     */
     @GetMapping("/simpleInfo/{uid}")
-    public Result<Map<String, Object>> getSimpleInfo(@PathVariable("uid") Long uid){
+    public Result<Map<String, Object>> getSimpleInfo(@PathVariable("uid") Long uid) {
         return Result.success(userInfoService.getSimpleInfo(uid));
     }
 }

@@ -3,7 +3,6 @@ package top.zhongyingjie.common.cache.config;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONFactory;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -11,6 +10,8 @@ import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
 import org.redisson.config.SentinelServersConfig;
 import org.redisson.config.SingleServerConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -43,16 +44,18 @@ import java.util.Map;
 /**
  * redis配置类
  *
- * @author atulan_zyj
- * @date 2024/3/4
+ * @author Kong
  */
-@Slf4j
 @Configuration
 @ConditionalOnClass(RedisOperations.class)
 @EnableConfigurationProperties(RedisProperties.class)
 public class RedisConfig extends CachingConfigurerSupport {
 
+    private static final Logger log = LoggerFactory.getLogger(RedisConfig.class);
+
     private static final String REDIS_PREFIX = "redis://";
+
+    private static final int PING_CONNECTION_INTERVAL = 1000;
 
     @Value("${bumblebee.cache.timeout:7200}")
     private Integer timeout;
@@ -70,8 +73,10 @@ public class RedisConfig extends CachingConfigurerSupport {
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory);
         //序列化方式
         FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
-        RedisSerializationContext.SerializationPair<Object> pair = RedisSerializationContext.SerializationPair.fromSerializer(fastJsonRedisSerializer);
-        RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig().serializeValuesWith(pair);
+        RedisSerializationContext.SerializationPair<Object> pair =
+                RedisSerializationContext.SerializationPair.fromSerializer(fastJsonRedisSerializer);
+        RedisCacheConfiguration defaultCacheConfig =
+                RedisCacheConfiguration.defaultCacheConfig().serializeValuesWith(pair);
         //设置过期时间
         defaultCacheConfig = defaultCacheConfig.entryTtl(Duration.ofSeconds(timeout));
         RedisCacheManager cacheManager = new RedisCacheManager(redisCacheWriter, defaultCacheConfig);
@@ -87,6 +92,12 @@ public class RedisConfig extends CachingConfigurerSupport {
         return cacheManager;
     }
 
+    /**
+     * 获取redisTemple实例
+     *
+     * @param lettuceConnectionFactory 连接工厂
+     * @return redisTemple实例
+     */
     @Bean(name = "redisTemplate")
     @ConditionalOnMissingBean(name = "redisTemplate")
     public RedisTemplate<Object, Object> redisTemplate(LettuceConnectionFactory lettuceConnectionFactory) {
@@ -103,6 +114,12 @@ public class RedisConfig extends CachingConfigurerSupport {
         return template;
     }
 
+    /**
+     * 获取redisson客户端
+     *
+     * @param redisProperties redis属性参数类
+     * @return redisson客户端
+     */
     @Bean(destroyMethod = "shutdown")
     public RedissonClient redisson(RedisProperties redisProperties) {
         Config config = new Config();
@@ -135,7 +152,7 @@ public class RedisConfig extends CachingConfigurerSupport {
             if (CharSequenceUtil.isNotEmpty(redisProperties.getPassword())) {
                 singleServerConfig.setPassword(redisProperties.getPassword());
             }
-            singleServerConfig.setPingConnectionInterval(1000);
+            singleServerConfig.setPingConnectionInterval(PING_CONNECTION_INTERVAL);
         }
 
         return Redisson.create(config);
@@ -143,6 +160,8 @@ public class RedisConfig extends CachingConfigurerSupport {
 
     /**
      * 自定义缓存key生成策略，默认将使用该策略
+     *
+     * @return 缓存key生成器
      */
     @Bean
     @Override

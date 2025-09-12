@@ -6,10 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
-* @author 11th
-* @description 针对表【log_info】的数据库操作Mapper
-* @createDate 2024-01-30 21:09:48
-* @Entity com.dfwh.djctask.domain.LogInfo
+* @author Kong
 */
 public interface FightLogInfoMapper {
 
@@ -25,6 +22,14 @@ public interface FightLogInfoMapper {
 
     int updateByPrimaryKey(FightLogInfo record);
 
+    /**
+     * 通过QQ号和时间查询日志信息列表
+     *
+     * @param qqNum QQ号
+     * @param sDate 开始时间
+     * @param eDate 结束时间
+     * @return 日志列表
+     */
     List<FightLogInfo> selectByQQNumAndCreateTime(@Param("qqNum") Integer qqNum,
                                                   @Param("sDate") String sDate,
                                                   @Param("eDate") String eDate);

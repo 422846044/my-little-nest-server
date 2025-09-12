@@ -11,6 +11,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * 用户信息服务实现
+ *
+ * @author Kong
+ */
 @Service
 public class IUserServiceImpl implements IUserService {
 
@@ -25,9 +30,9 @@ public class IUserServiceImpl implements IUserService {
     @Override
     public Map<String, String> getSimpleUserInfoByUserId(Long userId) {
         Map<String, String> data = new HashMap<>();
-        String nickName = "",avatar = "";
-        HashMap<String,String> userInfo = userInfoMapper.selectUserNameAndNickNameAndAvatarByUserId(userId);
-        if(Objects.nonNull(userInfo)){
+        String nickName = "", avatar = "";
+        HashMap<String, String> userInfo = userInfoMapper.selectUserNameAndNickNameAndAvatarByUserId(userId);
+        if (Objects.nonNull(userInfo)) {
             nickName = Optional.ofNullable(userInfo.get("nickName")).orElse(userInfo.get("userName"));
             avatar = userInfo.get("avatar");
         }

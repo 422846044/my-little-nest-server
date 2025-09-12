@@ -10,6 +10,9 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * 自定义序列化器
+ *
+ * @param <T> 序列化类型
+ * @author Kong
  */
 public class FastJsonRedisSerializer<T> implements RedisSerializer<T> {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;

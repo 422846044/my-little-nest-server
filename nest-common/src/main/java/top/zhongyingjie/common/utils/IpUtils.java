@@ -7,17 +7,30 @@ import java.net.UnknownHostException;
 /**
  * ip工具类
  *
- * @author aitulan_zyj
- * @date 2024/3/4
+ * @author Kong
  */
-public class IpUtils {
+public final class IpUtils {
+
     private static final String UNKNOWN = "unknown";
+
     private static final String LOCALHOST_IP = "127.0.0.1";
-    // 客户端与服务器同为一台机器，获取的ip 有时候是 ipv6 格式
+
     private static final String LOCALHOST_IPV6 = "0:0:0:0:0:0:0:1";
+
     private static final String SEPARATOR = ",";
 
-    // 根据 HttpServletRequest 获取 IP
+    private static final int IP_SPLIT_INDEX = 15;
+
+    private IpUtils() {
+
+    }
+
+    /**
+     * 根据HttpServletRequest获取IP
+     *
+     * @param request 请求对象
+     * @return ip
+     */
     public static String getIpAddress(HttpServletRequest request) {
         if (request == null) {
             return "unknown";
@@ -50,7 +63,7 @@ public class IpUtils {
             }*/
         }
         // 对于通过多个代理的情况，分割出第一个IP
-        if (ip != null && ip.length() > 15) {
+        if (ip != null && ip.length() > IP_SPLIT_INDEX) {
             if (ip.indexOf(SEPARATOR) > 0) {
                 ip = ip.substring(0, ip.indexOf(SEPARATOR));
             }
@@ -63,8 +76,7 @@ public class IpUtils {
      *
      * @return IP地址
      */
-    public static String getIpAddr()
-    {
+    public static String getIpAddr() {
         return getIpAddress(ServletUtils.getRequest());
     }
 
@@ -73,14 +85,10 @@ public class IpUtils {
      *
      * @return 本地IP地址
      */
-    public static String getHostIp()
-    {
-        try
-        {
+    public static String getHostIp() {
+        try {
             return InetAddress.getLocalHost().getHostAddress();
-        }
-        catch (UnknownHostException e)
-        {
+        } catch (UnknownHostException e) {
         }
         return "127.0.0.1";
     }
@@ -90,14 +98,10 @@ public class IpUtils {
      *
      * @return 本地主机名
      */
-    public static String getHostName()
-    {
-        try
-        {
+    public static String getHostName() {
+        try {
             return InetAddress.getLocalHost().getHostName();
-        }
-        catch (UnknownHostException e)
-        {
+        } catch (UnknownHostException e) {
         }
         return "未知";
     }
