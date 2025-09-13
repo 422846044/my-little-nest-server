@@ -1,6 +1,7 @@
 package top.zhongyingjie.admin.event.listener;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -17,8 +18,9 @@ import top.zhongyingjie.common.enums.UpdatesType;
  * @author Kong
  */
 @Service
-@Slf4j
 public class ArticleEventListener {
+
+    private static final Logger log = LoggerFactory.getLogger(ArticleEventListener.class);
 
     @Autowired
     private UpdatesInfoService updatesInfoService;
