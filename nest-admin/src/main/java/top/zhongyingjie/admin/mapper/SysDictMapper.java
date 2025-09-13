@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 * @author 11th
 * @description 针对表【sys_dict】的数据库操作Mapper
 * @createDate 2024-02-15 15:55:12
-* @Entity top.dfwx.admin.entity.SysDict
+* @Entity top.zhongyingjie.admin.entity.SysDict
 */
 public interface SysDictMapper {
 

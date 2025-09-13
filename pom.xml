@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
     
-    <groupId>top.dfwx</groupId>
+    <groupId>top.zhongyingjie</groupId>
     <artifactId>my-little-nest-server</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -52,12 +52,12 @@
         <dependencies>
             <!-- 内部模块依赖 -->
             <dependency>
-                <groupId>top.dfwx</groupId>
+                <groupId>top.zhongyingjie</groupId>
                 <artifactId>nest-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>top.dfwx</groupId>
+                <groupId>top.zhongyingjie</groupId>
                 <artifactId>nest-entity</artifactId>
                 <version>${project.version}</version>
             </dependency>
