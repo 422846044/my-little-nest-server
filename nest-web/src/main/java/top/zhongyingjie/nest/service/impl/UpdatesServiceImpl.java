@@ -46,7 +46,7 @@ public class UpdatesServiceImpl implements UpdatesService {
             BeanUtils.copyProperties(updatesInfo, updatesVO);
             Date createTime = updatesInfo.getCreateTime();
             long ms = DateUtil.betweenMs(new Date(), createTime);
-            int minutes = (int) (ms / SECOND * ONE_THOUSAND);
+            int minutes = (int) (ms / (SECOND * ONE_THOUSAND));
             if (minutes == 0) {
                 time = (ms / ONE_THOUSAND) + "秒前";
             } else if (minutes < SECOND) {
