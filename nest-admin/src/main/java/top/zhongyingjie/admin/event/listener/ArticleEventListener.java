@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import top.zhongyingjie.admin.event.AddArticleEvent;
 import top.zhongyingjie.admin.event.ArticleEvent;
@@ -17,7 +18,7 @@ import top.zhongyingjie.common.enums.UpdatesType;
  *
  * @author Kong
  */
-@Service
+@Component
 public class ArticleEventListener {
 
     private static final Logger log = LoggerFactory.getLogger(ArticleEventListener.class);
@@ -30,7 +31,7 @@ public class ArticleEventListener {
      *
      * @param articleEvent 文章事件
      */
-    @Async
+    @Async("viewCountAsyncService")
     @EventListener
     public void handlerArticleEvent(ArticleEvent articleEvent) {
         log.info("开始执行文章事件监听处理");

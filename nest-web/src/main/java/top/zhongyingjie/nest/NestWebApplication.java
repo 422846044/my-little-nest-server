@@ -3,6 +3,7 @@ package top.zhongyingjie.nest;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
@@ -11,13 +12,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @author Kong
  */
 @SpringBootApplication(scanBasePackages = {
-        "top.zhongyingjie.common",
-        "top.zhongyingjie.nest"
+        "top.zhongyingjie.common.*",
+        "top.zhongyingjie.nest.*"
 })
 @MapperScan(basePackages = {
         "top.zhongyingjie.nest.mapper"
 })
 @EnableScheduling
+@EnableAsync
 public class NestWebApplication {
 
     /**

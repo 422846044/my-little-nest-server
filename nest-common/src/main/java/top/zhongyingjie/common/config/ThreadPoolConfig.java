@@ -52,9 +52,35 @@ public class ThreadPoolConfig implements AsyncConfigurer {
     private static final int CUSTOMIZE_REJECTED_EXECUTION_SLEEP = 5000;
 
     /**
-     * 线程池名前缀
+     * 日志线程池名前缀
      */
-    private static final String THREAD_NAME_PREFIX = "log-thread-pool";
+    private static final String LOG_THREAD_NAME_PREFIX = "log-thread-pool-";
+
+    /**
+     * 浏览事件统计线程池名前缀
+     */
+    private static final String VIEW_COUNT_THREAD_NAME_PREFIX = "view-count-thread-pool-";
+
+    /**
+     * 获取异步日志线程池
+     *
+     * @return 异步日志线程池
+     */
+    @Bean(name = "viewCountAsyncService")
+    public ThreadPoolTaskExecutor viewCountAsyncService() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        //核心线程数
+        executor.setCorePoolSize(CORE_POOL_SIZE);
+        //最大线程数
+        executor.setMaxPoolSize(MAX_POOL_SIZE);
+        executor.setKeepAliveSeconds(KEEP_ALIVE_TIME);
+        executor.setAwaitTerminationMillis(AWAIT_TERMINATION_TIME);
+        executor.setQueueCapacity(QUEUE_CAPACITY);
+        executor.setThreadNamePrefix(VIEW_COUNT_THREAD_NAME_PREFIX);
+        //使用自定义线程拒绝策略，拒绝后休眠五秒之后再次排队
+        executor.setRejectedExecutionHandler(customizeRejectedExecutionHandler());
+        return executor;
+    }
 
     /**
      * 获取异步日志线程池
@@ -71,7 +97,7 @@ public class ThreadPoolConfig implements AsyncConfigurer {
         executor.setKeepAliveSeconds(KEEP_ALIVE_TIME);
         executor.setAwaitTerminationMillis(AWAIT_TERMINATION_TIME);
         executor.setQueueCapacity(QUEUE_CAPACITY);
-        executor.setThreadNamePrefix(THREAD_NAME_PREFIX);
+        executor.setThreadNamePrefix(LOG_THREAD_NAME_PREFIX);
         //使用自定义线程拒绝策略，拒绝后休眠五秒之后再次排队
         executor.setRejectedExecutionHandler(customizeRejectedExecutionHandler());
         return executor;

@@ -3,9 +3,13 @@ package top.zhongyingjie.nest.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.context.ApplicationEventPublisher;
 import top.zhongyingjie.common.constant.ArticleStatus;
 import top.zhongyingjie.common.domain.Result;
 import top.zhongyingjie.common.entity.ArticleTagsInfo;
+import top.zhongyingjie.common.utils.IpUtils;
+import top.zhongyingjie.nest.event.ArticleViewEvent;
+import top.zhongyingjie.nest.event.DayViewEvent;
 import top.zhongyingjie.nest.mapper.ArticleTagsInfoMapper;
 import top.zhongyingjie.nest.pojo.dto.ArticlePageQueryDTO;
 import top.zhongyingjie.nest.vo.ArticleListVO;
@@ -33,6 +37,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleTagsInfoMapper articleTagsInfoMapper;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     public Result<Result.PageData<ArticleListVO>> getArticleByPage(ArticlePageQueryDTO articlePageQuery) {
@@ -69,6 +76,7 @@ public class ArticleServiceImpl implements ArticleService {
                 voList.add(vo);
             }
         }
+        applicationEventPublisher.publishEvent(new DayViewEvent(IpUtils.getIpAddr()));
         return Result.page(voList, pageInfo.getTotal());
     }
 
@@ -86,6 +94,7 @@ public class ArticleServiceImpl implements ArticleService {
         vo.setTags(tagsCodeList);
         vo.setAuthor(articleInfo.getCreateBy());
         vo.setCreateTime(articleInfo.getCreateTime());
+        applicationEventPublisher.publishEvent(new ArticleViewEvent(IpUtils.getIpAddr(), vo.getTitle()));
         return vo;
     }
 
